@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,8 +7,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("IngeMath"),
+      body: Stack(
+        children: [
+          CustomLines(),
+          Align(alignment: Alignment.bottomRight, child: CustomLines()),
+          Center(child: Text("IngeMath")),
+        ],
       ),
     );
   }
