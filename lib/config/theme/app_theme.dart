@@ -4,6 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   ThemeData getTheme() => ThemeData(
 
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      titleTextStyle: GoogleFonts.montserrat()
+        .copyWith( fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black ),
+    ),
+
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStatePropertyAll(
