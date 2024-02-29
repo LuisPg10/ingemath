@@ -24,10 +24,12 @@ class OperationsScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: appMenuOptions.length,
               itemBuilder: (context, index) {
+                final option = appMenuOptions[index];
+
                 return GestureDetector(
-                  onTap: () => context.push("/aux"),
+                  onTap: () => context.push("/operations/${option.link}"),
                   child: ListTile(
-                    title: Text(appMenuOptions[index].name),
+                    title: Text(option.name),
                   ),
                 );
               },
