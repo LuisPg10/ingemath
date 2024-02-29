@@ -14,5 +14,10 @@ final appRouter = GoRouter(
       path: "/operations",
       builder: (context, state) => const OperationsScreen(),
     ),
+
+    GoRoute(
+      path: "/aux",
+      builder: (context, state) => const AuxScreen(),
+    )
   ],
 );

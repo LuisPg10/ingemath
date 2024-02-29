@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ingemath/config/menu/operation_options.dart';
 
 class OperationsScreen extends StatelessWidget {
   const OperationsScreen({super.key});
@@ -6,17 +8,13 @@ class OperationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final textStyles = Theme.of(context).textTheme;
-
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Bienvenidos a IngeMath"),
+      ),
       body: Column(
         children: [
-          Text(
-            "Bienvenidos a IngeMath",
-            style: textStyles.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-      
+
           const SizedBox(height: 10),
           const Text("Elige la herramienta contable de tu interes"),
           
@@ -24,9 +22,14 @@ class OperationsScreen extends StatelessWidget {
       
           Expanded(
             child: ListView.builder(
-              itemCount: 2,
+              itemCount: appMenuOptions.length,
               itemBuilder: (context, index) {
-                return const Text("Hola");
+                return GestureDetector(
+                  onTap: () => context.push("/aux"),
+                  child: ListTile(
+                    title: Text(appMenuOptions[index].name),
+                  ),
+                );
               },
             )
           )
