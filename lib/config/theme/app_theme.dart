@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+final colorSchemeSeed = Colors.green;
+
 class AppTheme {
   ThemeData getTheme() => ThemeData(
+
+    colorSchemeSeed: colorSchemeSeed,
 
     appBarTheme: AppBarTheme(
       centerTitle: true,
@@ -11,7 +15,9 @@ class AppTheme {
     ),
 
     textTheme: TextTheme(
-      bodyMedium: GoogleFonts.montserrat()
+      bodyMedium: GoogleFonts.montserrat().copyWith(
+        fontWeight: FontWeight.bold,
+      )
     ),
 
     filledButtonTheme: FilledButtonThemeData(
