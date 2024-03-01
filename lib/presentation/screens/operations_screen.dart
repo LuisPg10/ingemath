@@ -11,35 +11,35 @@ class OperationsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Bienvenidos a IngeMath")),
-      body: Column(
-        children: [
-
-          const SizedBox(height: 10),
-          const Text("Elige la herramienta contable de tu interes"),
-      
-          Expanded(
-            child: MasonryGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              padding: const EdgeInsets.all(22),
-              itemCount: appMenuOptions.length,
-              itemBuilder: (context, index) {
-                final option = appMenuOptions[index];
-
-                if(index == 1) {
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Elige la herramienta contable de tu interes"),
+            const SizedBox(height: 10),
+        
+            Expanded(
+              child: MasonryGridView.count(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                crossAxisCount: 2,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                itemCount: appMenuOptions.length,
+                itemBuilder: (context, index) {
+                  final option = appMenuOptions[index];
+                
                   return Column(
                     children: [
-                      const SizedBox(height: 45),
+                      if(index == 1) const SizedBox(height: 40),
                       _MenuOption(option: option),
                     ],
                   );
-                }
-                return _MenuOption(option: option);
-              },
+                },
+              )
             )
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
