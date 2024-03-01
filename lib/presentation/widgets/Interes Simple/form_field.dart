@@ -1,17 +1,17 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// class FormFieldText extends StatelessWidget {
-//   final String texto;
+class FormFieldText extends StatelessWidget {
+  final String texto;
 
-//   const FormFieldText({
-//     super.key,
-//     required this.texto,
-//   });
+  const FormFieldText({
+    super.key,
+    required this.texto,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       decoration: InputDecoration(labelText: texto),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(labelText: texto),
+    );
+  }
+}
