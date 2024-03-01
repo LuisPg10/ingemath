@@ -67,7 +67,7 @@ class _MenuOption extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(option.icon),
-            Text(option.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(option.name),
           ],
         ),
       )
