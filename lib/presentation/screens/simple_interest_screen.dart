@@ -174,12 +174,9 @@ class FormOption4 extends StatelessWidget {
         children: [
           const Text("Completa la Siguiente Información:"),
           TextFormField(
-            // controller: capitalController,
-            decoration: const InputDecoration(labelText: "Capital"),
-          ),
-          TextFormField(
             controller: vpController,
-            decoration: const InputDecoration(labelText: "Valor Presente"),
+            decoration:
+                const InputDecoration(labelText: "Capital o Valor Presente"),
           ),
           TextFormField(
             controller: iController,
