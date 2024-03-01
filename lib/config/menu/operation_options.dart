@@ -14,17 +14,17 @@ class Option {
 const appMenuOptions = <Option>[
   Option(
     name: "Interés simple",
-    icon: "assets/images/interes-simple.png",
-    link: "simple_interest"
+    icon: "assets/images/simple-interest.png",
+    link: "simple_interest",
   ),
   Option(
     name: "Interés compuesto",
-    icon: "assets/images/interes-compuesto.png",
-    link: "compound_interest"
+    icon: "assets/images/compound-interest.png",
+    link: "compound_interest",
   ),
   Option(
     name: "Anualidades",
-    icon: "assets/images/anualidades.png",
-    link: "annuities"
+    icon: "assets/images/annuities.png",
+    link: "annuities",
   ),
 ];

@@ -10,6 +10,10 @@ class AppTheme {
         .copyWith( fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black ),
     ),
 
+    textTheme: TextTheme(
+      bodyMedium: GoogleFonts.montserrat()
+    ),
+
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStatePropertyAll(
