@@ -22,11 +22,7 @@ class FormOption4 extends StatelessWidget {
       child: Column(
         children: [
           const Text("Completa la Siguiente Información:"),
-          TextFormField(
-            controller: vpController,
-            decoration:
-                const InputDecoration(labelText: "Capital o Valor Presente"),
-          ),
+          CampoText(vpController: vpController),
           TextFormField(
             controller: iController,
             decoration: const InputDecoration(labelText: "Tasa de Interés (%)"),
@@ -42,6 +38,26 @@ class FormOption4 extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CampoText extends StatelessWidget {
+  const CampoText({
+    super.key,
+    required this.vpController,
+  });
+
+  final TextEditingController vpController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: vpController,
+      decoration: InputDecoration(
+          labelText: "Capital o Valor Presente",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+          contentPadding: const EdgeInsets.all(5)),
     );
   }
 }

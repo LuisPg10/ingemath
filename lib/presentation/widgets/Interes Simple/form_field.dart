@@ -10,8 +10,10 @@ class FormFieldText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: texto),
+    return TextField(
+      decoration: InputDecoration(
+          labelText: texto,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
     );
   }
 }
