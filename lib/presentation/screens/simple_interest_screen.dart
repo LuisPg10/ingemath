@@ -22,7 +22,6 @@ class SimpleInterestScreenState extends State<SimpleInterestScreen> {
     double d = double.tryParse(dController.text) ?? 0;
 
     setState(() {
-      // Calcular el resultado usando la fórmula de interés simple
       result = vp + (vp * (i / 100) * (d / 360));
     });
   }
@@ -31,15 +30,19 @@ class SimpleInterestScreenState extends State<SimpleInterestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Calculadora de \n Interés Simple"),
+        title: const Text("Interés Simple"),
       ),
       body: Container(
-        margin: const EdgeInsets.all(30),
+        decoration: BoxDecoration(
+          border: Border.all(width: 1.0, color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xFFFFDC62),
+        ),
+        margin: const EdgeInsets.all(25),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const Text("Selecciona Variable a Calcular"),
             DropdownMenuWidget(
               vpController: vpController,
               iController: iController,
@@ -47,7 +50,7 @@ class SimpleInterestScreenState extends State<SimpleInterestScreen> {
             ),
             const SizedBox(height: 20),
             CustomFilledButton(
-              buttonColor: Colors.grey,
+              buttonColor: const Color(0xFF218C1E),
               onPressed: () {
                 calculateResult();
               },

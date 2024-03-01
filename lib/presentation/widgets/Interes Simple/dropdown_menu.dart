@@ -35,10 +35,12 @@ class DropdownMenuWidgetState extends State<DropdownMenuWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const Center(child: Text("Selecciona Variable a Calcular")),
+        const SizedBox(height: 5),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 28),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
@@ -46,9 +48,11 @@ class DropdownMenuWidgetState extends State<DropdownMenuWidget> {
               value: _selectedItem,
               icon: const Icon(Icons.arrow_drop_down),
               iconSize: 24,
+              iconEnabledColor: Colors.black,
               elevation: 16,
               style: const TextStyle(
                 color: Colors.black,
+                fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
               underline: const SizedBox(),
