@@ -1,66 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:ingemath/presentation/widgets/Interes%20Simple/dropdown_menu.dart';
-import 'package:ingemath/presentation/widgets/shared/custom_filled_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/widgets/widgets.dart';
 
-final TextEditingController vpController = TextEditingController();
-final TextEditingController iController = TextEditingController();
-final TextEditingController dController = TextEditingController();
-
-class SimpleInterestScreen extends StatefulWidget {
+class SimpleInterestScreen extends StatelessWidget {
   const SimpleInterestScreen({super.key});
-
-  @override
-  SimpleInterestScreenState createState() => SimpleInterestScreenState();
-}
-
-class SimpleInterestScreenState extends State<SimpleInterestScreen> {
-  double? result;
-
-  void calculateResult() {
-    double vp = double.tryParse(vpController.text) ?? 0;
-    double i = double.tryParse(iController.text) ?? 0;
-    double d = double.tryParse(dController.text) ?? 0;
-
-    setState(() {
-      result = vp + (vp * (i / 100) * (d / 360));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Interés Simple"),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1.0, color: Colors.transparent),
-          borderRadius: BorderRadius.circular(10.0),
-          color: const Color(0xFFFFDC62),
+      appBar: AppBar(title: const Text("Interes simple"),),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFDC62),
+            borderRadius: BorderRadius.circular(20)
+          ),
+          child: const _SimpleInterestForm(),
         ),
-        margin: const EdgeInsets.all(25),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      ),
+    );
+  }
+}
+
+final simpleOptions = <String, String>{
+  "capital": "Capital",
+  "rateInterest": "Tasa de interés",
+  "time": "Tiempo",
+  "interest": "Interés",
+  "amount": "Monto",
+};
+
+class _SimpleInterestForm extends ConsumerWidget {
+  const _SimpleInterestForm();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final simpleInterestForm = ref.watch(simpleFormProvider);
+    final textStyles = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            DropdownMenuWidget(
-              vpController: vpController,
-              iController: iController,
-              dController: dController,
-            ),
-            const SizedBox(height: 20),
-            CustomFilledButton(
-              buttonColor: const Color(0xFF218C1E),
-              onPressed: () {
-                calculateResult();
+        
+            Text("Seleccione la variable a calcular", style: textStyles.bodyLarge),
+            OperationsDropDownButton( options: simpleOptions, onChanged: (value){}),
+        
+            const SizedBox(height: 40),
+            Text("Completa la siguiente información", style: textStyles.bodyLarge),
+            const SizedBox(height: 30),
+        
+            //* Form
+            CustomTextFormField(
+              label: "Capital",
+              onChanged: (value) {
+                ref.read(simpleFormProvider.notifier).
+                onCapitalChanged(double.tryParse(value) ?? 0);
               },
-              child: const Text("Calcular", style: TextStyle(fontSize: 24)),
+              errorMessage: simpleInterestForm.isFormPosted
+              ? simpleInterestForm.capital.errorMessage
+              : null,
             ),
-            if (result != null)
-              Text(
-                "Resultado: ${result?.toStringAsFixed(2)}",
-                style: const TextStyle(fontSize: 20),
+        
+            const SizedBox(height: 15),
+
+            CustomTextFormField(
+              label: "Tasa de interés",
+              onChanged: (value) {
+                ref.read(simpleFormProvider.notifier).
+                onRateInterestChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: simpleInterestForm.isFormPosted
+              ? simpleInterestForm.rateInterest.errorMessage
+              : null,
+            ),
+
+            const SizedBox(height: 15),
+
+            CustomTextFormField(
+              label: "Tiempo",
+              onChanged: (value) {
+                ref.read(simpleFormProvider.notifier).
+                onTimeChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: simpleInterestForm.isFormPosted
+              ? simpleInterestForm.time.errorMessage
+              : null,
+            ),
+
+            const SizedBox(height: 60),
+
+            SizedBox(
+              width: double.infinity,
+              height: 40, 
+              child: CustomFilledButton(
+                onPressed: ref.read(simpleFormProvider.notifier).calculate,
+                child: const Text("Calcular"),
               ),
+            ),
+
+            const SizedBox(height: 50),
+
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: double.infinity - 30,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: const Color(0xFFD3AD24),
+              ),
+              child: Text("Resultado: ${simpleInterestForm.result}",
+                style: const TextStyle(color: Colors.white)
+              ),
+            )
           ],
         ),
       ),

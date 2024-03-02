@@ -26,7 +26,7 @@ class AnnuitiesScreen extends StatelessWidget {
   }
 }
 
-final options = <String, String>{
+final annuitiesOptions = <String, String>{
   "amount": "Monto anualidad",
   "currentAnnuity": "Valor anualidad actual",
   "annuityRate": "Tasa de interés",
@@ -49,7 +49,7 @@ class _AnnuitiesForm extends ConsumerWidget {
           children: [
         
             Text("Seleccione la variable a calcular", style: textStyles.bodyLarge),
-            OperationsDropDownButton( options: options, onChanged: (value){}),
+            OperationsDropDownButton( options: annuitiesOptions, onChanged: (value){}),
         
             const SizedBox(height: 40),
             Text("Completa la siguiente información", style: textStyles.bodyLarge),
