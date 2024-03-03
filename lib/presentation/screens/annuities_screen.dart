@@ -49,7 +49,8 @@ class _AnnuitiesForm extends ConsumerWidget {
         child: Column(
           children: [
         
-            OperationsDropDownMenu(
+            CustomDropDownMenu(
+              hintText: "Variable a calcular",
               options: menuOptions,
               onSelected: (value) {
                 ref.read(annuityFormProvider.notifier)

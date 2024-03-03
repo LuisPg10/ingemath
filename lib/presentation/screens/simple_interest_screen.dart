@@ -26,15 +26,16 @@ class SimpleInterestScreen extends StatelessWidget {
   }
 }
 
-final simpleOptions = <String, String>{
-  "capital": "Capital",
-  "rateInterest": "Tasa de interés",
-  "time": "Tiempo",
-  "interest": "Interés",
-  "amount": "Monto",
-};
-
 class _SimpleInterestForm extends ConsumerWidget {
+  
+  final menuOptions = const <String, String>{
+    "capital": "Capital",
+    "rateInterest": "Tasa de interés",
+    "time": "Tiempo",
+    "interest": "Interés",
+    "amount": "Monto",
+  };
+
   const _SimpleInterestForm();
 
   @override
@@ -49,7 +50,11 @@ class _SimpleInterestForm extends ConsumerWidget {
         child: Column(
           children: [
         
-            OperationsDropDownMenu( options: simpleOptions, onSelected: (value){}),
+            CustomDropDownMenu(
+              hintText: "Variable a calcular",
+              options: menuOptions,
+              onSelected: (value){}
+            ),
         
             const SizedBox(height: 40),
             Text("Completa la siguiente información", style: textStyles.bodyLarge),
