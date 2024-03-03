@@ -1,1 +1,1 @@
-export 'annuities_inputs/data_number.dart';
+export 'data_number.dart';
