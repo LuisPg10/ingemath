@@ -9,7 +9,7 @@ class SimpleInterestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Interes simple"),),
+      appBar: AppBar(title: const Text("Interés simple"),),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Container(
@@ -49,8 +49,7 @@ class _SimpleInterestForm extends ConsumerWidget {
         child: Column(
           children: [
         
-            Text("Seleccione la variable a calcular", style: textStyles.bodyLarge),
-            OperationsDropDownButton( options: simpleOptions, onChanged: (value){}),
+            OperationsDropDownMenu( options: simpleOptions, onSelected: (value){}),
         
             const SizedBox(height: 40),
             Text("Completa la siguiente información", style: textStyles.bodyLarge),

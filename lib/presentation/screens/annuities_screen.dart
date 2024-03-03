@@ -14,7 +14,6 @@ class AnnuitiesScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Container(
           width: double.infinity,
-          height: double.infinity,
           decoration: BoxDecoration(
             color: const Color(0xFFFFDC62),
             borderRadius: BorderRadius.circular(20)
@@ -48,10 +47,9 @@ class _AnnuitiesForm extends ConsumerWidget {
         child: Column(
           children: [
         
-            Text("Seleccione la variable a calcular", style: textStyles.bodyLarge),
-            OperationsDropDownButton( options: annuitiesOptions, onChanged: (value){}),
+            OperationsDropDownMenu( options: annuitiesOptions, onSelected: (value){}),
         
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             Text("Completa la siguiente información", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
         
