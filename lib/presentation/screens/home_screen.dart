@@ -13,33 +13,27 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           const Spacer(flex: 5),
-
-          const IngeMathLogo(size: 150),
-
-          Text("INGEMATH",
+          const IngeMathLogo(size: 130),
+          Text(
+            "INGEMATH",
             style: GoogleFonts.squadaOne().copyWith(
-              fontSize: 60,
-              fontWeight: FontWeight.normal,
-              color: const Color(0xFFFF833D),
-              letterSpacing: 10,
-              height: 0
-            ),
+                fontSize: 60,
+                fontWeight: FontWeight.normal,
+                color: const Color(0xFFFF833D),
+                letterSpacing: 10,
+                height: 0),
           ),
-
-          Text("MONEY",
+          Text(
+            "MONEY",
             style: GoogleFonts.squadaOne().copyWith(
-              fontSize: 30,
-              fontWeight: FontWeight.normal,
-              color: const Color(0xFF7ED957),
-              letterSpacing: 3,
-              height: 0
-            ),
+                fontSize: 30,
+                fontWeight: FontWeight.normal,
+                color: const Color(0xFF7ED957),
+                letterSpacing: 3,
+                height: 0),
           ),
-
           const Spacer(flex: 2),
-
           SizedBox(
             height: 50,
             child: CustomFilledButton(
@@ -48,7 +42,6 @@ class HomeScreen extends StatelessWidget {
               child: const Text("Ingresar", style: TextStyle(fontSize: 24)),
             ),
           ),
-
           const Spacer(flex: 2),
         ],
       ),
