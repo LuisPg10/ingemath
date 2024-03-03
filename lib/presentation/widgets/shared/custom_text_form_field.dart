@@ -31,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyBoardType,
       decoration: InputDecoration(
         enabledBorder: _customBorder(),
+        disabledBorder: _customBorder(color: Colors.black12),
         focusedBorder: _customBorder(color: colors.primary),
         errorBorder: _customBorder(color: Colors.red.shade800),
         focusedErrorBorder: _customBorder(color: Colors.red.shade800),

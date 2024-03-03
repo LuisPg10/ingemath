@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class OperationsDropDownMenu extends StatelessWidget {
   final Map<String, String> options;
+  final String? errorText;
   final void Function(String?)? onSelected;
 
   const OperationsDropDownMenu({
     super.key,
     required this.options,
+    this.errorText,
     this.onSelected,
   });
 
@@ -15,9 +17,11 @@ class OperationsDropDownMenu extends StatelessWidget {
     return DropdownMenu(
       expandedInsets: EdgeInsets.zero,
       hintText: "Variable a calcular",
+      errorText: errorText,
       inputDecorationTheme: InputDecorationTheme(
         enabledBorder: _customBorder(),
         disabledBorder: _customBorder(color: Colors.black12),
+        errorBorder: _customBorder(color: Colors.red.shade800),
         isDense: true,
       ),
       dropdownMenuEntries: options.entries.map(
