@@ -69,19 +69,19 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 30),
 
             //* Form
-            CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions.first,
-              label: "Monto",
-              onChanged: (value) {
-                ref
-                    .read(simpleFormProvider.notifier)
-                    .onCapitalChanged(double.tryParse(value) ?? 0);
-              },
-              errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "amount"
-                  ? simpleInterestForm.amount.errorMessage
-                  : null,
-            ),
+            // CustomTextFormField(
+            //   enable: simpleInterestForm.optionSimple != keyOptions.first,
+            //   label: "Monto",
+            //   onChanged: (value) {
+            //     ref
+            //         .read(simpleFormProvider.notifier)
+            //         .onCapitalChanged(double.tryParse(value) ?? 0);
+            //   },
+            //   errorMessage: simpleInterestForm.isFormPosted &&
+            //           simpleInterestForm.optionSimple != "amount"
+            //       ? simpleInterestForm.amount.errorMessage
+            //       : null,
+            // ),
 
             const SizedBox(height: 15),
 
@@ -102,7 +102,8 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[2],
+              enable: simpleInterestForm.optionSimple != keyOptions[2] &&
+                  simpleInterestForm.optionSimple != keyOptions[0],
               label: "Interés",
               onChanged: (value) {
                 ref
@@ -111,22 +112,6 @@ class _SimpleInterestForm extends ConsumerWidget {
               },
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.optionSimple != "interest"
-                  ? simpleInterestForm.amount.errorMessage
-                  : null,
-            ),
-
-            const SizedBox(height: 15),
-
-            CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[3],
-              label: "Tiempo",
-              onChanged: (value) {
-                ref
-                    .read(simpleFormProvider.notifier)
-                    .onCapitalChanged(double.tryParse(value) ?? 0);
-              },
-              errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "time"
                   ? simpleInterestForm.amount.errorMessage
                   : null,
             ),
@@ -143,6 +128,22 @@ class _SimpleInterestForm extends ConsumerWidget {
               },
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.optionSimple != "rateInterest"
+                  ? simpleInterestForm.amount.errorMessage
+                  : null,
+            ),
+
+            const SizedBox(height: 15),
+
+            CustomTextFormField(
+              enable: simpleInterestForm.optionSimple != keyOptions[3],
+              label: "Tiempo",
+              onChanged: (value) {
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "time"
                   ? simpleInterestForm.amount.errorMessage
                   : null,
             ),
