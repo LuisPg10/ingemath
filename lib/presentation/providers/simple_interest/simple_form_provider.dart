@@ -3,65 +3,80 @@ import 'package:formz/formz.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 
-final simpleFormProvider = StateNotifierProvider
-.autoDispose<SimpleFormNotifier, SimpleFormState>(
-  (ref) {
-    final simpleInterestRepository = ref.watch(simpleRepositorytProvider);
+final simpleFormProvider =
+    StateNotifierProvider.autoDispose<SimpleFormNotifier, SimpleFormState>(
+        (ref) {
+  final simpleInterestRepository = ref.watch(simpleRepositorytProvider);
 
-    return SimpleFormNotifier(
-      repository: simpleInterestRepository,
-    );
-  }
-);
+  return SimpleFormNotifier(
+    repository: simpleInterestRepository,
+  );
+});
 
 class SimpleFormState {
   final bool isFormPosted;
   final bool isValid;
+  final String optionSimple;
   final DataNumber capital;
+  final DataNumber amount;
   final DataNumber rateInterest;
   final DataNumber time;
+  final DataNumber interest;
   final double result;
 
   SimpleFormState({
     this.isFormPosted = false,
     this.isValid = false,
+    this.optionSimple = "none",
     this.capital = const DataNumber.pure(),
+    this.amount = const DataNumber.pure(),
     this.rateInterest = const DataNumber.pure(),
     this.time = const DataNumber.pure(),
+    this.interest = const DataNumber.pure(),
     this.result = 0,
   });
 
   SimpleFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
+    String? optionSimple,
     DataNumber? capital,
+    DataNumber? amount,
     DataNumber? rateInterest,
     DataNumber? time,
+    DataNumber? interest,
     double? result,
-  }) => SimpleFormState(
-
-    isFormPosted: isFormPosted ?? this.isFormPosted,
-    isValid: isValid ?? this.isValid,
-    capital: capital ?? this.capital,
-    rateInterest: rateInterest ?? this.rateInterest,
-    time: time ?? this.time,
-    result: result ?? this.result,
-  );
+  }) =>
+      SimpleFormState(
+        isFormPosted: isFormPosted ?? this.isFormPosted,
+        isValid: isValid ?? this.isValid,
+        optionSimple: optionSimple ?? this.optionSimple,
+        capital: capital ?? this.capital,
+        amount: amount ?? this.amount,
+        rateInterest: rateInterest ?? this.rateInterest,
+        time: time ?? this.time,
+        interest: interest ?? this.interest,
+        result: result ?? this.result,
+      );
 }
 
 class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
-
   CalculationSimpleRepositoryImpl repository;
 
   SimpleFormNotifier({
     required this.repository,
   }) : super(SimpleFormState());
 
+  void onOptionsSimpleChanged(String value) {
+    state = state.copyWith(optionSimple: value);
+  }
+
   void onCapitalChanged(double value) {
     state = state.copyWith(
       capital: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
+        state.interest,
         state.rateInterest,
         state.time,
       ]),
@@ -73,10 +88,10 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       rateInterest: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
+        state.interest,
         state.capital,
         state.time,
-      ]
-      ),
+      ]),
     );
   }
 
@@ -85,6 +100,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       time: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
+        state.interest,
         state.capital,
         state.rateInterest,
       ]),
@@ -93,14 +109,13 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
   void calculate() async {
     _touchEveryField();
-    
+
     if (!state.isValid) return;
 
     final result = await repository.finalAmount(
-      capital: state.capital.value,
-      rateInterest: state.rateInterest.value,
-      time: state.time.value
-    );
+        capital: state.capital.value,
+        rateInterest: state.rateInterest.value,
+        time: state.time.value);
     state = state.copyWith(result: result);
   }
 
@@ -108,9 +123,10 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     state = state.copyWith(
       isFormPosted: true,
       capital: DataNumber.dirty(state.capital.value),
+      amount: DataNumber.dirty(state.amount.value),
       time: DataNumber.dirty(state.time.value),
       rateInterest: DataNumber.dirty(state.rateInterest.value),
+      interest: DataNumber.dirty(state.interest.value),
     );
   }
-
 }
