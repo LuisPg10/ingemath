@@ -13,23 +13,32 @@ final compoundFormProvider =
   );
 });
 
+enum CompoundInterestVariable { none, amount, capital, capInterestRate, time }
+
 class CompoundFormState {
+  final menuOptions = const <CompoundInterestVariable, String>{
+    CompoundInterestVariable.amount: "Monto compuesto",
+    CompoundInterestVariable.capital: "Capital compuesto",
+    CompoundInterestVariable.capInterestRate: "Tasa de interés",
+    CompoundInterestVariable.time: "Tiempo compuesto",
+  };
+
   final bool isFormPosted;
   final bool isValid;
-  final String optionCompound;
+  final CompoundInterestVariable variable;
   final DataNumber amount;
   final DataNumber capital;
-  final DataNumber capInterestRate;
+  final InterestRate capInterestRate;
   final DataNumber time;
   final double result;
 
   CompoundFormState({
     this.isFormPosted = false,
     this.isValid = false,
-    this.optionCompound = "none",
+    this.variable = CompoundInterestVariable.none,
     this.amount = const DataNumber.pure(),
     this.capital = const DataNumber.pure(),
-    this.capInterestRate = const DataNumber.pure(),
+    this.capInterestRate = const InterestRate.pure(),
     this.time = const DataNumber.pure(),
     this.result = 0,
   });
@@ -37,17 +46,17 @@ class CompoundFormState {
   CompoundFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
-    String? optionCompound,
+    CompoundInterestVariable? variable,
     DataNumber? amount,
     DataNumber? capital,
-    DataNumber? capInterestRate,
+    InterestRate? capInterestRate,
     DataNumber? time,
     double? result,
   }) =>
       CompoundFormState(
         isFormPosted: isFormPosted ?? this.isFormPosted,
         isValid: isValid ?? this.isValid,
-        optionCompound: optionCompound ?? this.optionCompound,
+        variable: variable ?? this.variable,
         amount: amount ?? this.amount,
         capital: capital ?? this.capital,
         capInterestRate: capInterestRate ?? this.capInterestRate,
@@ -63,52 +72,24 @@ class CompoundFormNotifier extends StateNotifier<CompoundFormState> {
     required this.repository,
   }) : super(CompoundFormState());
 
-  void onOptionsCompoundChanged(String value) {
-    state = state.copyWith(optionCompound: value);
+  void onOptionsCompoundChanged(CompoundInterestVariable value) {
+    state = state.copyWith(variable: value);
   }
 
   void onOptionsAmountCompoundChanged(double value) {
-    state = state.copyWith(
-      amount: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.capital,
-        state.capInterestRate,
-        state.time,
-      ]),
-    );
+    state = state.copyWith(amount: DataNumber.dirty(value));
   }
 
   void onCapitalCompoundChanged(double value) {
-    state = state.copyWith(
-      capital: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.amount,
-        state.capInterestRate,
-        state.time
-      ]),
-    );
+    state = state.copyWith(capital: DataNumber.dirty(value));
   }
 
-  void onInteresRateCompoundChanged(double value) {
-    state = state.copyWith(
-      capInterestRate: DataNumber.dirty(value),
-      isValid: Formz.validate(
-          [DataNumber.dirty(value), state.amount, state.capital, state.time]),
-    );
+  void onInteresRateCompoundChanged(int value) {
+    state = state.copyWith(capInterestRate: InterestRate.dirty(value));
   }
 
   void onTimeCompoundChanged(double value) {
-    state = state.copyWith(
-      time: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.amount,
-        state.capital,
-        state.capInterestRate,
-      ]),
-    );
+    state = state.copyWith(time: DataNumber.dirty(value),);
   }
 
   void calculate() async {
@@ -116,20 +97,56 @@ class CompoundFormNotifier extends StateNotifier<CompoundFormState> {
 
     if (!state.isValid) return;
 
-    final result = await repository.calculateAmountComp(
-        capital: state.capital.value,
-        capInterestRate: state.capInterestRate.value,
-        time: state.time.value);
+    double result = 0;
+    switch (state.variable) {
+      case CompoundInterestVariable.amount:
+        result = await repository.calculateAmountComp(
+            capital: state.capital.value,
+            capInterestRate: state.capInterestRate.value,
+            time: state.time.value);
+        break;
+        
+      case CompoundInterestVariable.capital:
+        result = await repository.calculateCapitalComp(
+            amount: state.amount.value,
+            capInterestRate: state.capInterestRate.value,
+            time: state.time.value);
+        break;
+
+      case CompoundInterestVariable.capInterestRate:
+        result = await repository.calculateInterestRate(
+            amount: state.amount.value,
+            capital: state.capital.value,
+            time: state.time.value);
+        break;
+      case CompoundInterestVariable.time:
+        result = await repository.calculateTimeComp(
+            amount: state.amount.value,
+            capital: state.capital.value,
+            capInterestRate: state.capInterestRate.value);
+        break;
+      default:
+        break;
+    }
     state = state.copyWith(result: result);
   }
 
   void _touchEveryField() {
     state = state.copyWith(
       isFormPosted: true,
-      capital: DataNumber.dirty(state.capital.value),
       amount: DataNumber.dirty(state.amount.value),
+      capital: DataNumber.dirty(state.capital.value),
+      capInterestRate: InterestRate.dirty(state.capInterestRate.value),
       time: DataNumber.dirty(state.time.value),
-      capInterestRate: DataNumber.dirty(state.capInterestRate.value),
+
+      isValid: state.variable != CompoundInterestVariable.none && Formz.validate([
+        if(state.variable != CompoundInterestVariable.amount) state.amount,
+        if(state.variable != CompoundInterestVariable.capital) state.amount,
+        if(state.variable != CompoundInterestVariable.capInterestRate) state.amount,
+        if(state.variable != CompoundInterestVariable.time) state.amount,
+        
+
+      ])
     );
   }
 }

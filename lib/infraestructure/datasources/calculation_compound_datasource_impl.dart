@@ -6,20 +6,21 @@ class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   @override
   Future<double> calculateAmountComp(
       {required double capital,
-      required double capInterestRate,
+      required int capInterestRate,
       required double time}) async {
-    double amountResult = capital * (pow(1 + capInterestRate, time));
-    final result = double.parse(amountResult.toStringAsFixed(3));
-    return result;
+
+    // double amountResult = 
+    // final result = amountResult;
+    return capital * (pow(1 + capInterestRate.toDouble(), time));
   }
 
   @override
   Future<double> calculateCapitalComp(
       {required double amount,
-      required double capInterestRate,
+      required int capInterestRate,
       required double time
     }) async {
-      double capitalResult = amount * (pow(1 + capInterestRate, time));
+      double capitalResult = amount * (pow(1 + capInterestRate.toDouble(), time));
       final result = double.parse(capitalResult.toStringAsFixed(3));  
       return result;
   }
@@ -40,10 +41,10 @@ class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   Future<double> calculateTimeComp(
       {required double amount,
       required double capital,
-      required double capInterestRate
+      required int capInterestRate
       }) async {
 
-      double timeResult = (log(amount)-log(capital) / log( 1 + capInterestRate));
+      double timeResult = (log(amount)-log(capital) / log( 1 + capInterestRate.toDouble()));
       final result = double.parse(timeResult.toStringAsFixed(3));  
       return result;
   }
