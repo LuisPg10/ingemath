@@ -25,7 +25,8 @@ class InterestRate extends FormzInput<int, InterestRateError> {
     final cleanValue = value.toString().trim();
     if (cleanValue.isEmpty) return InterestRateError.empty;
 
-    if (value <= 1) return InterestRateError.notValid;
+    final isDouble = value / 100;
+    if (isDouble > 1 || isDouble <= 0) return InterestRateError.notValid;
 
     return null;
   }
