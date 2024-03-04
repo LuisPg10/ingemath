@@ -1,9 +1,8 @@
-
 class Option {
   final String name;
   final String icon;
   final String link;
-  
+
   const Option({
     required this.name,
     required this.icon,
@@ -18,7 +17,7 @@ const appMenuOptions = <Option>[
     link: "simple_interest",
   ),
   Option(
-    name: "Interés compuesto",
+    name: "    Interés\ncompuesto",
     icon: "assets/images/compound-interest.png",
     link: "compound_interest",
   ),

@@ -3,10 +3,10 @@ import 'package:formz/formz.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 
-final annuityFormProvider = StateNotifierProvider
-.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
-  (ref) {
-    final annuityRepository = ref.watch(annuityRepositorytProvider);
+final annuityFormProvider =
+    StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
+        (ref) {
+  final annuityRepository = ref.watch(annuityRepositorytProvider);
 
     return AnnuityFormNotifier(
       repository: annuityRepository,
@@ -68,7 +68,6 @@ class AnnuityFormState {
 }
 
 class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
-
   CalculationAnnuitiesRepositoryImpl repository;
 
   AnnuityFormNotifier({
@@ -107,7 +106,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
 
   void calculate() async {
     _touchEveryField();
-    
+
     if (!state.isValid) return;
 
     double result = 0;
