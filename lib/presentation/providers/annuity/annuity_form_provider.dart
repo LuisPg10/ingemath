@@ -17,6 +17,7 @@ final annuityFormProvider = StateNotifierProvider
 class AnnuityFormState {
   final bool isFormPosted;
   final bool isValid;
+  final String optionAnnuity;
   final DataNumber amount;
   final DataNumber currentAnnuity;
   final DataNumber annuityRate;
@@ -26,6 +27,7 @@ class AnnuityFormState {
   AnnuityFormState({
     this.isFormPosted = false,
     this.isValid = false,
+    this.optionAnnuity = "none",
     this.amount = const DataNumber.pure(),
     this.currentAnnuity = const DataNumber.pure(),
     this.annuityRate = const DataNumber.pure(),
@@ -36,6 +38,7 @@ class AnnuityFormState {
   AnnuityFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
+    String? optionAnnuity,
     DataNumber? amount,
     DataNumber? currentAnnuity,
     DataNumber? annuityRate,
@@ -45,6 +48,7 @@ class AnnuityFormState {
 
     isFormPosted: isFormPosted ?? this.isFormPosted,
     isValid: isValid ?? this.isValid,
+    optionAnnuity: optionAnnuity ?? this.optionAnnuity,
     amount: amount ?? this.amount,
     currentAnnuity: currentAnnuity ?? this.currentAnnuity,
     annuityRate: annuityRate ?? this.annuityRate,
@@ -60,6 +64,12 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
   AnnuityFormNotifier({
     required this.repository,
   }) : super(AnnuityFormState());
+
+  void onOptionsAnnuitiesChanged(String value) {
+    state = state.copyWith(
+      optionAnnuity: value
+    );
+  }
 
   void onAmountChanged(double value) {
     state = state.copyWith(
@@ -132,5 +142,4 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       annuityRate: DataNumber.dirty(state.annuityRate.value),
     );
   }
-
 }

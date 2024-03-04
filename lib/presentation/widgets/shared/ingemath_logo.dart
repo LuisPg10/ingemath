@@ -11,15 +11,13 @@ class IngeMathLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size * 2.2,
-      child: Row(
-        children: [
-          _Lines(size),
-          _CustomIcon(size: size),
-          Transform.flip(flipX: true, child: _Lines(size)),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _Lines(size),
+        _CustomIcon(size: size),
+        Transform.flip(flipX: true, child: _Lines(size)),
+      ],
     );
   }
 }
@@ -38,12 +36,25 @@ class _CustomIcon extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         border: Border.all(
-          width: size * 0.1,
+          width: size * 0.07,
           color: const Color(0xFFFF833D),
         ),
-        borderRadius: BorderRadius.circular(size / 2),
+        borderRadius: BorderRadius.circular(size * 0.5),
       ),
-      child: Icon(Icons.monetization_on, color: Colors.green, size: size * 0.8),
+      child: Padding(
+        padding: EdgeInsets.all(size * 0.09),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF7ED957),
+            borderRadius: BorderRadius.circular(size * 0.5)
+          ),
+          child: Icon(Icons.attach_money,
+            color: Colors.white,
+            size: size * 0.5
+            ,
+          ),
+        ),
+      ),
     );
   }
 }

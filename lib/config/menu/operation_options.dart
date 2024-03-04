@@ -1,9 +1,8 @@
-
 class Option {
   final String name;
   final String icon;
   final String link;
-  
+
   const Option({
     required this.name,
     required this.icon,

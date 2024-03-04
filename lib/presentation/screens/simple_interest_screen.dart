@@ -9,16 +9,16 @@ class SimpleInterestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Interes simple"),),
+      appBar: AppBar(
+        title: const Text("Interés simple"),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Container(
           width: double.infinity,
-          height: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFFFFDC62),
-            borderRadius: BorderRadius.circular(20)
-          ),
+              color: const Color(0xFFFFDC62),
+              borderRadius: BorderRadius.circular(20)),
           child: const _SimpleInterestForm(),
         ),
       ),
@@ -26,20 +26,20 @@ class SimpleInterestScreen extends StatelessWidget {
   }
 }
 
-final simpleOptions = <String, String>{
-  "capital": "Capital",
-  "rateInterest": "Tasa de interés",
-  "time": "Tiempo",
-  "interest": "Interés",
-  "amount": "Monto",
-};
-
 class _SimpleInterestForm extends ConsumerWidget {
+  final menuOptions = const <String, String>{
+    "amount": "Monto",
+    "capital": "Capital",
+    "interest": "Interés",
+    "time": "Tiempo",
+    "rateInterest": "Tasa de interés",
+  };
+
   const _SimpleInterestForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
+    final keyOptions = menuOptions.keys.toList();
     final simpleInterestForm = ref.watch(simpleFormProvider);
     final textStyles = Theme.of(context).textTheme;
 
@@ -48,64 +48,118 @@ class _SimpleInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-        
-            Text("Seleccione la variable a calcular", style: textStyles.bodyLarge),
-            OperationsDropDownButton( options: simpleOptions, onChanged: (value){}),
-        
+            Text("Selecciona Variable a Calcular", style: textStyles.bodyLarge),
+            CustomDropDownMenu(
+              hintText: "Seleccionar",
+              options: menuOptions,
+              onSelected: (value) {
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onOptionsSimpleChanged(value!);
+              },
+              errorText: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple == "none"
+                  ? "Seleccione la variable a calcular"
+                  : null,
+            ),
+
             const SizedBox(height: 40),
-            Text("Completa la siguiente información", style: textStyles.bodyLarge),
+            Text("Completa la siguiente información",
+                style: textStyles.bodyLarge),
             const SizedBox(height: 30),
-        
+
             //* Form
+            // CustomTextFormField(
+            //   enable: simpleInterestForm.optionSimple != keyOptions.first,
+            //   label: "Monto",
+            //   onChanged: (value) {
+            //     ref
+            //         .read(simpleFormProvider.notifier)
+            //         .onCapitalChanged(double.tryParse(value) ?? 0);
+            //   },
+            //   errorMessage: simpleInterestForm.isFormPosted &&
+            //           simpleInterestForm.optionSimple != "amount"
+            //       ? simpleInterestForm.amount.errorMessage
+            //       : null,
+            // ),
+
+            const SizedBox(height: 15),
+
             CustomTextFormField(
+              enable: simpleInterestForm.optionSimple != keyOptions[1],
               label: "Capital",
               onChanged: (value) {
-                ref.read(simpleFormProvider.notifier).
-                onCapitalChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: simpleInterestForm.isFormPosted
-              ? simpleInterestForm.capital.errorMessage
-              : null,
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "capital"
+                  ? simpleInterestForm.amount.errorMessage
+                  : null,
             ),
-        
+
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              label: "Tasa de interés",
+              enable: simpleInterestForm.optionSimple != keyOptions[2] &&
+                  simpleInterestForm.optionSimple != keyOptions[0],
+              label: "Interés",
               onChanged: (value) {
-                ref.read(simpleFormProvider.notifier).
-                onRateInterestChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: simpleInterestForm.isFormPosted
-              ? simpleInterestForm.rateInterest.errorMessage
-              : null,
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "interest"
+                  ? simpleInterestForm.amount.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
 
             CustomTextFormField(
+              enable: simpleInterestForm.optionSimple != keyOptions[4],
+              label: "Tasa de Interés",
+              onChanged: (value) {
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "rateInterest"
+                  ? simpleInterestForm.amount.errorMessage
+                  : null,
+            ),
+
+            const SizedBox(height: 15),
+
+            CustomTextFormField(
+              enable: simpleInterestForm.optionSimple != keyOptions[3],
               label: "Tiempo",
               onChanged: (value) {
-                ref.read(simpleFormProvider.notifier).
-                onTimeChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: simpleInterestForm.isFormPosted
-              ? simpleInterestForm.time.errorMessage
-              : null,
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "time"
+                  ? simpleInterestForm.amount.errorMessage
+                  : null,
             ),
 
-            const SizedBox(height: 60),
+            const SizedBox(height: 30),
 
             SizedBox(
               width: double.infinity,
-              height: 40, 
+              height: 40,
               child: CustomFilledButton(
                 onPressed: ref.read(simpleFormProvider.notifier).calculate,
                 child: const Text("Calcular"),
               ),
             ),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: 15),
 
             Container(
               padding: const EdgeInsets.all(10),
@@ -116,8 +170,7 @@ class _SimpleInterestForm extends ConsumerWidget {
                 color: const Color(0xFFD3AD24),
               ),
               child: Text("Resultado: ${simpleInterestForm.result}",
-                style: const TextStyle(color: Colors.white)
-              ),
+                  style: const TextStyle(color: Colors.white)),
             )
           ],
         ),
