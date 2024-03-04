@@ -71,12 +71,36 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     state = state.copyWith(optionSimple: value);
   }
 
+  void onAmountChanged(double value) {
+    state = state.copyWith(
+      amount: DataNumber.dirty(value),
+      isValid: Formz.validate([
+        DataNumber.dirty(value),
+        state.capital,
+        state.rateInterest,
+        state.time,
+      ]),
+    );
+  }
+
   void onCapitalChanged(double value) {
     state = state.copyWith(
       capital: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
         state.interest,
+        state.rateInterest,
+        state.time,
+      ]),
+    );
+  }
+
+  void onInterestChanged(double value) {
+    state = state.copyWith(
+      interest: DataNumber.dirty(value),
+      isValid: Formz.validate([
+        DataNumber.dirty(value),
+        state.capital,
         state.rateInterest,
         state.time,
       ]),
