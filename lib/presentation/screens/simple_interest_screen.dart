@@ -112,7 +112,8 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .read(simpleFormProvider.notifier)
                     .onRateInterestChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: simpleInterestForm.isFormPosted
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "rateInterest"
                   ? simpleInterestForm.rateInterest.errorMessage
                   : null,
             ),
@@ -127,7 +128,8 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .read(simpleFormProvider.notifier)
                     .onTimeChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: simpleInterestForm.isFormPosted
+              errorMessage: simpleInterestForm.isFormPosted &&
+                      simpleInterestForm.optionSimple != "time"
                   ? simpleInterestForm.time.errorMessage
                   : null,
             ),

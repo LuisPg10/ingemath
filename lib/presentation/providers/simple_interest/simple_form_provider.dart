@@ -13,8 +13,6 @@ final simpleFormProvider =
   );
 });
 
-//---------------------CAMBIOOOOOOOOOOOOOOS
-
 class SimpleFormState {
   final bool isFormPosted;
   final bool isValid;
@@ -74,6 +72,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       capital: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
+        state.interest,
         state.rateInterest,
         state.time,
       ]),
@@ -97,6 +96,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       rateInterest: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
+        state.interest,
         state.capital,
         state.time,
       ]),
@@ -110,6 +110,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
         DataNumber.dirty(value),
         state.capital,
         state.rateInterest,
+        state.interest
       ]),
     );
   }
@@ -119,11 +120,45 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
     if (!state.isValid) return;
 
-    final result = await repository.finalAmount(
-        capital: state.capital.value,
-        rateInterest: state.rateInterest.value,
-        time: state.time.value);
+    double result = 0;
+    final option = state.optionSimple;
 
+    switch (option) {
+      case "amount":
+        result = await repository.finalAmount(
+            capital: state.capital.value,
+            rateInterest: state.rateInterest.value,
+            time: state.time.value);
+        break;
+
+      case "capital":
+        result = await repository.capital(
+            interest: state.interest.value,
+            rateInterest: state.rateInterest.value,
+            time: state.time.value);
+        break;
+
+      case "rateInterest":
+        result = await repository.rateInterest(
+            capital: state.capital.value,
+            interest: state.interest.value,
+            time: state.time.value);
+        break;
+
+      case "time":
+        result = await repository.time(
+            capital: state.capital.value,
+            rateInterest: state.rateInterest.value,
+            interest: state.interest.value);
+        break;
+
+      case "interest":
+        result = await repository.interest(
+            capital: state.capital.value,
+            rateInterest: state.rateInterest.value,
+            time: state.time.value);
+        break;
+    }
     state = state.copyWith(result: result);
   }
 
