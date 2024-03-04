@@ -11,7 +11,7 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
   }) async {
 
     final newInterestRate = interestRate / 100;
-    double top = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    final top = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
     final amount = annuityValue * top;
     return amount;
   }
@@ -22,6 +22,7 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
     required double annuityValue,
     required double time,
   }) async {
+
     return 0;
   }
 
@@ -33,9 +34,8 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
   }) async {
 
     final newInterestRate = interestRate / 100;
-    double bottom = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
-    final currentAnnuity = amount / bottom;
-    return currentAnnuity;
+    final bottom = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    return amount / bottom;
   }
 
   @override
@@ -44,6 +44,8 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
     required double annuityValue,
     required int interestRate,
   }) async {
-    return 0;
+    
+    final newInterestRate = interestRate / 100;
+    return log(1 + (newInterestRate * amount / annuityValue)) / log(1 + newInterestRate);
   }
 }
