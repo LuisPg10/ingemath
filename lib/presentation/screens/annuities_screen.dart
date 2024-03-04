@@ -17,8 +17,9 @@ class AnnuitiesScreen extends StatelessWidget {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color: const Color(0xFFFFDC62),
-              borderRadius: BorderRadius.circular(20)),
+            color: const Color(0xFFFFDC62),
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: const _AnnuitiesForm(),
         ),
       ),
@@ -59,26 +60,26 @@ class _AnnuitiesForm extends ConsumerWidget {
               ? "Seleccione la variable a calcular"
               : null,
             ),
+
             const SizedBox(height: 20),
-            Text("Completa la siguiente información",
-                style: textStyles.bodyLarge),
+            Text("Completa la siguiente información", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
-            //Form
             CustomTextFormField(
               enable: annuityForm.variable != keyOptions.first,
               label: "Monto anualidad",
               onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onAmountChanged(double.tryParse(value) ?? 0);
+                ref.read(annuityFormProvider.notifier)
+                .onAmountChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: annuityForm.isFormPosted &&
               annuityForm.variable != keyOptions.first
               ? annuityForm.amount.errorMessage
               : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
               enable: annuityForm.variable != keyOptions[1],
               label: "Valor actual de la anualidad",
@@ -91,7 +92,9 @@ class _AnnuitiesForm extends ConsumerWidget {
               ? annuityForm.annuityValue.errorMessage
               : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
               enable: annuityForm.variable != keyOptions[2],
               label: "Tasa de interés %",
@@ -104,7 +107,9 @@ class _AnnuitiesForm extends ConsumerWidget {
               ? annuityForm.interestRate.errorMessage
               : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
               enable: annuityForm.variable != keyOptions.last,
               label: "Tiempo de la anualidad",
@@ -117,7 +122,9 @@ class _AnnuitiesForm extends ConsumerWidget {
               ? annuityForm.time.errorMessage
               : null,
             ),
+
             const SizedBox(height: 60),
+
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -126,7 +133,9 @@ class _AnnuitiesForm extends ConsumerWidget {
                 child: const Text("Calcular"),
               ),
             ),
+
             const SizedBox(height: 50),
+
             Container(
               padding: const EdgeInsets.all(10),
               width: double.infinity - 30,
@@ -136,7 +145,8 @@ class _AnnuitiesForm extends ConsumerWidget {
                 color: const Color(0xFFD3AD24),
               ),
               child: Text("Resultado: ${annuityForm.result}",
-                  style: const TextStyle(color: Colors.white)),
+                style: const TextStyle(color: Colors.white),
+              ),
             )
           ],
         ),

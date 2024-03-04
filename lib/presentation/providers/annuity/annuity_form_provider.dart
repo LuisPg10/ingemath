@@ -1,16 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:ingemath/domain/domain.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 
-final annuityFormProvider =
-    StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
-        (ref) {
-  final annuityRepository = ref.watch(annuityRepositorytProvider);
+final annuityFormProvider = StateNotifierProvider
+  .autoDispose<AnnuityFormNotifier, AnnuityFormState>((ref) {
 
+    final annuityRepository = ref.watch(annuityRepositorytProvider);
     return AnnuityFormNotifier(
       repository: annuityRepository,
     );
+
   }
 );
 
@@ -68,7 +69,7 @@ class AnnuityFormState {
 }
 
 class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
-  CalculationAnnuitiesRepositoryImpl repository;
+  CalculationAnnuitiesRepository repository;
 
   AnnuityFormNotifier({
     required this.repository,
@@ -158,8 +159,8 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       interestRate: InterestRate.dirty(state.interestRate.value),
 
       isValid: state.variable != AnnuityVariable.none && Formz.validate([
-        if (state.variable != AnnuityVariable.amount) state.amount,
-        if (state.variable != AnnuityVariable.annuityValue) state.annuityValue,
+        if(state.variable != AnnuityVariable.amount) state.amount,
+        if(state.variable != AnnuityVariable.annuityValue) state.annuityValue,
         if(state.variable != AnnuityVariable.interestRate) state.interestRate,
         if(state.variable != AnnuityVariable.time) state.time,
       ]),
