@@ -88,7 +88,8 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .onInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.variable != SimpleVariable.interest
+                      simpleInterestForm.variable != SimpleVariable.interest &&
+                      simpleInterestForm.variable != SimpleVariable.amount
                   ? simpleInterestForm.interest.errorMessage
                   : null,
             ),
@@ -97,7 +98,7 @@ class _SimpleInterestForm extends ConsumerWidget {
 
             CustomTextFormField(
               enable: simpleInterestForm.variable != keyOptions[4],
-              label: "Tasa de Interés",
+              label: "Tasa de Interés (%)",
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
@@ -113,7 +114,7 @@ class _SimpleInterestForm extends ConsumerWidget {
 
             CustomTextFormField(
               enable: simpleInterestForm.variable != keyOptions[3],
-              label: "Tiempo",
+              label: "Tiempo (Días)",
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
