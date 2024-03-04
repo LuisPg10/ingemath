@@ -13,12 +13,22 @@ final simpleFormProvider =
   );
 });
 
+enum SimpleVariable { none, amount, capital, interest, time, interestRate }
+
 class SimpleFormState {
+  final menuOptions = const <SimpleVariable, String>{
+    SimpleVariable.amount: "Monto",
+    SimpleVariable.capital: "Capital",
+    SimpleVariable.interest: "Interes",
+    SimpleVariable.time: "Tiempo",
+    SimpleVariable.interestRate: "Tasa de Interés",
+  };
+
   final bool isFormPosted;
   final bool isValid;
-  final String optionSimple;
+  final SimpleVariable variable;
   final DataNumber capital;
-  final DataNumber rateInterest;
+  final InterestRate rateInterest;
   final DataNumber time;
   final DataNumber interest;
   final double result;
@@ -26,9 +36,9 @@ class SimpleFormState {
   SimpleFormState({
     this.isFormPosted = false,
     this.isValid = false,
-    this.optionSimple = "none",
+    this.variable = SimpleVariable.none,
     this.capital = const DataNumber.pure(),
-    this.rateInterest = const DataNumber.pure(),
+    this.rateInterest = const InterestRate.pure(),
     this.time = const DataNumber.pure(),
     this.interest = const DataNumber.pure(),
     this.result = 0,
@@ -37,9 +47,9 @@ class SimpleFormState {
   SimpleFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
-    String? optionSimple,
+    SimpleVariable? variable,
     DataNumber? capital,
-    DataNumber? rateInterest,
+    InterestRate? rateInterest,
     DataNumber? time,
     DataNumber? interest,
     double? result,
@@ -47,7 +57,7 @@ class SimpleFormState {
       SimpleFormState(
         isFormPosted: isFormPosted ?? this.isFormPosted,
         isValid: isValid ?? this.isValid,
-        optionSimple: optionSimple ?? this.optionSimple,
+        variable: variable ?? this.variable,
         capital: capital ?? this.capital,
         rateInterest: rateInterest ?? this.rateInterest,
         time: time ?? this.time,
@@ -63,55 +73,31 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     required this.repository,
   }) : super(SimpleFormState());
 
-  void onOptionsSimpleChanged(String value) {
-    state = state.copyWith(optionSimple: value);
+  void onOptionsSimpleChanged(SimpleVariable value) {
+    state = state.copyWith(variable: value);
   }
 
   void onCapitalChanged(double value) {
     state = state.copyWith(
       capital: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.interest,
-        state.rateInterest,
-        state.time,
-      ]),
     );
   }
 
   void onInterestChanged(double value) {
     state = state.copyWith(
       interest: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.capital,
-        state.rateInterest,
-        state.time,
-      ]),
     );
   }
 
-  void onRateInterestChanged(double value) {
+  void onRateInterestChanged(int value) {
     state = state.copyWith(
-      rateInterest: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.interest,
-        state.capital,
-        state.time,
-      ]),
+      rateInterest: InterestRate.dirty(value),
     );
   }
 
   void onTimeChanged(double value) {
     state = state.copyWith(
       time: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.capital,
-        state.rateInterest,
-        state.interest
-      ]),
     );
   }
 
@@ -121,42 +107,42 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     if (!state.isValid) return;
 
     double result = 0;
-    final option = state.optionSimple;
-
-    switch (option) {
-      case "amount":
+    switch (state.variable) {
+      case SimpleVariable.amount:
         result = await repository.finalAmount(
             capital: state.capital.value,
             rateInterest: state.rateInterest.value,
             time: state.time.value);
         break;
 
-      case "capital":
+      case SimpleVariable.capital:
         result = await repository.capital(
             interest: state.interest.value,
             rateInterest: state.rateInterest.value,
             time: state.time.value);
         break;
 
-      case "rateInterest":
+      case SimpleVariable.interestRate:
         result = await repository.rateInterest(
             capital: state.capital.value,
             interest: state.interest.value,
             time: state.time.value);
         break;
 
-      case "time":
+      case SimpleVariable.time:
         result = await repository.time(
             capital: state.capital.value,
             rateInterest: state.rateInterest.value,
             interest: state.interest.value);
         break;
 
-      case "interest":
+      case SimpleVariable.interest:
         result = await repository.interest(
             capital: state.capital.value,
             rateInterest: state.rateInterest.value,
             time: state.time.value);
+        break;
+      default:
         break;
     }
     state = state.copyWith(result: result);
@@ -167,8 +153,18 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       isFormPosted: true,
       capital: DataNumber.dirty(state.capital.value),
       time: DataNumber.dirty(state.time.value),
-      rateInterest: DataNumber.dirty(state.rateInterest.value),
+      rateInterest: InterestRate.dirty(state.rateInterest.value),
       interest: DataNumber.dirty(state.interest.value),
+      isValid: state.variable != SimpleVariable.none &&
+          Formz.validate([
+            if (state.variable != SimpleVariable.capital) state.capital,
+            if (state.variable != SimpleVariable.interestRate)
+              state.rateInterest,
+            if (state.variable != SimpleVariable.time) state.time,
+            if (state.variable != SimpleVariable.interest &&
+                state.variable != SimpleVariable.amount)
+              state.interest,
+          ]),
     );
   }
 }

@@ -27,20 +27,12 @@ class SimpleInterestScreen extends StatelessWidget {
 }
 
 class _SimpleInterestForm extends ConsumerWidget {
-  final menuOptions = const <String, String>{
-    "amount": "Monto",
-    "capital": "Capital",
-    "interest": "Interés",
-    "time": "Tiempo",
-    "rateInterest": "Tasa de interés",
-  };
-
   const _SimpleInterestForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final keyOptions = menuOptions.keys.toList();
     final simpleInterestForm = ref.watch(simpleFormProvider);
+    final keyOptions = simpleInterestForm.menuOptions.keys.toList();
     final textStyles = Theme.of(context).textTheme;
 
     return Padding(
@@ -52,14 +44,14 @@ class _SimpleInterestForm extends ConsumerWidget {
 
             CustomDropDownMenu(
               hintText: "Seleccionar",
-              options: menuOptions,
+              options: simpleInterestForm.menuOptions,
               onSelected: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
                     .onOptionsSimpleChanged(value!);
               },
               errorText: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple == "none"
+                      simpleInterestForm.variable == SimpleVariable.none
                   ? "Seleccione la variable a calcular"
                   : null,
             ),
@@ -71,7 +63,7 @@ class _SimpleInterestForm extends ConsumerWidget {
 
             //FORM
             CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[1],
+              enable: simpleInterestForm.variable != keyOptions[1],
               label: "Capital",
               onChanged: (value) {
                 ref
@@ -79,7 +71,7 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "capital"
+                      simpleInterestForm.variable != SimpleVariable.capital
                   ? simpleInterestForm.capital.errorMessage
                   : null,
             ),
@@ -87,17 +79,16 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[2] &&
-                  simpleInterestForm.optionSimple != keyOptions[0],
+              enable: simpleInterestForm.variable != keyOptions[2] &&
+                  simpleInterestForm.variable != keyOptions[0],
               label: "Interés",
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
-                    .onCapitalChanged(double.tryParse(value) ?? 0);
+                    .onInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "interest" &&
-                      simpleInterestForm.optionSimple != "amount"
+                      simpleInterestForm.variable != SimpleVariable.interest
                   ? simpleInterestForm.interest.errorMessage
                   : null,
             ),
@@ -105,15 +96,15 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[4],
+              enable: simpleInterestForm.variable != keyOptions[4],
               label: "Tasa de Interés",
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
-                    .onRateInterestChanged(double.tryParse(value) ?? 0);
+                    .onRateInterestChanged(int.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "rateInterest"
+                      simpleInterestForm.variable != SimpleVariable.interestRate
                   ? simpleInterestForm.rateInterest.errorMessage
                   : null,
             ),
@@ -121,7 +112,7 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: simpleInterestForm.optionSimple != keyOptions[3],
+              enable: simpleInterestForm.variable != keyOptions[3],
               label: "Tiempo",
               onChanged: (value) {
                 ref
@@ -129,7 +120,7 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .onTimeChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "time"
+                      simpleInterestForm.variable != SimpleVariable.time
                   ? simpleInterestForm.time.errorMessage
                   : null,
             ),
