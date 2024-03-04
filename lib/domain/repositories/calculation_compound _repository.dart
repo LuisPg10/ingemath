@@ -5,12 +5,6 @@ abstract class CalculationCompoundRepository {
     required double time,
   });
 
-  Future<double> calculatePresentValue({
-    required double amount,
-    required double interestRateCap,
-    required double time,
-  });
-
   Future<double> calculateInterestRate({
     required double amount,
     required double capital,

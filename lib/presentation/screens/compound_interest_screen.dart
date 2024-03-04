@@ -1,234 +1,155 @@
 import 'package:flutter/material.dart';
-import '../widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {
-  const CompoundInterestScreen({Key? key}) : super(key: key);
+  const CompoundInterestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CALCULADORA DE INTERES C.",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),),
+        title: const Text("Interes Compuesto"),
       ),
-      body: const MyBody(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: const Color(0xFFFFDC62),
+              borderRadius: BorderRadius.circular(20)),
+          child: const _CompoundInterestForm(),
+        ),
+      ),
     );
   }
 }
 
-class MyBody extends StatelessWidget {
-  const MyBody({Key? key}) : super(key: key);
+class _CompoundInterestForm extends ConsumerWidget {
+  final menuOptions = const <String, String>{
+    "amount": "Monto compuesto",
+    "capitalComp": "Capital compuesto",
+    "capInterestRate": "Tasa de interés",
+    "timeComp": "Tiempo compuesto",
+  };
+
+  const _CompoundInterestForm();
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      left: true,
-      child: Container(
-        height: double.infinity,
-        margin: const EdgeInsets.all(30.0),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              const Text(
-                'Interes Compuesto',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final keyOptions = menuOptions.keys.toList();
+    final CompoundForm = ref.watch(compoundFormProvider);
+    final textStyles = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            
+            const SizedBox(height: 20),
+            Text("Selecciona variable a calcular",
+                style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
+            CustomDropDownMenu(
+              hintText: "Variable a calcular",
+              options: menuOptions,
+              onSelected: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onOptionsCompoundChanged(value!);
+              },
+              errorText: CompoundForm.isFormPosted &&
+                      CompoundForm.optionCompound == "none"
+                  ? "Seleccione la variable a calcular"
+                  : null,
+            ),
+            const SizedBox(height: 20),
+            Text("Completa la siguiente información",
+                style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
+            //Form
+            CustomTextFormField(
+              enable: CompoundForm.optionCompound != keyOptions.first,
+              label: "Monto compuesto",
+              onChanged: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onOptionsAmountCompoundChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: CompoundForm.isFormPosted &&
+                      CompoundForm.optionCompound != "amount"
+                  ? CompoundForm.amount.errorMessage
+                  : null,
+            ),
+            const SizedBox(height: 15),
+            CustomTextFormField(
+              
+              enable: CompoundForm.optionCompound != keyOptions[1],
+              label: "Capital",
+              onChanged: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onCapitalCompoundChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: CompoundForm.isFormPosted &&
+                      CompoundForm.optionCompound != "capital"
+                  ? CompoundForm.capital.errorMessage
+                  : null,
+            ),
+            const SizedBox(height: 15),
+            CustomTextFormField(
+              enable: CompoundForm.optionCompound != keyOptions[2],
+              label: "Tasa de interés",
+              onChanged: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onInteresRateCompoundChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: CompoundForm.isFormPosted &&
+                      CompoundForm.optionCompound != "capInterestRate"
+                  ? CompoundForm.capInterestRate.errorMessage
+                  : null,
+            ),
+            const SizedBox(height: 15),
+            CustomTextFormField(
+              enable: CompoundForm.optionCompound != keyOptions.last,
+              label: "Tiempo o periodo",
+              onChanged: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onTimeCompoundChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: CompoundForm.isFormPosted &&
+                      CompoundForm.optionCompound != "time"
+                  ? CompoundForm.time.errorMessage
+                  : null,
+            ),
+             const SizedBox(height: 60),
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: CustomFilledButton(
+                onPressed: ref.read(compoundFormProvider.notifier).calculate,
+                child: const Text("Calcular"),
               ),
-              const SizedBox(height: 30),
-              const Text(
-                'Selecciona Variable a Calcular',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                ),
+            ),
+            const SizedBox(height: 50),
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: double.infinity - 30,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: const Color(0xFFD3AD24),
               ),
-              const SizedBox(height: 10),
-              // Agrega el DropdownButton debajo del texto
-              DropdownButton<String>(
-                items: [
-                  'Capital',
-                  'Monto Compu',
-                  'Interes Compu'
-                ] // Reemplaza con tus opciones
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  // Puedes agregar lógica aquí cuando se selecciona una opción
-                },
-                hint: const Text(
-                    'Selecciona una opción'), // Texto antes de seleccionar
-                value:
-                    null, // Deberías mantener un estado para la opción seleccionada
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                'Completa la siguiente Informacion',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 163, 3, 3),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  color: Colors.amber[300],
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Capital',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.all(5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Valor Presente',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Tasa de Interes',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Tiempo',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 163, 3, 3),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Diario',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Trimestral',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Semestral',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Anual',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                            onPressed: () {
-                              // 
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 3, 114, 46),
-                              minimumSize: const Size(double.infinity, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    30.0), // Bordes circulares
-                              ),
-                            ),
-                            child: const Text('CALCULAR',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white)),
-                          ),
-                        TextField(
-                        controller: null,
-                        decoration: InputDecoration(
-                          labelText: 'Resultado',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical:100, horizontal: 5),
-                        ),
-                        style: const TextStyle(fontSize: 15),
-                      ),  
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
-            ],
-          ),
+              child: Text("Resultado: ${CompoundForm.result}",
+                  style: const TextStyle(color: Colors.white)),
+            )
+          ],
         ),
       ),
     );

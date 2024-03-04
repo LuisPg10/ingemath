@@ -95,7 +95,7 @@ class _SimpleInterestForm extends ConsumerWidget {
               },
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.optionSimple != "capital"
-                  ? simpleInterestForm.amount.errorMessage
+                  ? simpleInterestForm.capital.errorMessage
                   : null,
             ),
 
@@ -111,8 +111,9 @@ class _SimpleInterestForm extends ConsumerWidget {
                     .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                      simpleInterestForm.optionSimple != "interest"
-                  ? simpleInterestForm.amount.errorMessage
+                      simpleInterestForm.optionSimple != "interest" &&
+                      simpleInterestForm.optionSimple != "amount"
+                  ? simpleInterestForm.interest.errorMessage
                   : null,
             ),
 
@@ -124,11 +125,11 @@ class _SimpleInterestForm extends ConsumerWidget {
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
-                    .onCapitalChanged(double.tryParse(value) ?? 0);
+                    .onRateInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.optionSimple != "rateInterest"
-                  ? simpleInterestForm.amount.errorMessage
+                  ? simpleInterestForm.rateInterest.errorMessage
                   : null,
             ),
 
@@ -140,11 +141,11 @@ class _SimpleInterestForm extends ConsumerWidget {
               onChanged: (value) {
                 ref
                     .read(simpleFormProvider.notifier)
-                    .onCapitalChanged(double.tryParse(value) ?? 0);
+                    .onTimeChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.optionSimple != "time"
-                  ? simpleInterestForm.amount.errorMessage
+                  ? simpleInterestForm.time.errorMessage
                   : null,
             ),
 

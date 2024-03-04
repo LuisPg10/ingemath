@@ -45,20 +45,7 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
       time: time
       );
   }
-
-  @override
-  Future<double> calculatePresentValue({
-    required double amount,
-    required double interestRateCap,
-    required double time
-  }) {
-    return datasource.calculatePresentValue(
-      amount: amount, 
-      interestRateCap: interestRateCap, 
-      time: time
-    );
-  }
-
+  
   @override
   Future<double> calculateTimeComp({
     required double amount,
