@@ -3,16 +3,15 @@ import 'package:formz/formz.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 
-final annuityFormProvider = StateNotifierProvider
-.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
-  (ref) {
-    final annuityRepository = ref.watch(annuityRepositorytProvider);
+final annuityFormProvider =
+    StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
+        (ref) {
+  final annuityRepository = ref.watch(annuityRepositorytProvider);
 
-    return AnnuityFormNotifier(
-      repository: annuityRepository,
-    );
-  }
-);
+  return AnnuityFormNotifier(
+    repository: annuityRepository,
+  );
+});
 
 class AnnuityFormState {
   final bool isFormPosted;
@@ -44,21 +43,20 @@ class AnnuityFormState {
     DataNumber? annuityRate,
     DataNumber? currentValue,
     double? result,
-  }) => AnnuityFormState(
-
-    isFormPosted: isFormPosted ?? this.isFormPosted,
-    isValid: isValid ?? this.isValid,
-    optionAnnuity: optionAnnuity ?? this.optionAnnuity,
-    amount: amount ?? this.amount,
-    currentAnnuity: currentAnnuity ?? this.currentAnnuity,
-    annuityRate: annuityRate ?? this.annuityRate,
-    currentValue: currentValue ?? this.currentValue,
-    result: result ?? this.result,
-  );
+  }) =>
+      AnnuityFormState(
+        isFormPosted: isFormPosted ?? this.isFormPosted,
+        isValid: isValid ?? this.isValid,
+        optionAnnuity: optionAnnuity ?? this.optionAnnuity,
+        amount: amount ?? this.amount,
+        currentAnnuity: currentAnnuity ?? this.currentAnnuity,
+        annuityRate: annuityRate ?? this.annuityRate,
+        currentValue: currentValue ?? this.currentValue,
+        result: result ?? this.result,
+      );
 }
 
 class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
-
   CalculationAnnuitiesRepositoryImpl repository;
 
   AnnuityFormNotifier({
@@ -66,9 +64,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
   }) : super(AnnuityFormState());
 
   void onOptionsAnnuitiesChanged(String value) {
-    state = state.copyWith(
-      optionAnnuity: value
-    );
+    state = state.copyWith(optionAnnuity: value);
   }
 
   void onAmountChanged(double value) {
@@ -103,8 +99,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
         state.currentAnnuity,
         state.amount,
         state.currentValue,
-      ]
-      ),
+      ]),
     );
   }
 
@@ -122,7 +117,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
 
   void calculate() async {
     _touchEveryField();
-    
+
     if (!state.isValid) return;
 
     final result = await repository.calculateAmount(
