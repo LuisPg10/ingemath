@@ -54,7 +54,7 @@ class _CompoundInterestForm extends ConsumerWidget {
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
-              hintText: "Variable a calcular",
+              hintText: "Seleccionar",
               options: menuOptions,
               onSelected: (value) {
                 ref

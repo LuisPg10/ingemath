@@ -12,12 +12,13 @@ class OperationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Bienvenidos a IngeMath")),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             const Text("Elige la herramienta contable de tu interes"),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
         
             Expanded(
               child: MasonryGridView.count(
