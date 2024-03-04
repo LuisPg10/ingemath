@@ -10,7 +10,7 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   @override
   Future<double> calculateAmountComp({
     required double capital,
-    required double capInterestRate,
+    required int capInterestRate,
     required double time
   }) {
     return datasource.calculateAmountComp(
@@ -23,7 +23,7 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   @override
   Future<double> calculateCapitalComp({
     required double amount,
-    required double capInterestRate,
+    required int capInterestRate,
     required double time
   }) {
     return datasource.calculateCapitalComp(
@@ -50,7 +50,7 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   Future<double> calculateTimeComp({
     required double amount,
     required double capital,
-    required double capInterestRate
+    required int capInterestRate
   }) {
     return datasource.calculateTimeComp(
       amount: amount,  

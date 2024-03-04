@@ -7,7 +7,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return (interest / ((rateInterest / 100) * time));
+    return (interest / ((rateInterest / 100) * (time / 360)));
   }
 
   @override
@@ -16,7 +16,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return (amount / (1 + ((rateInterest / 100) * time)));
+    return (amount / (1 + ((rateInterest / 100) * (time / 360))));
   }
 
   @override
@@ -24,7 +24,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
       {required double capital,
       required int rateInterest,
       required double time}) async {
-    return capital + (capital * (rateInterest / 100) * (time / 360));
+    return capital * (1 + (rateInterest / 100) * (time / 360));
   }
 
   @override
@@ -41,7 +41,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return capital * (rateInterest / 100) * time;
+    return capital * (rateInterest / 100) * (time / 360);
   }
 
   @override
@@ -58,7 +58,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required double interest,
     required double time,
   }) async {
-    return (interest / (capital * time));
+    return (interest / (capital * (time / 360)));
   }
 
   @override
@@ -67,7 +67,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required double amount,
     required double time,
   }) async {
-    return ((amount - capital) / (capital * time));
+    return ((amount - capital) / (capital * (time / 360)));
   }
 
   @override

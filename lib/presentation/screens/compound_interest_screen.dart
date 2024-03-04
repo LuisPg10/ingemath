@@ -27,20 +27,15 @@ class CompoundInterestScreen extends StatelessWidget {
 }
 
 class _CompoundInterestForm extends ConsumerWidget {
-  final menuOptions = const <String, String>{
-    "amount": "Monto compuesto",
-    "capitalComp": "Capital compuesto",
-    "capInterestRate": "Tasa de interés",
-    "timeComp": "Tiempo compuesto",
-  };
-
+  
   const _CompoundInterestForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final keyOptions = menuOptions.keys.toList();
-    final compoundForm = ref.watch(compoundFormProvider);
+
     final textStyles = Theme.of(context).textTheme;
+    final compoundForm = ref.watch(compoundFormProvider);
+    final keyOptions = compoundForm.menuOptions.keys.toList();
 
     return Padding(
       padding: const EdgeInsets.all(30),
@@ -55,14 +50,14 @@ class _CompoundInterestForm extends ConsumerWidget {
 
             CustomDropDownMenu(
               hintText: "Seleccionar",
-              options: menuOptions,
+              options: compoundForm.menuOptions,
               onSelected: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
                     .onOptionsCompoundChanged(value!);
               },
               errorText: compoundForm.isFormPosted &&
-                      compoundForm.optionCompound == "none"
+                      compoundForm.variable == CompoundInterestVariable.none
                   ? "Seleccione la variable a calcular"
                   : null,
             ),
@@ -73,7 +68,7 @@ class _CompoundInterestForm extends ConsumerWidget {
 
             //Form
             CustomTextFormField(
-              enable: compoundForm.optionCompound != keyOptions.first,
+              enable: compoundForm.variable != keyOptions.first,
               label: "Monto compuesto",
               onChanged: (value) {
                 ref
@@ -81,14 +76,14 @@ class _CompoundInterestForm extends ConsumerWidget {
                     .onOptionsAmountCompoundChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.optionCompound != "amount"
+                      compoundForm.variable != keyOptions.first
                   ? compoundForm.amount.errorMessage
                   : null,
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-              
-              enable: compoundForm.optionCompound != keyOptions[1],
+          
+              enable: compoundForm.variable != keyOptions[1],
               label: "Capital",
               onChanged: (value) {
                 ref
@@ -96,27 +91,28 @@ class _CompoundInterestForm extends ConsumerWidget {
                     .onCapitalCompoundChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.optionCompound != "capital"
+                      compoundForm.variable != keyOptions[1]
                   ? compoundForm.capital.errorMessage
                   : null,
             ),
             const SizedBox(height: 15),
+
             CustomTextFormField(
-              enable: compoundForm.optionCompound != keyOptions[2],
+              enable: compoundForm.variable != keyOptions[2],
               label: "Tasa de interés",
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
-                    .onInteresRateCompoundChanged(double.tryParse(value) ?? 0);
+                    .onInteresRateCompoundChanged(int.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.optionCompound != "capInterestRate"
+                      compoundForm.variable != keyOptions[2]
                   ? compoundForm.capInterestRate.errorMessage
                   : null,
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-              enable: compoundForm.optionCompound != keyOptions.last,
+              enable: compoundForm.variable != keyOptions.last,
               label: "Tiempo o periodo",
               onChanged: (value) {
                 ref
@@ -124,7 +120,7 @@ class _CompoundInterestForm extends ConsumerWidget {
                     .onTimeCompoundChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.optionCompound != "time"
+                      compoundForm.variable != keyOptions.last
                   ? compoundForm.time.errorMessage
                   : null,
             ),
