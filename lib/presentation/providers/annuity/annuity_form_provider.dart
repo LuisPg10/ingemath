@@ -1,117 +1,107 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:ingemath/domain/domain.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 
-final annuityFormProvider =
-    StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
-        (ref) {
-  final annuityRepository = ref.watch(annuityRepositorytProvider);
+final annuityFormProvider = StateNotifierProvider
+  .autoDispose<AnnuityFormNotifier, AnnuityFormState>((ref) {
 
-  return AnnuityFormNotifier(
-    repository: annuityRepository,
-  );
-});
+    final annuityRepository = ref.watch(annuityRepositorytProvider);
+    return AnnuityFormNotifier(
+      repository: annuityRepository,
+    );
+
+  }
+);
+
+enum AnnuityVariable { none, amount, annuityValue, interestRate, time }
 
 class AnnuityFormState {
+
+  final menuOptions = const <AnnuityVariable, String>{
+    AnnuityVariable.amount: "Monto anualidad",
+    AnnuityVariable.annuityValue: "Valor actual de la anualidad",
+    AnnuityVariable.interestRate: "Tasa de interés",
+    AnnuityVariable.time: "Tiempo anualidad",
+  };
+
   final bool isFormPosted;
   final bool isValid;
-  final String optionAnnuity;
+  final AnnuityVariable variable;
   final DataNumber amount;
-  final DataNumber currentAnnuity;
-  final DataNumber annuityRate;
-  final DataNumber currentValue;
+  final DataNumber annuityValue;
+  final InterestRate interestRate;
+  final DataNumber time;
   final double result;
 
   AnnuityFormState({
     this.isFormPosted = false,
     this.isValid = false,
-    this.optionAnnuity = "none",
+    this.variable = AnnuityVariable.none,
     this.amount = const DataNumber.pure(),
-    this.currentAnnuity = const DataNumber.pure(),
-    this.annuityRate = const DataNumber.pure(),
-    this.currentValue = const DataNumber.pure(),
+    this.annuityValue = const DataNumber.pure(),
+    this.interestRate = const InterestRate.pure(),
+    this.time = const DataNumber.pure(),
     this.result = 0,
   });
 
   AnnuityFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
-    String? optionAnnuity,
+    AnnuityVariable? variable,
     DataNumber? amount,
-    DataNumber? currentAnnuity,
-    DataNumber? annuityRate,
-    DataNumber? currentValue,
+    DataNumber? annuityValue,
+    InterestRate? interestRate,
+    DataNumber? time,
     double? result,
-  }) =>
-      AnnuityFormState(
-        isFormPosted: isFormPosted ?? this.isFormPosted,
-        isValid: isValid ?? this.isValid,
-        optionAnnuity: optionAnnuity ?? this.optionAnnuity,
-        amount: amount ?? this.amount,
-        currentAnnuity: currentAnnuity ?? this.currentAnnuity,
-        annuityRate: annuityRate ?? this.annuityRate,
-        currentValue: currentValue ?? this.currentValue,
-        result: result ?? this.result,
-      );
+  }) => AnnuityFormState(
+
+    isFormPosted: isFormPosted ?? this.isFormPosted,
+    isValid: isValid ?? this.isValid,
+    variable: variable ?? this.variable,
+    amount: amount ?? this.amount,
+    annuityValue: annuityValue ?? this.annuityValue,
+    interestRate: interestRate ?? this.interestRate,
+    time: time ?? this.time,
+    result: result ?? this.result,
+  );
 }
 
 class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
-  CalculationAnnuitiesRepositoryImpl repository;
+  CalculationAnnuitiesRepository repository;
 
   AnnuityFormNotifier({
     required this.repository,
   }) : super(AnnuityFormState());
 
-  void onOptionsAnnuitiesChanged(String value) {
-    state = state.copyWith(optionAnnuity: value);
+  void onOptionsAnnuitiesChanged(AnnuityVariable value) {
+    state = state.copyWith(
+      variable: value,
+    );
   }
 
   void onAmountChanged(double value) {
     state = state.copyWith(
       amount: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.currentAnnuity,
-        state.annuityRate,
-        state.currentValue,
-      ]),
     );
   }
 
-  void onCurrentAnnuityChanged(double value) {
+  void onAnnuityValueChanged(double value) {
     state = state.copyWith(
-      currentAnnuity: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.amount,
-        state.annuityRate,
-        state.currentValue,
-      ]),
+      annuityValue: DataNumber.dirty(value),
     );
   }
 
-  void onAnnuityRateChanged(double value) {
+  void onInterestRateChanged(int value) {
     state = state.copyWith(
-      annuityRate: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.currentAnnuity,
-        state.amount,
-        state.currentValue,
-      ]),
+      interestRate: InterestRate.dirty(value),
     );
   }
 
-  void onCurrentValueChanged(double value) {
+  void onTimeChanged(double value) {
     state = state.copyWith(
-      currentValue: DataNumber.dirty(value),
-      isValid: Formz.validate([
-        DataNumber.dirty(value),
-        state.currentAnnuity,
-        state.amount,
-        state.annuityRate,
-      ]),
+      time: DataNumber.dirty(value),
     );
   }
 
@@ -120,21 +110,60 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
 
     if (!state.isValid) return;
 
-    final result = await repository.calculateAmount(
-      annuityRate: state.annuityRate.value,
-      currentAnnuity: state.currentAnnuity.value,
-      currentValue: state.currentValue.value.toInt(),
-    );
+    double result = 0;
+    switch(state.variable) {
+      case AnnuityVariable.amount :
+        result = await repository.calculateAmount(
+          interestRate: state.interestRate.value,
+          annuityValue: state.annuityValue.value,
+          time: state.time.value,
+        );
+        break;
+
+      case AnnuityVariable.annuityValue :
+        result = await repository.calculateAnnuityValue(
+          interestRate: state.interestRate.value,
+          amount: state.amount.value,
+          time: state.time.value,
+        );
+        break;
+
+      case AnnuityVariable.interestRate :
+        result = await repository.calculateInterestRate(
+          amount: state.amount.value,
+          annuityValue: state.annuityValue.value,
+          time: state.time.value,
+        );
+        break;
+        
+      case AnnuityVariable.time :
+        result = await repository.calculateTime(
+          amount: state.amount.value,
+          annuityValue: state.annuityValue.value,
+          interestRate: state.interestRate.value,
+        );
+        break;
+      default :
+        break;
+    }
     state = state.copyWith(result: result);
   }
 
   void _touchEveryField() {
     state = state.copyWith(
+
       isFormPosted: true,
       amount: DataNumber.dirty(state.amount.value),
-      currentAnnuity: DataNumber.dirty(state.currentAnnuity.value),
-      currentValue: DataNumber.dirty(state.currentValue.value),
-      annuityRate: DataNumber.dirty(state.annuityRate.value),
+      annuityValue: DataNumber.dirty(state.annuityValue.value),
+      time: DataNumber.dirty(state.time.value),
+      interestRate: InterestRate.dirty(state.interestRate.value),
+
+      isValid: state.variable != AnnuityVariable.none && Formz.validate([
+        if(state.variable != AnnuityVariable.amount) state.amount,
+        if(state.variable != AnnuityVariable.annuityValue) state.annuityValue,
+        if(state.variable != AnnuityVariable.interestRate) state.interestRate,
+        if(state.variable != AnnuityVariable.time) state.time,
+      ]),
     );
   }
 }

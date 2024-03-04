@@ -10,53 +10,53 @@ class CalculationAnnuitiesRepositoryImpl extends CalculationAnnuitiesRepository 
 
   @override
   Future<double> calculateAmount({
-    required double annuityRate,
-    required double currentAnnuity,
-    required int currentValue,
+    required int interestRate,
+    required double annuityValue,
+    required double time,
   }) {
     return datasource.calculateAmount(
-      annuityRate: annuityRate,
-      currentAnnuity: currentAnnuity,
-      currentValue: currentValue,
+      interestRate: interestRate,
+      annuityValue: annuityValue,
+      time: time,
     );
   }
 
   @override
-  Future<double> calculateAnnuityRate({
+  Future<double> calculateInterestRate({
     required double amount,
-    required double currentAnnuity,
-    required int currentValue,
+    required double annuityValue,
+    required double time,
   }) {
-    return datasource.calculateAnnuityRate(
+    return datasource.calculateInterestRate(
       amount: amount,
-      currentAnnuity: currentAnnuity,
-      currentValue: currentValue,
+      annuityValue: annuityValue,
+      time: time,
     );
   }
 
   @override
-  Future<double> calculateCurrentAnnuity({
+  Future<double> calculateAnnuityValue({
     required double amount,
-    required double annuityRate,
-    required int currentValue,
+    required int interestRate,
+    required double time,
   }) {
-    return datasource.calculateCurrentAnnuity(
+    return datasource.calculateAnnuityValue(
       amount: amount,
-      annuityRate: annuityRate,
-      currentValue: currentValue,
+      interestRate: interestRate,
+      time: time,
     );
   }
 
   @override
-  Future<double> calculateCurrentValue({
+  Future<double> calculateTime({
     required double amount,
-    required double currentAnnuity,
-    required double annuityRate,
+    required double annuityValue,
+    required int interestRate,
   }) {
-    return datasource.calculateCurrentValue(
+    return datasource.calculateTime(
       amount: amount,
-      currentAnnuity: currentAnnuity,
-      annuityRate: annuityRate,
+      annuityValue: annuityValue,
+      interestRate: interestRate,
     );
   }
 }

@@ -5,43 +5,45 @@ import 'package:ingemath/domain/domain.dart';
 class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource {
   @override
   Future<double> calculateAmount({
-    required double annuityRate,
-    required double currentAnnuity,
-    required int currentValue,
+    required int interestRate,
+    required double annuityValue,
+    required double time,
   }) async {
 
-    double top = (pow((1 + annuityRate), currentValue).toDouble() - 1) / annuityRate;
-    final result = currentAnnuity * top;
-    return result.truncateToDouble();
+    final newInterestRate = interestRate / 100;
+    double top = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    final amount = annuityValue * top;
+    return amount;
   }
 
   @override
-  Future<double> calculateAnnuityRate({
+  Future<double> calculateInterestRate({
     required double amount,
-    required double currentAnnuity,
-    required int currentValue,
-  }) {
-    // TODO: implement calculateAnnuityRate
-    throw UnimplementedError();
+    required double annuityValue,
+    required double time,
+  }) async {
+    return 0;
   }
 
   @override
-  Future<double> calculateCurrentAnnuity({
+  Future<double> calculateAnnuityValue({
     required double amount,
-    required double annuityRate,
-    required int currentValue,
-  }) {
-    // TODO: implement calculateCurrentAnnuity
-    throw UnimplementedError();
+    required int interestRate,
+    required double time,
+  }) async {
+
+    final newInterestRate = interestRate / 100;
+    double bottom = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    final currentAnnuity = amount / bottom;
+    return currentAnnuity;
   }
 
   @override
-  Future<double> calculateCurrentValue({
+  Future<double> calculateTime({
     required double amount,
-    required double currentAnnuity,
-    required double annuityRate,
-  }) {
-    // TODO: implement calculateCurrentValue
-    throw UnimplementedError();
+    required double annuityValue,
+    required int interestRate,
+  }) async {
+    return 0;
   }
 }

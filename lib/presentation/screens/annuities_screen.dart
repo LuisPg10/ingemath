@@ -17,8 +17,9 @@ class AnnuitiesScreen extends StatelessWidget {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color: const Color(0xFFFFDC62),
-              borderRadius: BorderRadius.circular(20)),
+            color: const Color(0xFFFFDC62),
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: const _AnnuitiesForm(),
         ),
       ),
@@ -27,101 +28,103 @@ class AnnuitiesScreen extends StatelessWidget {
 }
 
 class _AnnuitiesForm extends ConsumerWidget {
-  final menuOptions = const <String, String>{
-    "amount": "Monto anualidad",
-    "currentAnnuity": "Valor anualidad actual",
-    "annuityRate": "Tasa de interés",
-    "currentValue": "Tiempo anualidad",
-  };
 
   const _AnnuitiesForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final keyOptions = menuOptions.keys.toList();
-    final annuityForm = ref.watch(annuityFormProvider);
+
     final textStyles = Theme.of(context).textTheme;
+    
+    final annuityForm = ref.watch(annuityFormProvider);
+    final keyOptions = annuityForm.menuOptions.keys.toList();
 
     return Padding(
       padding: const EdgeInsets.all(30),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            CustomDropDownMenu(
-              hintText: "Variable a calcular",
-              options: menuOptions,
-              onSelected: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onOptionsAnnuitiesChanged(value!);
-              },
-              errorText: annuityForm.isFormPosted &&
-                      annuityForm.optionAnnuity == "none"
-                  ? "Seleccione la variable a calcular"
-                  : null,
-            ),
-            const SizedBox(height: 20),
-            Text("Completa la siguiente información",
-                style: textStyles.bodyLarge),
+            
+            Text("Variable a calcular", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
-            //Form
+            CustomDropDownMenu(
+              hintText: "Seleccionar",
+              options: annuityForm.menuOptions,
+              onSelected: (value) {
+                ref.read(annuityFormProvider.notifier)
+                .onOptionsAnnuitiesChanged(value);
+              },
+              errorText: annuityForm.isFormPosted &&
+              annuityForm.variable == AnnuityVariable.none
+              ? "Seleccione la variable a calcular"
+              : null,
+            ),
+
+            const SizedBox(height: 20),
+            Text("Completa la siguiente información", style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
             CustomTextFormField(
-              enable: annuityForm.optionAnnuity != keyOptions.first,
+              enable: annuityForm.variable != keyOptions.first,
               label: "Monto anualidad",
               onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onAmountChanged(double.tryParse(value) ?? 0);
+                ref.read(annuityFormProvider.notifier)
+                .onAmountChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: annuityForm.isFormPosted &&
-                      annuityForm.optionAnnuity != "amount"
-                  ? annuityForm.amount.errorMessage
-                  : null,
+              annuityForm.variable != keyOptions.first
+              ? annuityForm.amount.errorMessage
+              : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
-              enable: annuityForm.optionAnnuity != keyOptions[1],
+              enable: annuityForm.variable != keyOptions[1],
               label: "Valor actual de la anualidad",
               onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onCurrentAnnuityChanged(double.tryParse(value) ?? 0);
+                ref.read(annuityFormProvider.notifier).
+                onAnnuityValueChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: annuityForm.isFormPosted &&
-                      annuityForm.optionAnnuity != "currentAnnuity"
-                  ? annuityForm.currentAnnuity.errorMessage
-                  : null,
+              annuityForm.variable != keyOptions[1]
+              ? annuityForm.annuityValue.errorMessage
+              : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
-              enable: annuityForm.optionAnnuity != keyOptions[2],
-              label: "Tasa de interés",
+              enable: annuityForm.variable != keyOptions[2],
+              label: "Tasa de interés %",
               onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onAnnuityRateChanged(double.tryParse(value) ?? 0);
+                ref.read(annuityFormProvider.notifier).
+                onInterestRateChanged(int.tryParse(value) ?? 0);
               },
               errorMessage: annuityForm.isFormPosted &&
-                      annuityForm.optionAnnuity != "annuityRate"
-                  ? annuityForm.annuityRate.errorMessage
-                  : null,
+              annuityForm.variable != keyOptions[2]
+              ? annuityForm.interestRate.errorMessage
+              : null,
             ),
+
             const SizedBox(height: 15),
+
             CustomTextFormField(
-              enable: annuityForm.optionAnnuity != keyOptions.last,
+              enable: annuityForm.variable != keyOptions.last,
               label: "Tiempo de la anualidad",
               onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onCurrentValueChanged(double.tryParse(value) ?? 0);
+                ref.read(annuityFormProvider.notifier).
+                onTimeChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: annuityForm.isFormPosted &&
-                      annuityForm.optionAnnuity != "currentValue"
-                  ? annuityForm.currentValue.errorMessage
-                  : null,
+              annuityForm.variable != keyOptions.last
+              ? annuityForm.time.errorMessage
+              : null,
             ),
+
             const SizedBox(height: 60),
+
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -130,7 +133,9 @@ class _AnnuitiesForm extends ConsumerWidget {
                 child: const Text("Calcular"),
               ),
             ),
+
             const SizedBox(height: 50),
+
             Container(
               padding: const EdgeInsets.all(10),
               width: double.infinity - 30,
@@ -140,7 +145,8 @@ class _AnnuitiesForm extends ConsumerWidget {
                 color: const Color(0xFFD3AD24),
               ),
               child: Text("Resultado: ${annuityForm.result}",
-                  style: const TextStyle(color: Colors.white)),
+                style: const TextStyle(color: Colors.white),
+              ),
             )
           ],
         ),

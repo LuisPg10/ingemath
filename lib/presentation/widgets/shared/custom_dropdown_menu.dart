@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomDropDownMenu extends StatelessWidget {
   final String? hintText;
-  final Map<String, String> options;
+  final Map<dynamic, String> options;
   final String? errorText;
-  final void Function(String?)? onSelected;
+  final void Function(dynamic)? onSelected;
 
   const CustomDropDownMenu({
     super.key,
