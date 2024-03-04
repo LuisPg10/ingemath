@@ -49,6 +49,7 @@ class _SimpleInterestForm extends ConsumerWidget {
         child: Column(
           children: [
             Text("Selecciona Variable a Calcular", style: textStyles.bodyLarge),
+
             CustomDropDownMenu(
               hintText: "Seleccionar",
               options: menuOptions,
@@ -68,23 +69,7 @@ class _SimpleInterestForm extends ConsumerWidget {
                 style: textStyles.bodyLarge),
             const SizedBox(height: 30),
 
-            //* Form
-            // CustomTextFormField(
-            //   enable: simpleInterestForm.optionSimple != keyOptions.first,
-            //   label: "Monto",
-            //   onChanged: (value) {
-            //     ref
-            //         .read(simpleFormProvider.notifier)
-            //         .onCapitalChanged(double.tryParse(value) ?? 0);
-            //   },
-            //   errorMessage: simpleInterestForm.isFormPosted &&
-            //           simpleInterestForm.optionSimple != "amount"
-            //       ? simpleInterestForm.amount.errorMessage
-            //       : null,
-            // ),
-
-            const SizedBox(height: 15),
-
+            //FORM
             CustomTextFormField(
               enable: simpleInterestForm.optionSimple != keyOptions[1],
               label: "Capital",
@@ -170,9 +155,13 @@ class _SimpleInterestForm extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: const Color(0xFFD3AD24),
               ),
-              child: Text("Resultado: ${simpleInterestForm.result}",
-                  style: const TextStyle(color: Colors.white)),
-            )
+              child: Column(
+                children: [
+                  Text("Resultado: ${simpleInterestForm.result}",
+                      style: const TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
           ],
         ),
       ),

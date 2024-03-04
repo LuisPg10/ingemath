@@ -13,12 +13,13 @@ final simpleFormProvider =
   );
 });
 
+//---------------------CAMBIOOOOOOOOOOOOOOS
+
 class SimpleFormState {
   final bool isFormPosted;
   final bool isValid;
   final String optionSimple;
   final DataNumber capital;
-  final DataNumber amount;
   final DataNumber rateInterest;
   final DataNumber time;
   final DataNumber interest;
@@ -29,7 +30,6 @@ class SimpleFormState {
     this.isValid = false,
     this.optionSimple = "none",
     this.capital = const DataNumber.pure(),
-    this.amount = const DataNumber.pure(),
     this.rateInterest = const DataNumber.pure(),
     this.time = const DataNumber.pure(),
     this.interest = const DataNumber.pure(),
@@ -41,7 +41,6 @@ class SimpleFormState {
     bool? isValid,
     String? optionSimple,
     DataNumber? capital,
-    DataNumber? amount,
     DataNumber? rateInterest,
     DataNumber? time,
     DataNumber? interest,
@@ -52,7 +51,6 @@ class SimpleFormState {
         isValid: isValid ?? this.isValid,
         optionSimple: optionSimple ?? this.optionSimple,
         capital: capital ?? this.capital,
-        amount: amount ?? this.amount,
         rateInterest: rateInterest ?? this.rateInterest,
         time: time ?? this.time,
         interest: interest ?? this.interest,
@@ -76,7 +74,18 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       capital: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
-        state.interest,
+        state.rateInterest,
+        state.time,
+      ]),
+    );
+  }
+
+  void onInterestChanged(double value) {
+    state = state.copyWith(
+      interest: DataNumber.dirty(value),
+      isValid: Formz.validate([
+        DataNumber.dirty(value),
+        state.capital,
         state.rateInterest,
         state.time,
       ]),
@@ -88,7 +97,6 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       rateInterest: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
-        state.interest,
         state.capital,
         state.time,
       ]),
@@ -100,7 +108,6 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       time: DataNumber.dirty(value),
       isValid: Formz.validate([
         DataNumber.dirty(value),
-        state.interest,
         state.capital,
         state.rateInterest,
       ]),
@@ -116,6 +123,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
         capital: state.capital.value,
         rateInterest: state.rateInterest.value,
         time: state.time.value);
+
     state = state.copyWith(result: result);
   }
 
@@ -123,7 +131,6 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     state = state.copyWith(
       isFormPosted: true,
       capital: DataNumber.dirty(state.capital.value),
-      amount: DataNumber.dirty(state.amount.value),
       time: DataNumber.dirty(state.time.value),
       rateInterest: DataNumber.dirty(state.rateInterest.value),
       interest: DataNumber.dirty(state.interest.value),

@@ -20,11 +20,10 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   }
 
   @override
-  Future<double> finalAmount({
-    required double capital,
-    required double rateInterest,
-    required double time,
-  }) async {
+  Future<double> finalAmount(
+      {required double capital,
+      required double rateInterest,
+      required double time}) async {
     return capital + (capital * (rateInterest / 100) * (time / 360));
   }
 
