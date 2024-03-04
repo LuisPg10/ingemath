@@ -4,25 +4,25 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> capital({
     required double interest,
-    required double rateInterest,
+    required int rateInterest,
     required double time,
   }) async {
-    return (interest / (rateInterest * time));
+    return (interest / ((rateInterest / 100) * time));
   }
 
   @override
   Future<double> capitalWithAmount({
     required double amount,
-    required double rateInterest,
+    required int rateInterest,
     required double time,
   }) async {
-    return (amount / (1 + (rateInterest * time)));
+    return (amount / (1 + ((rateInterest / 100) * time)));
   }
 
   @override
   Future<double> finalAmount(
       {required double capital,
-      required double rateInterest,
+      required int rateInterest,
       required double time}) async {
     return capital + (capital * (rateInterest / 100) * (time / 360));
   }
@@ -38,10 +38,10 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> interest({
     required double capital,
-    required double rateInterest,
+    required int rateInterest,
     required double time,
   }) async {
-    return capital * rateInterest * time;
+    return capital * (rateInterest / 100) * time;
   }
 
   @override
@@ -74,17 +74,17 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   Future<double> time({
     required double capital,
     required double interest,
-    required double rateInterest,
+    required int rateInterest,
   }) async {
-    return (interest / (capital * rateInterest));
+    return (interest / (capital * (rateInterest / 100)));
   }
 
   @override
   Future<double> timeWithAmount({
     required double capital,
     required double amount,
-    required double rateInterest,
+    required int rateInterest,
   }) async {
-    return ((amount - capital) / (capital * rateInterest));
+    return ((amount - capital) / (capital * (rateInterest / 100)));
   }
 }
