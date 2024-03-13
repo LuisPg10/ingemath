@@ -1,6 +1,7 @@
 import 'package:ingemath/domain/datasources/datasources.dart';
 
 class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
+  //Calcular Capital, tasa de interes se recibe como % y el tiempo en días.
   @override
   Future<double> capital({
     required double interest,
@@ -19,6 +20,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     return (amount / (1 + ((rateInterest / 100) * (time / 360))));
   }
 
+  //Calcular Monto, tasa de interes se recibe como % y el tiempo en días.
   @override
   Future<double> finalAmount(
       {required double capital,
@@ -58,7 +60,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required double interest,
     required double time,
   }) async {
-    return (interest / (capital * (time / 360)));
+    return (interest / (capital * (time / 360))) * 100;
   }
 
   @override
