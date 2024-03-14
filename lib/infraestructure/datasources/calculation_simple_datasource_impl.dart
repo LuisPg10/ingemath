@@ -1,14 +1,14 @@
 import 'package:ingemath/domain/datasources/datasources.dart';
 
 class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
-  //Calcular Capital, tasa de interes se recibe como % y el tiempo en días.
+  //Calcular Capital, tasa de interes se recibe como % y el tiempo en Años.
   @override
   Future<double> capital({
     required double interest,
     required int rateInterest,
     required double time,
   }) async {
-    return (interest / ((rateInterest / 100) * (time / 360)));
+    return (interest / ((rateInterest / 100) * time));
   }
 
   @override
@@ -17,16 +17,16 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return (amount / (1 + ((rateInterest / 100) * (time / 360))));
+    return (amount / (1 + ((rateInterest / 100) * time)));
   }
 
-  //Calcular Monto, tasa de interes se recibe como % y el tiempo en días.
+  //Calcular Monto, tasa de interes se recibe como % y el tiempo en Años.
   @override
   Future<double> finalAmount(
       {required double capital,
       required int rateInterest,
       required double time}) async {
-    return capital * (1 + (rateInterest / 100) * (time / 360));
+    return capital * (1 + (rateInterest / 100) * time);
   }
 
   @override
@@ -37,13 +37,14 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     return capital + interest;
   }
 
+  //Calcular Interes, tasa de interes se recibe como % y el tiempo en Años.
   @override
   Future<double> interest({
     required double capital,
     required int rateInterest,
     required double time,
   }) async {
-    return capital * (rateInterest / 100) * (time / 360);
+    return capital * (rateInterest / 100) * time;
   }
 
   @override
@@ -54,13 +55,14 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     return amount - capital;
   }
 
+  //Calcular Tasa de Interest, tiempo se recibe en Años.
   @override
   Future<double> rateInterest({
     required double capital,
     required double interest,
     required double time,
   }) async {
-    return (interest / (capital * (time / 360))) * 100;
+    return (interest / (capital * time)) * 100;
   }
 
   @override
@@ -69,9 +71,10 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required double amount,
     required double time,
   }) async {
-    return ((amount - capital) / (capital * (time / 360)));
+    return ((amount - capital) / (capital * time));
   }
 
+  //Calcular Tiempo, tasa de interes se recibe como %
   @override
   Future<double> time({
     required double capital,
