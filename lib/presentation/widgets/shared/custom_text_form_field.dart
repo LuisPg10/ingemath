@@ -8,6 +8,9 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType keyBoardType;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final bool showIcon;
+  final IconData? icon;
+  final void Function()? onIconPressed;
 
   const CustomTextFormField({
     super.key,
@@ -18,6 +21,9 @@ class CustomTextFormField extends StatelessWidget {
     this.keyBoardType = TextInputType.number,
     this.onChanged,
     this.validator,
+    this.showIcon = false,
+    this.icon,
+    this.onIconPressed,
   });
 
   @override
@@ -39,6 +45,12 @@ class CustomTextFormField extends StatelessWidget {
         label: label != null ? Text(label!) : null,
         hintText: hint,
         errorText: errorMessage,
+        suffixIcon: showIcon
+            ? IconButton(
+                icon: Icon(icon),
+                onPressed: onIconPressed,
+              )
+            : null,
       ),
     );
   }

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
@@ -41,20 +43,17 @@ class _SimpleInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Text(
-              "Interés Simple",
-              style: GoogleFonts.montserrat().copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            const CustomOperationTitle(
+              title: "Interés Simple",
+              length: 220,
             ),
             const SizedBox(height: 20),
-            Concept(textStyles: textStyles),
+            DefinitionSimpleInterest(textStyles: textStyles),
 
             Text(
               "Calculadora de Interés Simple",
               style: GoogleFonts.montserrat().copyWith(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -82,7 +81,7 @@ class _SimpleInterestForm extends ConsumerWidget {
               "Completa la siguiente información:",
               style: GoogleFonts.montserrat().copyWith(
                 color: const Color(0xFFF13636),
-                fontSize: 17,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -141,6 +140,8 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
+              showIcon: true,
+              icon: Icons.calendar_today,
               enable: simpleInterestForm.variable != keyOptions[3],
               label: "Tiempo (Días)",
               onChanged: (value) {
@@ -152,6 +153,52 @@ class _SimpleInterestForm extends ConsumerWidget {
                       simpleInterestForm.variable != SimpleVariable.time
                   ? simpleInterestForm.time.errorMessage
                   : null,
+              onIconPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Establecer Tiempo"),
+                      content: Form(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextFormField(
+                              decoration:
+                                  const InputDecoration(labelText: 'Días'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              decoration:
+                                  const InputDecoration(labelText: 'Semanas'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              decoration:
+                                  const InputDecoration(labelText: 'Meses'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              decoration:
+                                  const InputDecoration(labelText: 'Años'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CustomFilledButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Establecer")),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
 
             const SizedBox(height: 30),
@@ -185,53 +232,6 @@ class _SimpleInterestForm extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class Concept extends StatelessWidget {
-  const Concept({
-    super.key,
-    required this.textStyles,
-  });
-
-  final TextTheme textStyles;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        RichText(
-          textAlign: TextAlign.justify,
-          text: TextSpan(
-            style: textStyles.bodySmall,
-            children: const <TextSpan>[
-              TextSpan(
-                text: 'El interés simple, es el que se cobra sobre el ',
-              ),
-              TextSpan(
-                text: 'capital (C) o Valor Presente (VP)',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: ' por un cierto ',
-              ),
-              TextSpan(
-                text: 'tiempo (t)',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: ', expresado en años (360 años).',
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        const Text("FORMULA:"),
-        const SizedBox(height: 5),
-        const Text("I = Cit "),
-        const SizedBox(height: 40),
-      ],
     );
   }
 }
