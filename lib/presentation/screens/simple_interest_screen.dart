@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -173,15 +171,9 @@ class _SimpleInterestForm extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextFormField(
-                              controller: daysController,
+                              controller: yearsController,
                               decoration:
-                                  const InputDecoration(labelText: 'Días'),
-                              keyboardType: TextInputType.number,
-                            ),
-                            TextFormField(
-                              controller: weeksController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Semanas'),
+                                  const InputDecoration(labelText: 'Años'),
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
@@ -191,9 +183,15 @@ class _SimpleInterestForm extends ConsumerWidget {
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
-                              controller: yearsController,
+                              controller: weeksController,
                               decoration:
-                                  const InputDecoration(labelText: 'Años'),
+                                  const InputDecoration(labelText: 'Semanas'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              controller: daysController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Días'),
                               keyboardType: TextInputType.number,
                             ),
                             const SizedBox(height: 20),
@@ -213,14 +211,12 @@ class _SimpleInterestForm extends ConsumerWidget {
                                       double.tryParse(yearsController.text) ??
                                           0;
 
-                                  // Convertir todo a años
                                   years += (days / 360);
                                   years += (weeks / 52);
                                   years += (months / 12);
 
                                   Navigator.of(context).pop();
 
-                                  // Actualizar el valor en el formulario principal
                                   ref
                                       .read(simpleFormProvider.notifier)
                                       .onTimeChanged(years);
@@ -260,8 +256,11 @@ class _SimpleInterestForm extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  Text("Resultado: ${simpleInterestForm.result}",
-                      style: const TextStyle(color: Colors.white)),
+                  Text(
+                    _getResultText(
+                        simpleInterestForm.variable, simpleInterestForm.result),
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ],
               ),
             ),
@@ -269,5 +268,22 @@ class _SimpleInterestForm extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+String _getResultText(SimpleVariable variable, double result) {
+  switch (variable) {
+    case SimpleVariable.amount:
+      return "El Monto obtenido es de: \$$result";
+    case SimpleVariable.capital:
+      return "El Capital obtenido es de: \$$result";
+    case SimpleVariable.interestRate:
+      return "La Tasa de Interés obtenida es de: $result%";
+    case SimpleVariable.time:
+      return "El Tiempo obtenido es de: $result";
+    case SimpleVariable.interest:
+      return "El Interés obtenido es de: \$$result";
+    default:
+      return "El resultado es: $result";
   }
 }

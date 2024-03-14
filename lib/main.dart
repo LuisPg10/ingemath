@@ -18,7 +18,4 @@ class MainApp extends StatelessWidget {
       routerConfig: appRouter,
     );
   }
-
-
-  
 }

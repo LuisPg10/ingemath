@@ -1,5 +1,19 @@
 import 'package:ingemath/domain/datasources/datasources.dart';
 
+class TimeResult {
+  final int years;
+  final int months;
+  final int weeks;
+  final int days;
+
+  TimeResult({
+    required this.years,
+    required this.months,
+    required this.weeks,
+    required this.days,
+  });
+}
+
 class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   //Calcular Capital, tasa de interes se recibe como % y el tiempo en Años.
   @override
@@ -8,7 +22,8 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return (interest / ((rateInterest / 100) * time));
+    double result = (interest / ((rateInterest / 100) * time));
+    return double.parse(result.toStringAsFixed(2));
   }
 
   @override
@@ -26,7 +41,8 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
       {required double capital,
       required int rateInterest,
       required double time}) async {
-    return capital * (1 + (rateInterest / 100) * time);
+    double result = capital * (1 + (rateInterest / 100) * time);
+    return double.parse(result.toStringAsFixed(2));
   }
 
   @override
@@ -44,7 +60,8 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required int rateInterest,
     required double time,
   }) async {
-    return capital * (rateInterest / 100) * time;
+    double result = capital * (rateInterest / 100) * time;
+    return double.parse(result.toStringAsFixed(2));
   }
 
   @override
@@ -62,7 +79,8 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     required double interest,
     required double time,
   }) async {
-    return (interest / (capital * time)) * 100;
+    double result = (interest / (capital * time)) * 100;
+    return double.parse(result.toStringAsFixed(2));
   }
 
   @override
