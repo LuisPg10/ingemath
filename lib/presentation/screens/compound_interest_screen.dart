@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
@@ -27,15 +28,13 @@ class CompoundInterestScreen extends StatelessWidget {
 }
 
 class _CompoundInterestForm extends ConsumerWidget {
-  
   const _CompoundInterestForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    final textStyles = Theme.of(context).textTheme;
     final compoundForm = ref.watch(compoundFormProvider);
     final keyOptions = compoundForm.menuOptions.keys.toList();
+    final textStyles = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.all(30),
@@ -57,23 +56,27 @@ class _CompoundInterestForm extends ConsumerWidget {
                     .onOptionsCompoundChanged(value!);
               },
               errorText: compoundForm.isFormPosted &&
-                      compoundForm.variable == CompoundInterestVariable.none
+                      compoundForm.variable == CompoundVariable.none
                   ? "Seleccione la variable a calcular"
                   : null,
             ),
             const SizedBox(height: 20),
             Text("Completa la siguiente información",
-                style: textStyles.bodyLarge),
+                style: GoogleFonts.montserrat().copyWith(
+                color: const Color(0xFFF13636),
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),),
             const SizedBox(height: 10),
 
             //Form
             CustomTextFormField(
-              enable: compoundForm.variable != keyOptions.first,
+              enable: compoundForm.variable != keyOptions[0],
               label: "Monto compuesto",
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
-                    .onOptionsAmountCompoundChanged(double.tryParse(value) ?? 0);
+                    .onAmountChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
                       compoundForm.variable != keyOptions.first
@@ -88,10 +91,10 @@ class _CompoundInterestForm extends ConsumerWidget {
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
-                    .onCapitalCompoundChanged(double.tryParse(value) ?? 0);
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.variable != keyOptions[1]
+                      compoundForm.variable != CompoundVariable.capital
                   ? compoundForm.capital.errorMessage
                   : null,
             ),
@@ -103,21 +106,39 @@ class _CompoundInterestForm extends ConsumerWidget {
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
-                    .onInteresRateCompoundChanged(int.tryParse(value) ?? 0);
+                    .onInterestRateChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
                       compoundForm.variable != keyOptions[2]
                   ? compoundForm.capInterestRate.errorMessage
                   : null,
             ),
+            const SizedBox(height: 20),
+            Text("Seleccione Capitalizacion",
+                style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
+            CustomDropDownMenu(
+              hintText: "Seleccionar ",
+              options: compoundForm.menuOptionsCap,
+              onSelected: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onOptionsCapitalizationChanged(value!);
+              },
+              errorText: compoundForm.isFormPosted &&
+                      compoundForm.variable == CompoundVariable.none
+                  ? "Seleccione Capitalizacion"
+                  : null,
+            ),
             const SizedBox(height: 15),
             CustomTextFormField(
               enable: compoundForm.variable != keyOptions.last,
-              label: "Tiempo o periodo",
+              label: "Tiempo",
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
-                    .onTimeCompoundChanged(double.tryParse(value) ?? 0);
+                    .onTimeChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
                       compoundForm.variable != keyOptions.last
@@ -133,7 +154,7 @@ class _CompoundInterestForm extends ConsumerWidget {
                 child: const Text("Calcular"),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 15),
             Container(
               padding: const EdgeInsets.all(10),
               width: double.infinity - 30,

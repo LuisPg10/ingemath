@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/domain/entities/capitalization.dart';
+
 
 final compoundFormProvider =
-    StateNotifierProvider.autoDispose<CompoundFormNotifier, CompoundFormState>(
+    StateNotifierProvider.autoDispose<CompoundFormNotifier, CompoundFromState>(
         (ref) {
   final compoundInterestRepository = ref.watch(compoundRepositorytProvider);
 
@@ -13,83 +15,111 @@ final compoundFormProvider =
   );
 });
 
-enum CompoundInterestVariable { none, amount, capital, capInterestRate, time }
+enum CompoundVariable { none, amount, capital, interestRate, time }
 
-class CompoundFormState {
-  final menuOptions = const <CompoundInterestVariable, String>{
-    CompoundInterestVariable.amount: "Monto compuesto",
-    CompoundInterestVariable.capital: "Capital compuesto",
-    CompoundInterestVariable.capInterestRate: "Tasa de interés",
-    CompoundInterestVariable.time: "Tiempo compuesto",
+
+class CompoundFromState {
+
+  final CapitalizationPeriod capitalizationPeriod;
+
+  final menuOptions = const <CompoundVariable, String>{
+    CompoundVariable.amount: "Monto",
+    CompoundVariable.capital: "Capital",
+    CompoundVariable.interestRate: "Tasa de Interés",
+    CompoundVariable.time: "Tiempo",
+  };
+  final menuOptionsCap = const <CapitalizationPeriod, String>{
+    CapitalizationPeriod.diario: "Diario",
+    CapitalizationPeriod.semanal: "Semanal",
+    CapitalizationPeriod.mensual: "Mensual",
+    CapitalizationPeriod.trimestral: "Trimestral",
+    CapitalizationPeriod.cuatrimestral: "Cuatrimestral",
+    CapitalizationPeriod.semestral: "Semestral",
+    CapitalizationPeriod.anual: "Anual",
   };
 
   final bool isFormPosted;
   final bool isValid;
-  final CompoundInterestVariable variable;
+  final CompoundVariable variable;
   final DataNumber amount;
   final DataNumber capital;
-  final InterestRate capInterestRate;
+  final DataNumber capInterestRate;
   final DataNumber time;
   final double result;
 
-  CompoundFormState({
+  CompoundFromState({
     this.isFormPosted = false,
     this.isValid = false,
-    this.variable = CompoundInterestVariable.none,
+    this.variable = CompoundVariable.none,
     this.amount = const DataNumber.pure(),
     this.capital = const DataNumber.pure(),
-    this.capInterestRate = const InterestRate.pure(),
+    this.capInterestRate = const DataNumber.pure(),
+    this.capitalizationPeriod = CapitalizationPeriod.none,
     this.time = const DataNumber.pure(),
     this.result = 0,
   });
 
-  CompoundFormState copyWith({
+  CompoundFromState copyWith({
     bool? isFormPosted,
     bool? isValid,
-    CompoundInterestVariable? variable,
+    CompoundVariable? variable,
     DataNumber? amount,
     DataNumber? capital,
-    InterestRate? capInterestRate,
+    DataNumber? capInterestRate,
+    CapitalizationPeriod? capitalizationPeriod,
     DataNumber? time,
     double? result,
   }) =>
-      CompoundFormState(
+      CompoundFromState(
         isFormPosted: isFormPosted ?? this.isFormPosted,
         isValid: isValid ?? this.isValid,
         variable: variable ?? this.variable,
         amount: amount ?? this.amount,
         capital: capital ?? this.capital,
         capInterestRate: capInterestRate ?? this.capInterestRate,
+        capitalizationPeriod: capitalizationPeriod ?? this.capitalizationPeriod,
         time: time ?? this.time,
         result: result ?? this.result,
       );
 }
 
-class CompoundFormNotifier extends StateNotifier<CompoundFormState> {
+class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
   CalculationCompoundRepositoryImpl repository;
 
   CompoundFormNotifier({
     required this.repository,
-  }) : super(CompoundFormState());
+  }) : super(CompoundFromState());
 
-  void onOptionsCompoundChanged(CompoundInterestVariable value) {
+  void onOptionsCompoundChanged(CompoundVariable value) {
     state = state.copyWith(variable: value);
   }
 
-  void onOptionsAmountCompoundChanged(double value) {
-    state = state.copyWith(amount: DataNumber.dirty(value));
+  void onAmountChanged(double value) {
+    state = state.copyWith(
+      amount: DataNumber.dirty(value),
+    );
   }
 
-  void onCapitalCompoundChanged(double value) {
-    state = state.copyWith(capital: DataNumber.dirty(value));
+  void onCapitalChanged(double value) {
+    state = state.copyWith(
+      capital: DataNumber.dirty(value),
+    );
   }
 
-  void onInteresRateCompoundChanged(int value) {
-    state = state.copyWith(capInterestRate: InterestRate.dirty(value));
+  void onInterestRateChanged(double value) {
+    state = state.copyWith(
+      capInterestRate: DataNumber.dirty(value),
+    );
+  }
+  // capitalizacion
+  void onOptionsCapitalizationChanged(CapitalizationPeriod value) {
+    state = state.copyWith(capitalizationPeriod: value);
   }
 
-  void onTimeCompoundChanged(double value) {
-    state = state.copyWith(time: DataNumber.dirty(value),);
+  void onTimeChanged(double value) {
+    state = state.copyWith(
+      time: DataNumber.dirty(value),
+    );
   }
 
   void calculate() async {
@@ -98,32 +128,36 @@ class CompoundFormNotifier extends StateNotifier<CompoundFormState> {
     if (!state.isValid) return;
 
     double result = 0;
-    switch (state.variable) {
-      case CompoundInterestVariable.amount:
+    switch (state.variable ) {
+      case CompoundVariable.amount:
         result = await repository.calculateAmountComp(
             capital: state.capital.value,
             capInterestRate: state.capInterestRate.value,
-            time: state.time.value);
-        break;
-        
-      case CompoundInterestVariable.capital:
-        result = await repository.calculateCapitalComp(
-            amount: state.amount.value,
-            capInterestRate: state.capInterestRate.value,
+            capitalizationPeriod: state.capitalizationPeriod,
             time: state.time.value);
         break;
 
-      case CompoundInterestVariable.capInterestRate:
-        result = await repository.calculateInterestRate(
+      case CompoundVariable.capital:
+        result = await repository.calculateCapitalComp(
             amount: state.amount.value,
-            capital: state.capital.value,
+            capInterestRate: state.capInterestRate.value,
+            capitalizationPeriod: state.capitalizationPeriod,
             time: state.time.value);
         break;
-      case CompoundInterestVariable.time:
-        result = await repository.calculateTimeComp(
-            amount: state.amount.value,
+
+      case CompoundVariable.interestRate:
+        result = await repository.calculateInterestRate(
             capital: state.capital.value,
-            capInterestRate: state.capInterestRate.value);
+            amount: state.amount.value,
+            time: state.time.value);
+        break;
+
+      case CompoundVariable.time:
+        result = await repository.calculateTimeComp(
+            capital: state.capital.value,
+            capInterestRate: state.capInterestRate.value,
+            capitalizationPeriod: state.capitalizationPeriod,
+            amount: state.amount.value);
         break;
       default:
         break;
@@ -136,17 +170,16 @@ class CompoundFormNotifier extends StateNotifier<CompoundFormState> {
       isFormPosted: true,
       amount: DataNumber.dirty(state.amount.value),
       capital: DataNumber.dirty(state.capital.value),
-      capInterestRate: InterestRate.dirty(state.capInterestRate.value),
+      capInterestRate: DataNumber.dirty(state.capInterestRate.value),
       time: DataNumber.dirty(state.time.value),
-
-      isValid: state.variable != CompoundInterestVariable.none && Formz.validate([
-        if(state.variable != CompoundInterestVariable.amount) state.amount,
-        if(state.variable != CompoundInterestVariable.capital) state.amount,
-        if(state.variable != CompoundInterestVariable.capInterestRate) state.amount,
-        if(state.variable != CompoundInterestVariable.time) state.amount,
-        
-
-      ])
+      isValid: state.variable != CompoundVariable.none &&
+          Formz.validate([
+            if (state.variable != CompoundVariable.capital) state.capital,
+            if (state.variable != CompoundVariable.interestRate)
+              state.capInterestRate,
+            if (state.variable != CompoundVariable.time) state.time,
+            if (state.variable != CompoundVariable.amount) state.amount,
+          ]),
     );
   }
 }

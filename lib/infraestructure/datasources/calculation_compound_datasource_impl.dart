@@ -6,46 +6,132 @@ class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   @override
   Future<double> calculateAmountComp(
       {required double capital,
-      required int capInterestRate,
+      required double capInterestRate,
+      required CapitalizationPeriod capitalizationPeriod,
       required double time}) async {
+    
+    double effectiveInterestRate;
+    int periodsPerYear;
 
-    // double amountResult = 
-    // final result = amountResult;
-    return capital * (pow(1 + capInterestRate.toDouble(), time));
+    switch (capitalizationPeriod) {
+      case CapitalizationPeriod.diario:
+        periodsPerYear = 365; 
+        break;
+      case CapitalizationPeriod.semanal:
+        periodsPerYear = 52; 
+        break;
+      case CapitalizationPeriod.mensual:
+        periodsPerYear = 12; 
+        break;
+      case CapitalizationPeriod.trimestral:
+        periodsPerYear = 4; 
+        break;
+      case CapitalizationPeriod.cuatrimestral:
+        periodsPerYear = 3; 
+        break;
+      case CapitalizationPeriod.semestral:
+        periodsPerYear = 2; 
+        break;
+      case CapitalizationPeriod.anual:
+      default:
+        periodsPerYear = 1; 
+    }
+
+    effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
+    double amountResult =
+        capital * (pow(1 + effectiveInterestRate, (time)));
+    final result = amountResult;
+    return result;
   }
 
   @override
   Future<double> calculateCapitalComp(
       {required double amount,
-      required int capInterestRate,
-      required double time
-    }) async {
-      double capitalResult = amount * (pow(1 + capInterestRate.toDouble(), time));
-      final result = double.parse(capitalResult.toStringAsFixed(3));  
-      return result;
+      required double capInterestRate,
+      required CapitalizationPeriod capitalizationPeriod,
+      required double time}) async {
+      double effectiveInterestRate;
+    int periodsPerYear;
+
+    switch (capitalizationPeriod) {
+      case CapitalizationPeriod.diario:
+        periodsPerYear = 365; 
+        break;
+      case CapitalizationPeriod.semanal:
+        periodsPerYear = 52; 
+        break;
+      case CapitalizationPeriod.mensual:
+        periodsPerYear = 12; 
+        break;
+      case CapitalizationPeriod.trimestral:
+        periodsPerYear = 4; 
+        break;
+      case CapitalizationPeriod.cuatrimestral:
+        periodsPerYear = 3; 
+        break;
+      case CapitalizationPeriod.semestral:
+        periodsPerYear = 2; 
+        break;
+      case CapitalizationPeriod.anual:
+      default:
+        periodsPerYear = 1; 
+    }
+
+    effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
+    double capitalResult =
+        amount / (pow(1 + effectiveInterestRate, (time)));
+    final result = double.parse(capitalResult.toStringAsFixed(3));
+    return result;
   }
 
   @override
   Future<double> calculateInterestRate(
-      {required double amount, 
-      required double capital, 
-      required double time
-      }) async {
-      
-      double capitalResult = (pow(amount/capital, 1/(time-1)).toDouble());
-      final result = double.parse(capitalResult.toStringAsFixed(3));  
-      return result;
+      {required double amount,
+      required double capital,
+      required double time}) async {
+    double capitalResult =
+        (pow(amount / capital, 1 / ((time * 12) - 1)).toDouble());
+    final result = double.parse(capitalResult.toStringAsFixed(3));
+    return result;
   }
 
   @override
   Future<double> calculateTimeComp(
       {required double amount,
       required double capital,
-      required int capInterestRate
-      }) async {
+      required double capInterestRate,
+      required CapitalizationPeriod capitalizationPeriod}) async {
+          double effectiveInterestRate;
+    int periodsPerYear;
 
-      double timeResult = (log(amount)-log(capital) / log( 1 + capInterestRate.toDouble()));
-      final result = double.parse(timeResult.toStringAsFixed(3));  
-      return result;
+    switch (capitalizationPeriod) {
+      case CapitalizationPeriod.diario:
+        periodsPerYear = 365; 
+        break;
+      case CapitalizationPeriod.semanal:
+        periodsPerYear = 52; 
+        break;
+      case CapitalizationPeriod.mensual:
+        periodsPerYear = 12; 
+        break;
+      case CapitalizationPeriod.trimestral:
+        periodsPerYear = 4; 
+        break;
+      case CapitalizationPeriod.cuatrimestral:
+        periodsPerYear = 3; 
+        break;
+      case CapitalizationPeriod.semestral:
+        periodsPerYear = 2; 
+        break;
+      case CapitalizationPeriod.anual:
+      default:
+        periodsPerYear = 1; 
+    }
+
+    effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
+    double timeResult =
+        ((log(amount) - log(capital)) / log(1 + (effectiveInterestRate)));
+    final result = double.parse(timeResult.toStringAsFixed(3));
+    return result;
   }
 }

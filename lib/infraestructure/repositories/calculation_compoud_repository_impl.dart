@@ -2,20 +2,26 @@ import 'package:ingemath/domain/domain.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 
 class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
+
   final CalculationCompoundDatasource datasource;
 
-  CalculationCompoundRepositoryImpl({CalculationCompoundDatasource? datasource})
-      : datasource = datasource ?? CalculationCompoundDatasourceImpl();
+  CalculationCompoundRepositoryImpl(
+    {CalculationCompoundDatasource? datasource}
+    ): datasource = datasource ?? CalculationCompoundDatasourceImpl();
+
+    
 
   @override
   Future<double> calculateAmountComp({
     required double capital,
-    required int capInterestRate,
+    required double capInterestRate,
+    required CapitalizationPeriod capitalizationPeriod,
     required double time
   }) {
     return datasource.calculateAmountComp(
       capital: capital, 
       capInterestRate: capInterestRate, 
+      capitalizationPeriod: capitalizationPeriod,
       time: time
     );
   }
@@ -23,12 +29,14 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   @override
   Future<double> calculateCapitalComp({
     required double amount,
-    required int capInterestRate,
+    required double capInterestRate,
+    required CapitalizationPeriod capitalizationPeriod,
     required double time
   }) {
     return datasource.calculateCapitalComp(
       amount: amount, 
       capInterestRate: capInterestRate, 
+      capitalizationPeriod: capitalizationPeriod,
       time: time
       );
   }
@@ -50,12 +58,16 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   Future<double> calculateTimeComp({
     required double amount,
     required double capital,
-    required int capInterestRate
+    required double capInterestRate,
+    required CapitalizationPeriod capitalizationPeriod,
   }) {
     return datasource.calculateTimeComp(
       amount: amount,  
       capital: capital, 
-      capInterestRate: capInterestRate
+      capInterestRate: capInterestRate,
+      capitalizationPeriod: capitalizationPeriod,
     );
   }
+  
+  
 }
