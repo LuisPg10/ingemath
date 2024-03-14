@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
@@ -10,7 +11,7 @@ class SimpleInterestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Interés simple"),
+        title: const Text("Interés Simple"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -36,11 +37,31 @@ class _SimpleInterestForm extends ConsumerWidget {
     final textStyles = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Text(
+              "Interés Simple",
+              style: GoogleFonts.montserrat().copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Concept(textStyles: textStyles),
+
+            Text(
+              "Calculadora de Interés Simple",
+              style: GoogleFonts.montserrat().copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
             Text("Selecciona Variable a Calcular", style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
 
             CustomDropDownMenu(
               hintText: "Seleccionar",
@@ -56,10 +77,17 @@ class _SimpleInterestForm extends ConsumerWidget {
                   : null,
             ),
 
-            const SizedBox(height: 40),
-            Text("Completa la siguiente información",
-                style: textStyles.bodyLarge),
             const SizedBox(height: 30),
+            Text(
+              "Completa la siguiente información:",
+              style: GoogleFonts.montserrat().copyWith(
+                color: const Color(0xFFF13636),
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 15),
 
             //FORM
             CustomTextFormField(
@@ -157,6 +185,53 @@ class _SimpleInterestForm extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Concept extends StatelessWidget {
+  const Concept({
+    super.key,
+    required this.textStyles,
+  });
+
+  final TextTheme textStyles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        RichText(
+          textAlign: TextAlign.justify,
+          text: TextSpan(
+            style: textStyles.bodySmall,
+            children: const <TextSpan>[
+              TextSpan(
+                text: 'El interés simple, es el que se cobra sobre el ',
+              ),
+              TextSpan(
+                text: 'capital (C) o Valor Presente (VP)',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: ' por un cierto ',
+              ),
+              TextSpan(
+                text: 'tiempo (t)',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: ', expresado en años (360 años).',
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Text("FORMULA:"),
+        const SizedBox(height: 5),
+        const Text("I = Cit "),
+        const SizedBox(height: 40),
+      ],
     );
   }
 }

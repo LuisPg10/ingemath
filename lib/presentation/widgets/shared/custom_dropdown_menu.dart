@@ -26,12 +26,12 @@ class CustomDropDownMenu extends StatelessWidget {
         errorBorder: _customBorder(color: Colors.red.shade800),
         isDense: true,
       ),
-      dropdownMenuEntries: options.entries.map(
-        (option) => DropdownMenuEntry(
-          value: option.key,
-          label: option.value,
-        )
-      ).toList(),
+      dropdownMenuEntries: options.entries
+          .map((option) => DropdownMenuEntry(
+                value: option.key,
+                label: option.value,
+              ))
+          .toList(),
       onSelected: onSelected,
     );
   }
