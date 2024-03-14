@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+// Importa los widgets y providers necesarios
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
@@ -143,12 +145,10 @@ class _SimpleInterestForm extends ConsumerWidget {
               showIcon: true,
               icon: Icons.calendar_today,
               enable: simpleInterestForm.variable != keyOptions[3],
-              label: "Tiempo (Días)",
-              onChanged: (value) {
-                ref
-                    .read(simpleFormProvider.notifier)
-                    .onTimeChanged(double.tryParse(value) ?? 0);
-              },
+              label: "Tiempo (Años)",
+              controller: TextEditingController(
+                text: simpleInterestForm.time.value.toStringAsFixed(3),
+              ),
               errorMessage: simpleInterestForm.isFormPosted &&
                       simpleInterestForm.variable != SimpleVariable.time
                   ? simpleInterestForm.time.errorMessage
@@ -157,6 +157,15 @@ class _SimpleInterestForm extends ConsumerWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
+                    TextEditingController daysController =
+                        TextEditingController();
+                    TextEditingController weeksController =
+                        TextEditingController();
+                    TextEditingController monthsController =
+                        TextEditingController();
+                    TextEditingController yearsController =
+                        TextEditingController();
+
                     return AlertDialog(
                       title: const Text("Establecer Tiempo"),
                       content: Form(
@@ -164,21 +173,25 @@ class _SimpleInterestForm extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextFormField(
+                              controller: daysController,
                               decoration:
                                   const InputDecoration(labelText: 'Días'),
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
+                              controller: weeksController,
                               decoration:
                                   const InputDecoration(labelText: 'Semanas'),
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
+                              controller: monthsController,
                               decoration:
                                   const InputDecoration(labelText: 'Meses'),
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
+                              controller: yearsController,
                               decoration:
                                   const InputDecoration(labelText: 'Años'),
                               keyboardType: TextInputType.number,
@@ -187,10 +200,33 @@ class _SimpleInterestForm extends ConsumerWidget {
                             SizedBox(
                               width: double.infinity,
                               child: CustomFilledButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Establecer")),
+                                onPressed: () {
+                                  double days =
+                                      double.tryParse(daysController.text) ?? 0;
+                                  double weeks =
+                                      double.tryParse(weeksController.text) ??
+                                          0;
+                                  double months =
+                                      double.tryParse(monthsController.text) ??
+                                          0;
+                                  double years =
+                                      double.tryParse(yearsController.text) ??
+                                          0;
+
+                                  // Convertir todo a años
+                                  years += (days / 360);
+                                  years += (weeks / 52);
+                                  years += (months / 12);
+
+                                  Navigator.of(context).pop();
+
+                                  // Actualizar el valor en el formulario principal
+                                  ref
+                                      .read(simpleFormProvider.notifier)
+                                      .onTimeChanged(years);
+                                },
+                                child: const Text("Establecer"),
+                              ),
                             ),
                           ],
                         ),

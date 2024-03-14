@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorMessage;
   final bool? enable;
   final TextInputType keyBoardType;
+  final TextEditingController? controller;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final bool showIcon;
@@ -19,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.errorMessage,
     this.enable,
     this.keyBoardType = TextInputType.number,
+    this.controller,
     this.onChanged,
     this.validator,
     this.showIcon = false,
@@ -31,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return TextFormField(
+      controller: controller,
       enabled: enable,
       onChanged: onChanged,
       validator: validator,
