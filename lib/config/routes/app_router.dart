@@ -25,6 +25,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: "compound_interest",
           builder: (context, state) => const CompoundInterestScreen(),
+        ),
+        GoRoute(
+          path: "interest_rate",
+          builder: (context, state) => const InterestRateScreen(),
         )
       ]
     ),

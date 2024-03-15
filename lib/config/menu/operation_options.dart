@@ -16,14 +16,22 @@ const appMenuOptions = <Option>[
     icon: "assets/images/simple-interest.png",
     link: "simple_interest",
   ),
+
   Option(
-    name: "    Interés\ncompuesto",
+    name: "Interé compuesto",
     icon: "assets/images/compound-interest.png",
     link: "compound_interest",
   ),
+
+  // Option(
+  //  name: "Anualidades",
+  //  icon: "assets/images/annuities.png",
+  //  link: "annuities",
+  // ),
+  
   Option(
-    name: "Anualidades",
-    icon: "assets/images/annuities.png",
-    link: "annuities",
+    name: "Tasa de interés",
+    icon: "assets/images/interest_rate.png",
+    link: "interest_rate",
   ),
 ];
