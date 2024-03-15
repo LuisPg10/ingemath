@@ -167,11 +167,15 @@ class _SimpleInterestForm extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  Text(
-                    _getResultText(
-                        simpleInterestForm.variable, simpleInterestForm.result),
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  const Text("RESULTADO:",
+                      style: TextStyle(color: Colors.white)),
+                  const SizedBox(height: 6),
+                  if (simpleInterestForm.isFormPosted)
+                    Text(
+                      _getResultText(simpleInterestForm.variable,
+                          simpleInterestForm.result),
+                      style: const TextStyle(color: Colors.white),
+                    ),
                 ],
               ),
             ),
@@ -195,6 +199,6 @@ String _getResultText(SimpleVariable variable, String result) {
     case SimpleVariable.interest:
       return "El Interés obtenido es de: \$$result";
     default:
-      return "El resultado es: $result";
+      return "";
   }
 }
