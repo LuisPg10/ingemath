@@ -18,7 +18,6 @@ class CustomTimeFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextFormField(
-      showIcon: true,
       icon: Icons.calendar_today,
       enable: simpleInterestForm.variable != keyOptions[3],
       label: "Tiempo en Años",
@@ -29,7 +28,7 @@ class CustomTimeFormField extends StatelessWidget {
               simpleInterestForm.variable != SimpleVariable.time
           ? simpleInterestForm.time.errorMessage
           : null,
-      onIconPressed: () {
+      suffixIconPressed: () {
         showDialog(
           context: context,
           builder: (BuildContext context) {
