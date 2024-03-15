@@ -75,6 +75,29 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
   void onOptionsSimpleChanged(SimpleVariable value) {
     state = state.copyWith(variable: value);
+    clearFieldsAndResult();
+  }
+
+  void clearFieldsAndResult() {
+    clearFields();
+    clearResult();
+  }
+
+  void clearFields() {
+    state = state.copyWith(
+      capital: const DataNumber.pure(),
+      rateInterest: const InterestRate.pure(),
+      time: const DataNumber.pure(),
+      interest: const DataNumber.pure(),
+    );
+  }
+
+  void clearResult() {
+    state = state.copyWith(
+      result: "",
+      isFormPosted: false,
+      isValid: false,
+    );
   }
 
   void onCapitalChanged(double value) {
