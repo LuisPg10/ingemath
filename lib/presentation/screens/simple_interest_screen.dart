@@ -182,7 +182,7 @@ class _SimpleInterestForm extends ConsumerWidget {
   }
 }
 
-String _getResultText(SimpleVariable variable, double result) {
+String _getResultText(SimpleVariable variable, String result) {
   switch (variable) {
     case SimpleVariable.amount:
       return "El Monto obtenido es de: \$$result";

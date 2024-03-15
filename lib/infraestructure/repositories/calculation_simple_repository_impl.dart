@@ -108,7 +108,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   }
 
   @override
-  Future<double> time(
+  Future<String> time(
       {required double capital,
       required double interest,
       required int rateInterest}) {

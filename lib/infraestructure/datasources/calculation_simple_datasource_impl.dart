@@ -92,14 +92,44 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     return ((amount - capital) / (capital * time));
   }
 
-  //Calcular Tiempo, tasa de interes se recibe como %
   @override
-  Future<double> time({
+  Future<String> time({
     required double capital,
     required double interest,
     required int rateInterest,
   }) async {
-    return (interest / (capital * (rateInterest / 100)));
+    // Calcular el tiempo en años
+    double timeInYears = interest / (capital * (rateInterest / 100));
+
+    // Parte entera del tiempo en años
+    int years = timeInYears.toInt();
+
+    // Calcular el remanente para meses
+    double remainingMonths = (timeInYears - years) * 12;
+
+    // Parte entera del tiempo en meses
+    int months = remainingMonths.toInt();
+
+    // Calcular el remanente para días
+    double remainingDays =
+        (remainingMonths - months) * 31; // Promedio de días en un mes
+
+    // Parte entera del tiempo en días
+    int days = remainingDays.toInt();
+
+    // Validar singular o plural para años
+    String yearsText = years == 1 ? 'año' : 'años';
+
+    // Validar singular o plural para meses
+    String monthsText = months == 1 ? 'mes' : 'meses';
+
+    // Validar singular o plural para días
+    String daysText = days == 1 ? 'día' : 'días';
+
+    // Crear la cadena de resultado
+    String result = '$years $yearsText, $months $monthsText y $days $daysText.';
+
+    return result;
   }
 
   @override
