@@ -131,9 +131,13 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTimeFormField(
-              simpleInterestForm: simpleInterestForm,
-              keyOptions: keyOptions,
-              ref: ref,
+              enable: simpleInterestForm.variable != keyOptions[3],
+              text: simpleInterestForm.time.value.toStringAsFixed(3),
+              setTime: ref.read(simpleFormProvider.notifier).onTimeChanged,
+              errorMessage: simpleInterestForm.isFormPosted &&
+              simpleInterestForm.variable != SimpleVariable.time
+              ? simpleInterestForm.time.errorMessage
+              : null,
             ),
 
             const SizedBox(height: 30),
