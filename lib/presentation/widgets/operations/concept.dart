@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-class DefinitionSimpleInterest extends StatelessWidget {
-  const DefinitionSimpleInterest({
+class Concept extends StatelessWidget {
+  const Concept({
     super.key,
-    required this.textStyles,
   });
-
-  final TextTheme textStyles;
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+    
     return Column(
       children: [
         RichText(
@@ -37,11 +36,10 @@ class DefinitionSimpleInterest extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 30),
         const Text("FORMULA:"),
         const SizedBox(height: 5),
         const Text("I = Cit "),
-        const SizedBox(height: 40),
       ],
     );
   }

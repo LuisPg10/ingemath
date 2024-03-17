@@ -31,7 +31,7 @@ class SimpleFormState {
   final InterestRate rateInterest;
   final DataNumber time;
   final DataNumber interest;
-  final double result;
+  final String result;
 
   SimpleFormState({
     this.isFormPosted = false,
@@ -41,7 +41,7 @@ class SimpleFormState {
     this.rateInterest = const InterestRate.pure(),
     this.time = const DataNumber.pure(),
     this.interest = const DataNumber.pure(),
-    this.result = 0,
+    this.result = "",
   });
 
   SimpleFormState copyWith({
@@ -52,7 +52,7 @@ class SimpleFormState {
     InterestRate? rateInterest,
     DataNumber? time,
     DataNumber? interest,
-    double? result,
+    String? result,
   }) =>
       SimpleFormState(
         isFormPosted: isFormPosted ?? this.isFormPosted,
@@ -75,6 +75,29 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
   void onOptionsSimpleChanged(SimpleVariable value) {
     state = state.copyWith(variable: value);
+    clearFieldsAndResult();
+  }
+
+  void clearFieldsAndResult() {
+    clearFields();
+    clearResult();
+  }
+
+  void clearFields() {
+    state = state.copyWith(
+      capital: const DataNumber.pure(),
+      rateInterest: const InterestRate.pure(),
+      time: const DataNumber.pure(),
+      interest: const DataNumber.pure(),
+    );
+  }
+
+  void clearResult() {
+    state = state.copyWith(
+      result: "",
+      isFormPosted: false,
+      isValid: false,
+    );
   }
 
   void onCapitalChanged(double value) {
@@ -106,27 +129,31 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
     if (!state.isValid) return;
 
-    double result = 0;
+    String result = "";
     switch (state.variable) {
       case SimpleVariable.amount:
-        result = await repository.finalAmount(
-            capital: state.capital.value,
-            rateInterest: state.rateInterest.value,
-            time: state.time.value);
+        double amount = await repository.finalAmount(
+          capital: state.capital.value,
+          rateInterest: state.rateInterest.value,
+          time: state.time.value,
+        );
+        result = amount.toString();
         break;
 
       case SimpleVariable.capital:
-        result = await repository.capital(
+        double capital = await repository.capital(
             interest: state.interest.value,
             rateInterest: state.rateInterest.value,
             time: state.time.value);
+        result = capital.toString();
         break;
 
       case SimpleVariable.interestRate:
-        result = await repository.rateInterest(
+        double interestRate = await repository.rateInterest(
             capital: state.capital.value,
             interest: state.interest.value,
             time: state.time.value);
+        result = interestRate.toString();
         break;
 
       case SimpleVariable.time:
@@ -137,10 +164,11 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
         break;
 
       case SimpleVariable.interest:
-        result = await repository.interest(
+        double interest = await repository.interest(
             capital: state.capital.value,
             rateInterest: state.rateInterest.value,
             time: state.time.value);
+        result = interest.toString();
         break;
       default:
         break;

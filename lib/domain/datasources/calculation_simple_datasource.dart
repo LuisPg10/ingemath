@@ -34,7 +34,7 @@ abstract class CalculationSimpleDatasource {
     required double time,
   });
 
-  Future<double> time({
+  Future<String> time({
     required double capital,
     required double interest,
     required int rateInterest,
