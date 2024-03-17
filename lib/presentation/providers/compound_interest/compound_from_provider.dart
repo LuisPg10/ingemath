@@ -4,7 +4,6 @@ import 'package:ingemath/infraestructure/infraestructure.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/domain/entities/capitalization.dart';
 
-
 final compoundFormProvider =
     StateNotifierProvider.autoDispose<CompoundFormNotifier, CompoundFromState>(
         (ref) {
@@ -15,17 +14,26 @@ final compoundFormProvider =
   );
 });
 
-enum CompoundVariable { none, amount, capital, interestRate, time }
+enum CompoundVariable { none, amount, capital, interestRate, interestRate2, time }
 
+enum TimeCompoundVariable {
+  none,
+  diario,
+  mensual,
+  semestral,
+  trimestral,
+  bimestral,
+  anual
+}
 
 class CompoundFromState {
-
   final CapitalizationPeriod capitalizationPeriod;
 
   final menuOptions = const <CompoundVariable, String>{
     CompoundVariable.amount: "Monto",
     CompoundVariable.capital: "Capital",
-    CompoundVariable.interestRate: "Tasa de Interés",
+    CompoundVariable.interestRate: "Tasa de Interés (1)",
+    CompoundVariable.interestRate2: "Tasa de Interés (2)",
     CompoundVariable.time: "Tiempo",
   };
   final menuOptionsCap = const <CapitalizationPeriod, String>{
@@ -37,6 +45,7 @@ class CompoundFromState {
     CapitalizationPeriod.semestral: "Semestral",
     CapitalizationPeriod.anual: "Anual",
   };
+  // Tiempo
 
   final bool isFormPosted;
   final bool isValid;
@@ -111,6 +120,11 @@ class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
       capInterestRate: DataNumber.dirty(value),
     );
   }
+void onInterestRate2Changed(double value) {
+    state = state.copyWith(
+      capInterestRate: DataNumber.dirty(value),
+    );
+  }
   // capitalizacion
   void onOptionsCapitalizationChanged(CapitalizationPeriod value) {
     state = state.copyWith(capitalizationPeriod: value);
@@ -128,7 +142,7 @@ class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
     if (!state.isValid) return;
 
     double result = 0;
-    switch (state.variable ) {
+    switch (state.variable) {
       case CompoundVariable.amount:
         result = await repository.calculateAmountComp(
             capital: state.capital.value,
@@ -149,9 +163,14 @@ class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
         result = await repository.calculateInterestRate(
             capital: state.capital.value,
             amount: state.amount.value,
+            capitalizationPeriod: state.capitalizationPeriod,
             time: state.time.value);
         break;
-
+      case CompoundVariable.interestRate2:
+        result = await repository.calculateInterestRate2(
+            capital: state.capital.value,
+            amount: state.amount.value,);
+        break;
       case CompoundVariable.time:
         result = await repository.calculateTimeComp(
             capital: state.capital.value,
@@ -175,9 +194,11 @@ class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
       isValid: state.variable != CompoundVariable.none &&
           Formz.validate([
             if (state.variable != CompoundVariable.capital) state.capital,
-            if (state.variable != CompoundVariable.interestRate)
+            if (state.variable != CompoundVariable.interestRate && 
+            state.variable != CompoundVariable.interestRate2)
               state.capInterestRate,
-            if (state.variable != CompoundVariable.time) state.time,
+            if (state.variable != CompoundVariable.time && 
+            state.variable != CompoundVariable.interestRate2) state.time,
             if (state.variable != CompoundVariable.amount) state.amount,
           ]),
     );

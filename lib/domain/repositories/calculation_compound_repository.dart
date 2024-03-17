@@ -14,8 +14,12 @@ abstract class CalculationCompoundRepository {
     required double amount,
     required double capital,
     required double time,
+    required CapitalizationPeriod capitalizationPeriod ,
   });
-
+ Future<double> calculateInterestRate2({
+    required double amount,
+    required double capital,
+  });
   Future<double> calculateCapitalComp({
     required double amount,
     required double capInterestRate,

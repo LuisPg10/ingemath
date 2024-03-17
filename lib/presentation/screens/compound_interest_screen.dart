@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ingemath/domain/domain.dart';
+import 'package:ingemath/domain/entities/calculateTime.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/widgets/compoundInterest/conception_Compound.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {
@@ -41,10 +44,23 @@ class _CompoundInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            
+            const CustomOperationTitle(
+              title: "Interés Compuesto",
+              length: 220,
+            ),
             const SizedBox(height: 20),
-            Text("Selecciona variable a calcular",
-                style: textStyles.bodyLarge),
+            ConceptionCompoundInterest(textStyles: textStyles),
+
+            Text(
+              "Calculadora de Interés Compuesto",
+              style: GoogleFonts.montserrat().copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            Text("Selecciona variable a calcular", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
@@ -61,12 +77,14 @@ class _CompoundInterestForm extends ConsumerWidget {
                   : null,
             ),
             const SizedBox(height: 20),
-            Text("Completa la siguiente información",
-                style: GoogleFonts.montserrat().copyWith(
+            Text(
+              "Completa la siguiente información",
+              style: GoogleFonts.montserrat().copyWith(
                 color: const Color(0xFFF13636),
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-              ),),
+              ),
+            ),
             const SizedBox(height: 10),
 
             //Form
@@ -85,7 +103,6 @@ class _CompoundInterestForm extends ConsumerWidget {
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-          
               enable: compoundForm.variable != keyOptions[1],
               label: "Capital",
               onChanged: (value) {
@@ -101,7 +118,8 @@ class _CompoundInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: compoundForm.variable != keyOptions[2],
+              enable: compoundForm.variable != keyOptions[2]&&
+                  compoundForm.variable != keyOptions[3],
               label: "Tasa de interés",
               onChanged: (value) {
                 ref
@@ -109,13 +127,14 @@ class _CompoundInterestForm extends ConsumerWidget {
                     .onInterestRateChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.variable != keyOptions[2]
+                      compoundForm.variable != CompoundVariable.interestRate &&
+                      compoundForm.variable != CompoundVariable.interestRate2
                   ? compoundForm.capInterestRate.errorMessage
                   : null,
             ),
+            
             const SizedBox(height: 20),
-            Text("Seleccione Capitalizacion",
-                style: textStyles.bodyLarge),
+            Text("Seleccione Capitalizacion", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
@@ -131,21 +150,99 @@ class _CompoundInterestForm extends ConsumerWidget {
                   ? "Seleccione Capitalizacion"
                   : null,
             ),
-            const SizedBox(height: 15),
+            
+            const SizedBox(height: 20),
+            Text("Tiempo", style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
             CustomTextFormField(
-              enable: compoundForm.variable != keyOptions.last,
+              showIcon: true,
+              icon: Icons.calendar_today,
+              enable: compoundForm.variable != keyOptions[4]&&
+                  compoundForm.variable != keyOptions[3],
               label: "Tiempo",
-              onChanged: (value) {
-                ref
-                    .read(compoundFormProvider.notifier)
-                    .onTimeChanged(double.tryParse(value) ?? 0);
-              },
+              controller: TextEditingController(
+                text: compoundForm.time.value.toStringAsFixed(3),
+              ),
               errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.variable != keyOptions.last
+                      compoundForm.variable != CompoundVariable.time &&
+                      compoundForm.variable != CompoundVariable.interestRate2
                   ? compoundForm.time.errorMessage
                   : null,
+              onIconPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+
+                    TextEditingController daysController =
+                        TextEditingController();
+                    TextEditingController monthsController =
+                        TextEditingController();
+                    TextEditingController yearsController =
+                        TextEditingController();
+
+                    return AlertDialog(
+                      title: const Text("Establecer Tiempo"),
+                      content: Form(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextFormField(
+                              controller: yearsController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Años'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              controller: monthsController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Meses'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              controller: daysController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Días'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            // ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CustomFilledButton(
+                                onPressed: () {
+                                  
+                                  double days =
+                                      double.tryParse(daysController.text) ?? 0;
+                                  double months =
+                                      double.tryParse(monthsController.text) ??
+                                          0;
+                                  double years =
+                                      double.tryParse(yearsController.text) ??
+                                          0;
+
+                                  // years += (years * 12);
+                                  years += (days / 360);
+                                  years += (months /12);
+
+                                  Navigator.of(context).pop();
+
+                                  ref
+                                      .read(compoundFormProvider.notifier)
+                                      .onTimeChanged(years);
+                                },
+                                child: const Text("Establecer"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-             const SizedBox(height: 60),
+            const SizedBox(height: 60),
             SizedBox(
               width: double.infinity,
               height: 40,

@@ -45,12 +45,24 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
   Future<double> calculateInterestRate({
     required double amount, 
     required double capital, 
-    required double time
+    required double time,
+    required CapitalizationPeriod capitalizationPeriod,
   }) {
     return datasource.calculateInterestRate(
       amount: amount, 
       capital: capital, 
-      time: time
+      time: time,
+      capitalizationPeriod: capitalizationPeriod
+      );
+  }
+    
+  @override
+  Future<double> calculateInterestRate2({
+    required double amount, 
+    required double capital}) {
+    return datasource.calculateInterestRate2(
+      amount: amount, 
+      capital: capital, 
       );
   }
   
@@ -68,6 +80,6 @@ class CalculationCompoundRepositoryImpl extends CalculationCompoundRepository {
       capitalizationPeriod: capitalizationPeriod,
     );
   }
-  
+
   
 }
