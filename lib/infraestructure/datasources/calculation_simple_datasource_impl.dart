@@ -112,7 +112,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
 
     // Calcular el remanente para días
     double remainingDays =
-        (remainingMonths - months) * 31; // Promedio de días en un mes
+        (remainingMonths - months) * 30; // Promedio de días en un mes
 
     // Parte entera del tiempo en días
     int days = remainingDays.toInt();
@@ -127,7 +127,19 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
     String daysText = days == 1 ? 'día' : 'días';
 
     // Crear la cadena de resultado
-    String result = '$years $yearsText, $months $monthsText y $days $daysText.';
+    String result = '$years $yearsText';
+
+    // Agregar meses si es mayor que 0
+    if (months > 0) {
+      result += ', $months $monthsText';
+    }
+
+    // Agregar días si es mayor que 0
+    if (days > 0) {
+      result += ' y $days $daysText';
+    }
+
+    result += '.';
 
     return result;
   }
