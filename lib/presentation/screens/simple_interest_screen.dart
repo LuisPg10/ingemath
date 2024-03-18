@@ -26,7 +26,6 @@ class SimpleInterestScreen extends StatelessWidget {
 }
 
 class _SimpleInterestForm extends ConsumerWidget {
-
   const _SimpleInterestForm();
 
   @override
@@ -40,7 +39,6 @@ class _SimpleInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            
             Text("Interés simple", style: textStyles.titleLarge),
             const Divider(
               color: Color(0xFFFF833D),
@@ -48,13 +46,16 @@ class _SimpleInterestForm extends ConsumerWidget {
               indent: 50,
               endIndent: 50,
             ),
-            
+
             const SizedBox(height: 20),
             const Concept(
-              definition: "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años",
+              definition:
+                  "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años",
               important: [
-                "interés simple (I)", "capital (C)", 
-                "Valor Presente (VP)", "tiempo (t)"
+                "interés simple (I)",
+                "capital (C)",
+                "Valor Presente (VP)",
+                "tiempo (t)"
               ],
               equations: [r"I = Cit"],
             ),
@@ -69,22 +70,20 @@ class _SimpleInterestForm extends ConsumerWidget {
               options: simpleInterestForm.menuOptions,
               onSelected: (value) {
                 ref
-                .read(simpleFormProvider.notifier)
-                .onOptionsSimpleChanged(value!);
+                    .read(simpleFormProvider.notifier)
+                    .onOptionsSimpleChanged(value!);
               },
               errorText: simpleInterestForm.isFormPosted &&
-              simpleInterestForm.variable == SimpleVariable.none
-              ? "Seleccione la variable a calcular"
-              : null,
+                      simpleInterestForm.variable == SimpleVariable.none
+                  ? "Seleccione la variable a calcular"
+                  : null,
             ),
 
             const SizedBox(height: 30),
-            Text(
-              "Completa la siguiente información:",
-              style: textStyles.bodyMedium?.copyWith(
-                color: const Color(0xFFF13636),
-              )
-            ),
+            Text("Completa la siguiente información:",
+                style: textStyles.bodyMedium?.copyWith(
+                  color: const Color(0xFFF13636),
+                )),
 
             const SizedBox(height: 15),
 
@@ -93,31 +92,31 @@ class _SimpleInterestForm extends ConsumerWidget {
               label: "Capital",
               onChanged: (value) {
                 ref
-                .read(simpleFormProvider.notifier)
-                .onCapitalChanged(double.tryParse(value) ?? 0);
+                    .read(simpleFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-                simpleInterestForm.variable != SimpleVariable.capital
-              ? simpleInterestForm.capital.errorMessage
-              : null,
+                      simpleInterestForm.variable != SimpleVariable.capital
+                  ? simpleInterestForm.capital.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
 
             CustomTextFormField(
               enable: simpleInterestForm.variable != keyOptions[2] &&
-                simpleInterestForm.variable != keyOptions[0],
+                  simpleInterestForm.variable != keyOptions[0],
               label: "Interés",
               onChanged: (value) {
                 ref
-                .read(simpleFormProvider.notifier)
-                .onInterestChanged(double.tryParse(value) ?? 0);
+                    .read(simpleFormProvider.notifier)
+                    .onInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-              simpleInterestForm.variable != SimpleVariable.interest &&
-              simpleInterestForm.variable != SimpleVariable.amount
-              ? simpleInterestForm.interest.errorMessage
-              : null,
+                      simpleInterestForm.variable != SimpleVariable.interest &&
+                      simpleInterestForm.variable != SimpleVariable.amount
+                  ? simpleInterestForm.interest.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
@@ -127,13 +126,13 @@ class _SimpleInterestForm extends ConsumerWidget {
               label: "Tasa de Interés (%)",
               onChanged: (value) {
                 ref
-                .read(simpleFormProvider.notifier)
-                .onRateInterestChanged(int.tryParse(value) ?? 0);
+                    .read(simpleFormProvider.notifier)
+                    .onRateInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: simpleInterestForm.isFormPosted &&
-              simpleInterestForm.variable != SimpleVariable.interestRate
-              ? simpleInterestForm.rateInterest.errorMessage
-              : null,
+                      simpleInterestForm.variable != SimpleVariable.interestRate
+                  ? simpleInterestForm.rateInterest.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
@@ -143,9 +142,9 @@ class _SimpleInterestForm extends ConsumerWidget {
               text: simpleInterestForm.time.value.toStringAsFixed(3),
               setTime: ref.read(simpleFormProvider.notifier).onTimeChanged,
               errorMessage: simpleInterestForm.isFormPosted &&
-              simpleInterestForm.variable != SimpleVariable.time
-              ? simpleInterestForm.time.errorMessage
-              : null,
+                      simpleInterestForm.variable != SimpleVariable.time
+                  ? simpleInterestForm.time.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 30),
@@ -171,16 +170,15 @@ class _SimpleInterestForm extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  const Text("RESULTADO:",
+                  const Text(
+                    "RESULTADO:",
                     style: TextStyle(color: Colors.white),
                   ),
                   const SizedBox(height: 6),
-                  if (simpleInterestForm.isFormPosted) 
+                  if (simpleInterestForm.isFormPosted)
                     Text(
-                      _getResultText(
-                        simpleInterestForm.variable,
-                        simpleInterestForm.result
-                      ),
+                      _getResultText(simpleInterestForm.variable,
+                          simpleInterestForm.result),
                       style: const TextStyle(color: Colors.white),
                     ),
                 ],

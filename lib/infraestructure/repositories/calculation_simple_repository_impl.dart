@@ -10,7 +10,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   @override
   Future<double> capital({
     required double interest,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) {
     return datasource.capital(
@@ -23,7 +23,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   @override
   Future<double> capitalWithAmount({
     required double amount,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) {
     return datasource.capitalWithAmount(
@@ -36,7 +36,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   @override
   Future<double> finalAmount({
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) {
     return datasource.finalAmount(
@@ -60,7 +60,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   @override
   Future<double> interest({
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) {
     return datasource.interest(
@@ -111,7 +111,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   Future<String> time(
       {required double capital,
       required double interest,
-      required int rateInterest}) {
+      required double rateInterest}) {
     return datasource.time(
       capital: capital,
       rateInterest: rateInterest,
@@ -123,7 +123,7 @@ class CalculationSimpleRepositoryImpl extends CalculationSimpleRepository {
   Future<double> timeWithAmount({
     required double amount,
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
   }) {
     return datasource.timeWithAmount(
       capital: capital,

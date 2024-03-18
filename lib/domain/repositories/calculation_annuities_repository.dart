@@ -1,7 +1,7 @@
 abstract class CalculationAnnuitiesRepository {
   Future<double> calculateAmount({
     required double annuityValue,
-    required int interestRate,
+    required double interestRate,
     required double time,
   });
 
@@ -14,12 +14,12 @@ abstract class CalculationAnnuitiesRepository {
   Future<double> calculateTime({
     required double amount,
     required double annuityValue,
-    required int interestRate,
+    required double interestRate,
   });
 
   Future<double> calculateAnnuityValue({
     required double amount,
-    required int interestRate,
+    required double interestRate,
     required double time,
   });
 }
