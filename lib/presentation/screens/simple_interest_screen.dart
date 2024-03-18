@@ -26,6 +26,7 @@ class SimpleInterestScreen extends StatelessWidget {
 }
 
 class _SimpleInterestForm extends ConsumerWidget {
+
   const _SimpleInterestForm();
 
   @override
@@ -49,7 +50,14 @@ class _SimpleInterestForm extends ConsumerWidget {
             ),
             
             const SizedBox(height: 20),
-            const Concept(),
+            const Concept(
+              definition: "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años",
+              important: [
+                "interés simple (I)", "capital (C)", 
+                "Valor Presente (VP)", "tiempo (t)"
+              ],
+              equations: [r"I = Cit"],
+            ),
 
             //* FORM
             const SizedBox(height: 30),
@@ -131,9 +139,13 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTimeFormField(
-              simpleInterestForm: simpleInterestForm,
-              keyOptions: keyOptions,
-              ref: ref,
+              enable: simpleInterestForm.variable != keyOptions[3],
+              text: simpleInterestForm.time.value.toStringAsFixed(3),
+              setTime: ref.read(simpleFormProvider.notifier).onTimeChanged,
+              errorMessage: simpleInterestForm.isFormPosted &&
+              simpleInterestForm.variable != SimpleVariable.time
+              ? simpleInterestForm.time.errorMessage
+              : null,
             ),
 
             const SizedBox(height: 30),

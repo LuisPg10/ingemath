@@ -31,33 +31,3 @@ class InterestRate extends FormzInput<int, InterestRateError> {
     return null;
   }
 }
-
-// class InterestRateC extends FormzInput<double, InterestRateError> {
-
-//   // Call super.pure to represent an unmodified form input.
-//   const InterestRateC.pure() : super.pure(0.0);
-
-//   // Call super.dirty to represent a modified form input.
-//   const InterestRateC.dirty( super.value ) : super.dirty();
-
-//   String? get errorMessage {
-//     if ( isValid || isPure ) return null;
-
-//     if ( displayError == InterestRateError.empty ) return 'Digite un valor valido';
-//     if ( displayError == InterestRateError.notValid ) return 'Debe ser un número entero';
-
-//     return null;
-//   }
-
-//   @override
-//   InterestRateError? validator(double value) {
-
-//     final cleanValue = value.toString().trim();
-//     if (cleanValue.isEmpty) return InterestRateError.empty;
-
-//     final isDouble = value / 100;
-//     if (isDouble >= 1 || isDouble <= 0) return InterestRateError.notValid;
-
-//     return null;
-//   }
-// }
