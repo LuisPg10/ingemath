@@ -45,8 +45,8 @@ class _SimpleInterestForm extends ConsumerWidget {
             const Divider(
               color: Color(0xFFFF833D),
               thickness: 5,
-              indent: 30,
-              endIndent: 30,
+              indent: 50,
+              endIndent: 50,
             ),
             
             const SizedBox(height: 20),
