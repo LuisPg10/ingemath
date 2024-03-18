@@ -19,7 +19,7 @@ class ConceptionCompoundInterest extends StatelessWidget {
             children: const <TextSpan>[
               TextSpan(
                 text:
-                    'Es el interés que se llega a cobrar por un crédito que cuando es liquidado se agrega al capital, razón por la cual en la liquidación que prosigue, el primer interés pasará a formar parte del capital del nuevo interés.\n ',
+                    'El interés compuesto es cuando los intereses generados se agregan al capital inicial en cada período, lo que resulta en un crecimiento exponencial del capital a lo largo del tiempo.\n ',
               ),
               TextSpan(
                 text: '\n La ecuacion de interes compuesto es:',

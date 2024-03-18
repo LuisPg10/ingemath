@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormFieldCap extends StatelessWidget {
   final String? label;
   final String? hint;
   final String? errorMessage;
@@ -12,7 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final IconData? icon;
   final void Function()? suffixIconPressed;
 
-  const CustomTextFormField({
+  const CustomTextFormFieldCap({
     super.key,
     this.label,
     this.hint,

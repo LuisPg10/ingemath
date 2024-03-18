@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ingemath/domain/domain.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/widgets/compoundInterest/custom_text_form_field_M.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class CustomTimeCapFormField extends StatelessWidget {
@@ -25,9 +26,9 @@ class CustomTimeCapFormField extends StatelessWidget {
         ref.watch(compoundFormProvider).capitalizationPeriod;
 
 
-    return CustomTextFormField(
+    return CustomTextFormFieldCap(
       icon: Icons.calendar_today,
-      enable: compoundFromState.variable != keyOptions[3],
+      enable: compoundFromState.variable != keyOptions.last && compoundFromState.variable != keyOptions[3],
       label: "Tiempo",
       controller: TextEditingController(
         text: compoundFromState.time.value.toStringAsFixed(3),
@@ -37,7 +38,7 @@ class CustomTimeCapFormField extends StatelessWidget {
                       compoundFromState.variable != CompoundVariable.interestRate2
           ? compoundFromState.time.errorMessage
           : null,
-       suffixIconPressed: () {
+      suffixIconPressed: () {
         showDialog(
           context: context,
           builder: (BuildContext context) {
