@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/domain/entities/calculateTime.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/compoundInterest/conception_Compound.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
@@ -44,9 +42,13 @@ class _CompoundInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const CustomOperationTitle(
-              title: "Interés Compuesto",
-              length: 220,
+
+             Text("Interés Compuesto", style: textStyles.titleLarge),
+            const Divider(
+              color: Color(0xFFFF833D),
+              thickness: 5,
+              indent: 6,
+              endIndent: 6,
             ),
             const SizedBox(height: 20),
             ConceptionCompoundInterest(textStyles: textStyles),
@@ -54,12 +56,13 @@ class _CompoundInterestForm extends ConsumerWidget {
             Text(
               "Calculadora de Interés Compuesto",
               style: GoogleFonts.montserrat().copyWith(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             Text("Selecciona variable a calcular", style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
@@ -81,11 +84,11 @@ class _CompoundInterestForm extends ConsumerWidget {
               "Completa la siguiente información",
               style: GoogleFonts.montserrat().copyWith(
                 color: const Color(0xFFF13636),
-                fontSize: 17,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 13),
 
             //Form
             CustomTextFormField(
@@ -120,7 +123,7 @@ class _CompoundInterestForm extends ConsumerWidget {
             CustomTextFormField(
               enable: compoundForm.variable != keyOptions[2]&&
                   compoundForm.variable != keyOptions[3],
-              label: "Tasa de interés",
+              label: "Tasa de interés (%)",
               onChanged: (value) {
                 ref
                     .read(compoundFormProvider.notifier)
@@ -132,9 +135,26 @@ class _CompoundInterestForm extends ConsumerWidget {
                   ? compoundForm.capInterestRate.errorMessage
                   : null,
             ),
-            
+
+            const SizedBox(height: 25),
+            Text("Seleccione Tipo de tasa de interes", style: textStyles.bodyLarge),
+            const SizedBox(height: 10),
+
+            CustomDropDownMenu(
+              hintText: "Seleccionar ",
+              options: compoundForm.menuOptionsTypeInterest,
+              onSelected: (value) {
+                ref
+                    .read(compoundFormProvider.notifier)
+                    .onOptionsTypeInterestRateChanged(value!);
+              },
+              errorText: compoundForm.isFormPosted &&
+                      compoundForm.variable == CompoundVariable.none
+                  ? "Seleccione Tipo de tasa de interes"
+                  : null,
+            ),
             const SizedBox(height: 20),
-            Text("Seleccione Capitalizacion", style: textStyles.bodyLarge),
+            Text("Seleccione Capitalizacion", style: textStyles.bodyLarge,),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
@@ -151,98 +171,15 @@ class _CompoundInterestForm extends ConsumerWidget {
                   : null,
             ),
             
-            const SizedBox(height: 20),
-            Text("Tiempo", style: textStyles.bodyLarge),
-            const SizedBox(height: 10),
-
-            CustomTextFormField(
-              showIcon: true,
-              icon: Icons.calendar_today,
-              enable: compoundForm.variable != keyOptions[4]&&
-                  compoundForm.variable != keyOptions[3],
-              label: "Tiempo",
-              controller: TextEditingController(
-                text: compoundForm.time.value.toStringAsFixed(3),
-              ),
-              errorMessage: compoundForm.isFormPosted &&
-                      compoundForm.variable != CompoundVariable.time &&
-                      compoundForm.variable != CompoundVariable.interestRate2
-                  ? compoundForm.time.errorMessage
-                  : null,
-              onIconPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-
-                    TextEditingController daysController =
-                        TextEditingController();
-                    TextEditingController monthsController =
-                        TextEditingController();
-                    TextEditingController yearsController =
-                        TextEditingController();
-
-                    return AlertDialog(
-                      title: const Text("Establecer Tiempo"),
-                      content: Form(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              controller: yearsController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Años'),
-                              keyboardType: TextInputType.number,
-                            ),
-                            TextFormField(
-                              controller: monthsController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Meses'),
-                              keyboardType: TextInputType.number,
-                            ),
-                            TextFormField(
-                              controller: daysController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Días'),
-                              keyboardType: TextInputType.number,
-                            ),
-                            // ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: double.infinity,
-                              child: CustomFilledButton(
-                                onPressed: () {
-                                  
-                                  double days =
-                                      double.tryParse(daysController.text) ?? 0;
-                                  double months =
-                                      double.tryParse(monthsController.text) ??
-                                          0;
-                                  double years =
-                                      double.tryParse(yearsController.text) ??
-                                          0;
-
-                                  // years += (years * 12);
-                                  years += (days / 360);
-                                  years += (months /12);
-
-                                  Navigator.of(context).pop();
-
-                                  ref
-                                      .read(compoundFormProvider.notifier)
-                                      .onTimeChanged(years);
-                                },
-                                child: const Text("Establecer"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 30),
+             
+             CustomTimeCapFormField(
+              compoundFromState: compoundForm, 
+              keyOptions: keyOptions, 
+              ref: ref),
+             
+           
+            const SizedBox(height: 45),
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -251,7 +188,7 @@ class _CompoundInterestForm extends ConsumerWidget {
                 child: const Text("Calcular"),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(10),
               width: double.infinity - 30,
@@ -260,12 +197,43 @@ class _CompoundInterestForm extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: const Color(0xFFD3AD24),
               ),
-              child: Text("Resultado: ${compoundForm.result}",
-                  style: const TextStyle(color: Colors.white)),
+              child: Column(
+                children: [
+                  const Text("RESULTADO:",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 6),
+                  if (compoundForm.isFormPosted) 
+                    Text(
+                      _getResultText(
+                        compoundForm.variable,
+                        compoundForm.result
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                ],
+              ),
             )
           ],
         ),
       ),
     );
+  }
+}
+
+String _getResultText(CompoundVariable variable, double result) {
+  switch (variable) {
+    case CompoundVariable.amount:
+      return "El Monto obtenido es de: \$$result";
+    case CompoundVariable.capital:
+      return "El Capital obtenido es de: \$$result";
+    case CompoundVariable.interestRate:
+      return "La Tasa de Interés obtenida es de: $result%";
+    case CompoundVariable.interestRate2:
+      return "La Tasa de Interés obtenida es de: $result%";
+    case CompoundVariable.time:
+      return "El Tiempo obtenido es de: $result";
+    default:
+      return "";
   }
 }

@@ -15,6 +15,7 @@ dependencies:
   go_router: ^13.2.0
   google_fonts: ^6.1.0
   intl: ^0.17.0
+  fraction: ^5.0.2
 
 dev_dependencies:
   flutter_test:

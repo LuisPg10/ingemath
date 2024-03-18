@@ -1,46 +1,27 @@
 import 'dart:math';
 
+import 'package:fraction/fraction.dart';
 import 'package:ingemath/domain/domain.dart';
-
 
 class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   @override
   Future<double> calculateAmountComp(
       {required double capital,
       required double capInterestRate,
+      required TypeInterestRate typeInterestRate,
       required CapitalizationPeriod capitalizationPeriod,
       required double time}) async {
+
+    // Conversion de: Tipo de tasa de interes y Capitalizacion
+
+    double conversionFactorFraction = formulaTipoInteres(typeInterestRate, capitalizationPeriod);
+
+    double interes = capInterestRate / 100;
+
+    double effectiveInterestRate = interes * conversionFactorFraction;
     
-    double effectiveInterestRate;
-    int periodsPerYear;
-
-    switch (capitalizationPeriod) {
-      case CapitalizationPeriod.diario:
-        periodsPerYear = 365; 
-        break;
-      case CapitalizationPeriod.semanal:
-        periodsPerYear = 52; 
-        break;
-      case CapitalizationPeriod.mensual:
-        periodsPerYear = 12; 
-        break;
-      case CapitalizationPeriod.trimestral:
-        periodsPerYear = 4; 
-        break;
-      case CapitalizationPeriod.cuatrimestral:
-        periodsPerYear = 3; 
-        break;
-      case CapitalizationPeriod.semestral:
-        periodsPerYear = 2; 
-        break;
-      case CapitalizationPeriod.anual:
-      default:
-        periodsPerYear = 1; 
-    }
-
-    effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
-    double amountResult = capital * (pow(1 + effectiveInterestRate, (time*12)));
-    final result = amountResult;
+    double amount = capital * (pow(1 + effectiveInterestRate, (time)));
+    double result = double.parse(amount.toStringAsFixed(4));
     return result;
   }
 
@@ -48,137 +29,66 @@ class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   Future<double> calculateCapitalComp(
       {required double amount,
       required double capInterestRate,
+      required TypeInterestRate typeInterestRate,
       required CapitalizationPeriod capitalizationPeriod,
       required double time}) async {
-      double effectiveInterestRate;
-    int periodsPerYear;
+    // Conversion de: Tipo de tasa de interes y Capotalizacion
 
-    switch (capitalizationPeriod) {
-      case CapitalizationPeriod.diario:
-        periodsPerYear = 365; 
-        break;
-      case CapitalizationPeriod.semanal:
-        periodsPerYear = 52; 
-        break;
-      case CapitalizationPeriod.mensual:
-        periodsPerYear = 12; 
-        break;
-      case CapitalizationPeriod.trimestral:
-        periodsPerYear = 4; 
-        break;
-      case CapitalizationPeriod.cuatrimestral:
-        periodsPerYear = 3; 
-        break;
-      case CapitalizationPeriod.semestral:
-        periodsPerYear = 2; 
-        break;
-      case CapitalizationPeriod.anual:
-      default:
-        periodsPerYear = 1; 
-    }
+    double conversionFactorFraction = formulaTipoInteres(typeInterestRate, capitalizationPeriod);
 
-    effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
-    double capitalResult =
-        amount / (pow(1 + effectiveInterestRate, (time)));
-    final result = double.parse(capitalResult.toStringAsFixed(3));
+    double interes = capInterestRate / 100;
+
+    double effectiveInterestRate = interes * conversionFactorFraction;
+    
+    double capitalResult = amount / (pow(1 + effectiveInterestRate.toDouble(), (time)));
+    final result = double.parse(capitalResult.toStringAsFixed(4));
     return result;
   }
-
 
   @override
   Future<double> calculateInterestRate(
       {required double amount,
       required double capital,
-       required CapitalizationPeriod capitalizationPeriod,
+      required TypeInterestRate typeInterestRate,
+      required CapitalizationPeriod capitalizationPeriod,
       required double time}) async {
+    // Conversion de: Tipo de tasa de interes y Capotalizacion
 
-        double effectiveInterestRate;
-        int periodsPerYear;
+    double conversionFactorFraction = formulaTipoInteres(typeInterestRate, capitalizationPeriod);
 
-    switch (capitalizationPeriod) {
-      case CapitalizationPeriod.diario:
-        periodsPerYear = 365; 
-        break;
-      case CapitalizationPeriod.semanal:
-        periodsPerYear = 52; 
-        break;
-      case CapitalizationPeriod.mensual:
-        periodsPerYear = 12; 
-        break;
-      case CapitalizationPeriod.trimestral:
-        periodsPerYear = 4; 
-        break;
-      case CapitalizationPeriod.cuatrimestral:
-        periodsPerYear = 3; 
-        break;
-      case CapitalizationPeriod.semestral:
-        periodsPerYear = 2; 
-        break;
-      case CapitalizationPeriod.anual:
-      default:
-        periodsPerYear = 1; 
-    }
+    // se va provar sin que el resultado de esta operacion se multiplique por capitalResult
+    double effectiveInterestRate = (conversionFactorFraction) / conversionFactorFraction;
 
-      //effectiveInterestRate = (/ 100) / periodsPerYear;
-   
-    double capitalResult = ((pow(amount / capital, (1 / time))-1).toDouble());
-    final result = double.parse(capitalResult.toStringAsFixed(3));
+    double capitalResult = ((pow(amount / capital, (1 / time)) - 1).toDouble());
+    final result = double.parse(capitalResult.toStringAsFixed(4));
     return result;
   }
-
 
   @override
-  Future<double> calculateInterestRate2({
-    required double amount, 
-    required double capital}) async {
+  Future<double> calculateInterestRate2(
+      {required double amount, required double capital}) async {
     double capitalResult = amount - capital;
-    final result = double.parse(capitalResult.toStringAsFixed(3));
+    final result = double.parse(capitalResult.toStringAsFixed(4));
     return result;
   }
-
 
   @override
   Future<double> calculateTimeComp(
       {required double amount,
       required double capital,
       required double capInterestRate,
+      required TypeInterestRate typeInterestRate,
       required CapitalizationPeriod capitalizationPeriod}) async {
-          double effectiveInterestRate;
-    int periodsPerYear;
 
-    switch (capitalizationPeriod) {
-      case CapitalizationPeriod.diario:
-        periodsPerYear = 365; 
-        break;
-      case CapitalizationPeriod.semanal:
-        periodsPerYear = 52; 
-        break;
-      case CapitalizationPeriod.mensual:
-        periodsPerYear = 12; 
-        break;
-      case CapitalizationPeriod.trimestral:
-        periodsPerYear = 4; 
-        break;
-      case CapitalizationPeriod.cuatrimestral:
-        periodsPerYear = 3; 
-        break;
-      case CapitalizationPeriod.semestral:
-        periodsPerYear = 2; 
-        break;
-      case CapitalizationPeriod.anual:
-      default:
-        periodsPerYear = 1; 
-    }
+    // Conversion de: Tipo de tasa de interes y Capotalizacion
 
-    //effectiveInterestRate = (capInterestRate / 100) / periodsPerYear;
-    
-    double timeResult =(log(amount) - log(capital) / log(1 + capInterestRate));
-    final result = timeResult;
+    double conversionFactorFraction = formulaTipoInteres(typeInterestRate, capitalizationPeriod);
+
+    // se va provar sin que el resultado de esta operacion se multiplique por capitalResult
+    double effectiveInterestRate = (conversionFactorFraction) / conversionFactorFraction;
+
+    double timeResult = (log(amount) - log(capital) / log(1 + capInterestRate));
+    final result = double.parse(timeResult.toStringAsFixed(4));
     return result;
   }
-  
-
-  
-  
-  }
-  
+}

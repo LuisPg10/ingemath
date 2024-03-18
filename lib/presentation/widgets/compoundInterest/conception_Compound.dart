@@ -32,7 +32,7 @@ class ConceptionCompoundInterest extends StatelessWidget {
         const Text("FORMULA:"),
         const SizedBox(height: 5),
         const Text("I = MC - C"),
-        const SizedBox(height: 40),
+        const SizedBox(height: 20),
         RichText(
           textAlign: TextAlign.justify,
           text: TextSpan(
@@ -54,6 +54,13 @@ class ConceptionCompoundInterest extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
+        const Divider(
+              color: Color(0xFFFF833D),
+              thickness: 2,
+              indent: 2,
+              endIndent: 2,
+            ),
+        const SizedBox(height: 30),
       ],
     );
   }
