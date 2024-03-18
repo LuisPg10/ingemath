@@ -112,7 +112,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
     );
   }
 
-  void onRateInterestChanged(int value) {
+  void onRateInterestChanged(double value) {
     state = state.copyWith(
       rateInterest: InterestRate.dirty(value),
     );

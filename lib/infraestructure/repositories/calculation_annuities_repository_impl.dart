@@ -1,16 +1,17 @@
 import 'package:ingemath/domain/domain.dart';
 import 'package:ingemath/infraestructure/infraestructure.dart';
 
-class CalculationAnnuitiesRepositoryImpl extends CalculationAnnuitiesRepository {
+class CalculationAnnuitiesRepositoryImpl
+    extends CalculationAnnuitiesRepository {
   final CalculationAnnuitiesDatasource datasource;
 
   CalculationAnnuitiesRepositoryImpl(
-    {CalculationAnnuitiesDatasource? datasource}
-  ) : datasource = datasource ?? CalculationAnnuitiesDatasourceImpl();
+      {CalculationAnnuitiesDatasource? datasource})
+      : datasource = datasource ?? CalculationAnnuitiesDatasourceImpl();
 
   @override
   Future<double> calculateAmount({
-    required int interestRate,
+    required double interestRate,
     required double annuityValue,
     required double time,
   }) {
@@ -37,7 +38,7 @@ class CalculationAnnuitiesRepositoryImpl extends CalculationAnnuitiesRepository 
   @override
   Future<double> calculateAnnuityValue({
     required double amount,
-    required int interestRate,
+    required double interestRate,
     required double time,
   }) {
     return datasource.calculateAnnuityValue(
@@ -51,7 +52,7 @@ class CalculationAnnuitiesRepositoryImpl extends CalculationAnnuitiesRepository 
   Future<double> calculateTime({
     required double amount,
     required double annuityValue,
-    required int interestRate,
+    required double interestRate,
   }) {
     return datasource.calculateTime(
       amount: amount,

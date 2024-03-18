@@ -2,16 +2,17 @@ import 'dart:math';
 
 import 'package:ingemath/domain/domain.dart';
 
-class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource {
+class CalculationAnnuitiesDatasourceImpl
+    extends CalculationAnnuitiesDatasource {
   @override
   Future<double> calculateAmount({
-    required int interestRate,
+    required double interestRate,
     required double annuityValue,
     required double time,
   }) async {
-
     final newInterestRate = interestRate / 100;
-    final top = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    final top =
+        (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
     final amount = annuityValue * top;
     return amount;
   }
@@ -22,19 +23,18 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
     required double annuityValue,
     required double time,
   }) async {
-
     return 0;
   }
 
   @override
   Future<double> calculateAnnuityValue({
     required double amount,
-    required int interestRate,
+    required double interestRate,
     required double time,
   }) async {
-
     final newInterestRate = interestRate / 100;
-    final bottom = (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
+    final bottom =
+        (pow((1 + newInterestRate), time).toDouble() - 1) / newInterestRate;
     return amount / bottom;
   }
 
@@ -42,10 +42,10 @@ class CalculationAnnuitiesDatasourceImpl extends CalculationAnnuitiesDatasource 
   Future<double> calculateTime({
     required double amount,
     required double annuityValue,
-    required int interestRate,
+    required double interestRate,
   }) async {
-    
     final newInterestRate = interestRate / 100;
-    return log(1 + (newInterestRate * amount / annuityValue)) / log(1 + newInterestRate);
+    return log(1 + (newInterestRate * amount / annuityValue)) /
+        log(1 + newInterestRate);
   }
 }

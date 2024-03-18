@@ -19,7 +19,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> capital({
     required double interest,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) async {
     double result = (interest / ((rateInterest / 100) * time));
@@ -29,7 +29,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> capitalWithAmount({
     required double amount,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) async {
     return (amount / (1 + ((rateInterest / 100) * time)));
@@ -39,7 +39,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> finalAmount(
       {required double capital,
-      required int rateInterest,
+      required double rateInterest,
       required double time}) async {
     double result = capital * (1 + (rateInterest / 100) * time);
     return double.parse(result.toStringAsFixed(2));
@@ -57,7 +57,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   @override
   Future<double> interest({
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   }) async {
     double result = capital * (rateInterest / 100) * time;
@@ -96,7 +96,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   Future<String> time({
     required double capital,
     required double interest,
-    required int rateInterest,
+    required double rateInterest,
   }) async {
     // Calcular el tiempo en años
     double timeInYears = interest / (capital * (rateInterest / 100));
@@ -136,7 +136,7 @@ class CalculationSimpleDatasourceImpl extends CalculationSimpleDatasource {
   Future<double> timeWithAmount({
     required double capital,
     required double amount,
-    required int rateInterest,
+    required double rateInterest,
   }) async {
     return ((amount - capital) / (capital * (rateInterest / 100)));
   }

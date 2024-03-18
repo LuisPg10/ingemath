@@ -1,19 +1,19 @@
 abstract class CalculationSimpleRepository {
   Future<double> capital({
     required double interest,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   });
 
   Future<double> capitalWithAmount({
     required double amount,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   });
 
   Future<double> finalAmount({
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   });
 
@@ -37,18 +37,18 @@ abstract class CalculationSimpleRepository {
   Future<String> time({
     required double capital,
     required double interest,
-    required int rateInterest,
+    required double rateInterest,
   });
 
   Future<double> timeWithAmount({
     required double amount,
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
   });
 
   Future<double> interest({
     required double capital,
-    required int rateInterest,
+    required double rateInterest,
     required double time,
   });
 
