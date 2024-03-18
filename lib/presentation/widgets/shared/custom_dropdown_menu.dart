@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomDropDownMenu extends StatelessWidget {
+  final bool enable;
   final String? hintText;
   final Map<dynamic, String> options;
   final String? errorText;
@@ -8,6 +9,7 @@ class CustomDropDownMenu extends StatelessWidget {
 
   const CustomDropDownMenu({
     super.key,
+    this.enable = true,
     this.hintText,
     required this.options,
     this.errorText,
@@ -17,6 +19,7 @@ class CustomDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+      enabled: enable,
       expandedInsets: EdgeInsets.zero,
       hintText: hintText,
       errorText: errorText,

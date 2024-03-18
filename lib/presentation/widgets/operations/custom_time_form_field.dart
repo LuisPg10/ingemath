@@ -6,6 +6,7 @@ import 'package:ingemath/presentation/widgets/widgets.dart';
 class CustomTimeFormField extends StatelessWidget {
 
   final bool? enable;
+  final String label;
   final String? text;
   final void Function(double) setTime;
   final String? errorMessage;
@@ -13,6 +14,7 @@ class CustomTimeFormField extends StatelessWidget {
   const CustomTimeFormField({
     super.key,
     this.enable,
+    this.label = "Tiempo en años",
     this.text,
     this.errorMessage,
     required this.setTime,
@@ -23,7 +25,7 @@ class CustomTimeFormField extends StatelessWidget {
     return CustomTextFormField(
       enable: enable,
       readOnly: true,
-      label: "Tiempo en años",
+      label: label,
       controller: TextEditingController(
         text: text,
       ),

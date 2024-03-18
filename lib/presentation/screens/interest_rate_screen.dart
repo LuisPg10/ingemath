@@ -35,7 +35,7 @@ class _InteresRateForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textStyles = Theme.of(context).textTheme;
     final interestRateForm = ref.watch(interestRateFormProvider);
-    final keyOptions = interestRateForm.menuOptions.keys.toList();
+    final interestOptions = interestRateForm.interestOptions.keys.toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -67,7 +67,7 @@ class _InteresRateForm extends ConsumerWidget {
 
             CustomDropDownMenu(
               hintText: "Seleccionar",
-              options: interestRateForm.menuOptions,
+              options: interestRateForm.interestOptions,
               onSelected: (value) {
                 ref.read(interestRateFormProvider.notifier)
                 .onTypeInterestChanged(value!);
@@ -89,7 +89,7 @@ class _InteresRateForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: interestRateForm.typeInterest != keyOptions[1],
+              enable: interestRateForm.typeInterest != interestOptions[1],
               label: "Monto",
               onChanged: (value) {
                 ref.read(interestRateFormProvider.notifier)
@@ -117,7 +117,7 @@ class _InteresRateForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: interestRateForm.typeInterest != keyOptions[0],
+              enable: interestRateForm.typeInterest != interestOptions[0],
               label: "Interés",
               onChanged: (value) {
                 ref.read(interestRateFormProvider.notifier)
@@ -129,9 +129,30 @@ class _InteresRateForm extends ConsumerWidget {
               : null,
             ),
 
+            const SizedBox(height: 20),
+
+            const Text("Tipo de capitalización"),
+            const SizedBox(height: 15),
+
+            CustomDropDownMenu(
+              enable: interestRateForm.typeInterest == interestOptions[0],
+              hintText: "Seleccionar",
+              options: interestRateForm.capitalizationOptions,
+              onSelected: (value) {
+                ref.read(interestRateFormProvider.notifier)
+                .onCapitalizationChanged(value!);
+              },
+              errorText: interestRateForm.isFormPosted &&
+              interestRateForm.capitalization == Capitalization.none &&
+              interestRateForm.typeInterest == interestOptions[0]
+              ? "Seleccione la capitalización"
+              : null,
+            ),
+
             const SizedBox(height: 15),
 
             CustomTimeFormField(
+              label: "Tiempo",
               text: interestRateForm.time.value.toStringAsFixed(3),
               setTime: ref.read(interestRateFormProvider.notifier)
               .onTimeChanged,
