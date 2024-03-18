@@ -22,6 +22,7 @@ class CustomTimeFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomTextFormField(
       enable: enable,
+      readOnly: true,
       label: "Tiempo en años",
       controller: TextEditingController(
         text: text,
