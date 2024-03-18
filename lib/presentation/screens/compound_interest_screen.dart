@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/compoundInterest/conception_Compound.dart';
+import 'package:ingemath/presentation/widgets/operations/conception_Compound.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {

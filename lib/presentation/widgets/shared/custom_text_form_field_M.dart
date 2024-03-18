@@ -5,14 +5,12 @@ class CustomTextFormField extends StatelessWidget {
   final String? hint;
   final String? errorMessage;
   final bool? enable;
-  final bool readOnly;
-  final IconData? icon;
-  final void Function()? suffixIconPressed;
   final TextInputType keyBoardType;
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final Widget? suffixIcon;
+  final IconData? icon;
+  final void Function()? suffixIconPressed;
 
   const CustomTextFormField({
     super.key,
@@ -20,14 +18,12 @@ class CustomTextFormField extends StatelessWidget {
     this.hint,
     this.errorMessage,
     this.enable,
-    this.icon,
-    this.suffixIconPressed,
-    this.readOnly = false,
     this.keyBoardType = TextInputType.number,
     this.controller,
     this.onChanged,
     this.validator,
-    this.suffixIcon,
+    this.icon,
+    this.suffixIconPressed,
   });
 
   @override
@@ -35,12 +31,11 @@ class CustomTextFormField extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return TextFormField(
+      controller: controller,
       enabled: enable,
-      readOnly: readOnly,
       onChanged: onChanged,
       validator: validator,
       keyboardType: keyBoardType,
-      controller: controller,
       decoration: InputDecoration(
         enabledBorder: _customBorder(),
         disabledBorder: _customBorder(color: Colors.black12),
@@ -51,7 +46,12 @@ class CustomTextFormField extends StatelessWidget {
         label: label != null ? Text(label!) : null,
         hintText: hint,
         errorText: errorMessage,
-        suffixIcon: suffixIcon,
+        suffixIcon: suffixIconPressed != null
+        ? IconButton(
+            icon: Icon(icon),
+            onPressed: suffixIconPressed,
+          )
+        : null,
       ),
     );
   }

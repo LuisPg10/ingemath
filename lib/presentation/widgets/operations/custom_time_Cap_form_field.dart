@@ -37,7 +37,7 @@ class CustomTimeCapFormField extends StatelessWidget {
                       compoundFromState.variable != CompoundVariable.interestRate2
           ? compoundFromState.time.errorMessage
           : null,
-      suffixIconPressed: () {
+       suffixIconPressed: () {
         showDialog(
           context: context,
           builder: (BuildContext context) {
