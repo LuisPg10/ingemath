@@ -94,7 +94,7 @@ class _InteresRateForm extends ConsumerWidget {
               label: "Monto",
               onChanged: (value) {
                 ref.read(interestRateFormProvider.notifier)
-                .onAmountChangeg(double.tryParse(value) ?? 0);
+                .onAmountChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted &&
                 interestRateForm.typeInterest != TypeInterest.simple
@@ -108,7 +108,7 @@ class _InteresRateForm extends ConsumerWidget {
               label: "Capital",
               onChanged: (value) {
                 ref.read(interestRateFormProvider.notifier)
-                .onInterestChanged(double.tryParse(value) ?? 0);
+                .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted
               ? interestRateForm.interest.errorMessage

@@ -74,7 +74,7 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
     state = state.copyWith(typeInterest: value);
   }
 
-  void onAmountChangeg(double value) {
+  void onAmountChanged(double value) {
     state = state.copyWith(
       amount: DataNumber.dirty(value),
     );
