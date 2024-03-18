@@ -53,11 +53,17 @@ class _InteresRateForm extends ConsumerWidget {
             ),
             
             const SizedBox(height: 20),
-            const Concept(),
+            const Concept(
+              definition: "Hace referencia a la cantidad que se abona en una unidad de tiempo por cada unidad de capital invertido",
+              equations: [
+                r"i = \frac {I} {Ct}",
+                r"\sqrt[n]{\frac {VF} {VP}} - 1",
+              ],
+            ),
 
             //* FORM
             const SizedBox(height: 30),
-            Text("Variable a Calcular", style: textStyles.bodyMedium),
+            Text("Tipo de interés", style: textStyles.bodyMedium),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
