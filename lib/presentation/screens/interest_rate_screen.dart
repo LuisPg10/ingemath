@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/presentation/providers/interest_rate/interest_rate_form_provider.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
@@ -48,8 +47,8 @@ class _InteresRateForm extends ConsumerWidget {
             const Divider(
               color: Color(0xFFFF833D),
               thickness: 5,
-              indent: 30,
-              endIndent: 30,
+              indent: 50,
+              endIndent: 50,
             ),
             
             const SizedBox(height: 20),
@@ -57,7 +56,7 @@ class _InteresRateForm extends ConsumerWidget {
               definition: "Hace referencia a la cantidad que se abona en una unidad de tiempo por cada unidad de capital invertido",
               equations: [
                 r"i = \frac {I} {Ct}",
-                r"\sqrt[n]{\frac {VF} {VP}} - 1",
+                r"J = \sqrt[n]{\frac {VF} {VP}} - 1",
               ],
             ),
 
@@ -98,7 +97,7 @@ class _InteresRateForm extends ConsumerWidget {
               },
               errorMessage: interestRateForm.isFormPosted &&
                 interestRateForm.typeInterest != TypeInterest.simple
-              ? interestRateForm.capital.errorMessage
+              ? interestRateForm.amount.errorMessage
               : null,
             ),
 
@@ -111,19 +110,21 @@ class _InteresRateForm extends ConsumerWidget {
                 .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted
-              ? interestRateForm.interest.errorMessage
+              ? interestRateForm.capital.errorMessage
               : null,
             ),
 
             const SizedBox(height: 15),
 
             CustomTextFormField(
+              enable: interestRateForm.typeInterest != keyOptions[0],
               label: "Interés",
               onChanged: (value) {
                 ref.read(interestRateFormProvider.notifier)
                 .onInterestChanged(double.tryParse(value) ?? 0);
               },
-              errorMessage: interestRateForm.isFormPosted
+              errorMessage: interestRateForm.isFormPosted &&
+              interestRateForm.typeInterest != TypeInterest.compound
               ? interestRateForm.interest.errorMessage
               : null,
             ),

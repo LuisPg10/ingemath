@@ -137,8 +137,8 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
       time: DataNumber.dirty(state.time.value),
       isValid: state.typeInterest != TypeInterest.none && Formz.validate([
         if (state.typeInterest == TypeInterest.compound) state.amount,
+        if (state.typeInterest == TypeInterest.simple) state.interest,
         state.capital,
-        state.interest,
         state.time,
       ]),
     );
