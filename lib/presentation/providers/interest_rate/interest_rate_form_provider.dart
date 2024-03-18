@@ -153,6 +153,7 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
         state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 1));
         break;
       default:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime));
         break;
     }
   }
