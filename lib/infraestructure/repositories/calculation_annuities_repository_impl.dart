@@ -1,5 +1,5 @@
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
+import '../../domain/domain.dart';
+import '../infraestructure.dart';
 
 class CalculationAnnuitiesRepositoryImpl
     extends CalculationAnnuitiesRepository {

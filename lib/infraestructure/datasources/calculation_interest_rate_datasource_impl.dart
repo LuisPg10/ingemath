@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ingemath/domain/domain.dart';
+import '../../domain/domain.dart';
 
 class CalculationInterestRateDatasourceImpl
     extends CalculationInterestRateDatasource {
@@ -11,9 +11,7 @@ class CalculationInterestRateDatasourceImpl
     required double interest,
     required double timeCapitalization,
   }) async {
-
     return pow(amount / capital, 1 / timeCapitalization) - 1;
-
   }
 
   @override
@@ -22,8 +20,6 @@ class CalculationInterestRateDatasourceImpl
     required double interest,
     required double time,
   }) async {
-
     return interest / (capital * time);
-
   }
 }

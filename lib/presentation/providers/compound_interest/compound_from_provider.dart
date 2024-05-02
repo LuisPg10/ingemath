@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/domain/entities/capitalization.dart';
+import '../../../infraestructure/infraestructure.dart';
+import '../providers.dart';
+import '../../../domain/entities/capitalization.dart';
 
 final compoundFormProvider =
     StateNotifierProvider.autoDispose<CompoundFormNotifier, CompoundFromState>(
@@ -171,7 +171,7 @@ class CompoundFormNotifier extends StateNotifier<CompoundFromState> {
         result = await repository.calculateCapitalComp(
             amount: state.amount.value,
             capInterestRate: state.capInterestRate.value,
-             typeInterestRate: state.typeInterestRate,
+            typeInterestRate: state.typeInterestRate,
             capitalizationPeriod: state.capitalizationPeriod,
             time: state.time.value);
         break;

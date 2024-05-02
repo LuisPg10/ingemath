@@ -1,4 +1,4 @@
-import 'package:ingemath/domain/datasources/datasources.dart';
+import '../../domain/datasources/datasources.dart';
 
 class TimeResult {
   final int years;

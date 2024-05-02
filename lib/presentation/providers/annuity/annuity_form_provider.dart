@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
+import '../../../domain/domain.dart';
+import '../../../infraestructure/infraestructure.dart';
+import '../providers.dart';
 
 final annuityFormProvider =
     StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(

@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:ingemath/domain/domain.dart';
+import '../../domain/domain.dart';
 
 class CalculationCompoundDatasourceImpl extends CalculationCompoundDatasource {
   @override

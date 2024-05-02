@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
 
 class SimpleInterestScreen extends StatelessWidget {
   const SimpleInterestScreen({super.key});

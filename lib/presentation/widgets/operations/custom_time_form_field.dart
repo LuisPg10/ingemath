@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
-
+import '../widgets.dart';
 
 class CustomTimeFormField extends StatelessWidget {
-
   final bool? enable;
   final String label;
   final String? text;
@@ -32,20 +30,16 @@ class CustomTimeFormField extends StatelessWidget {
       suffixIcon: IconButton(
         onPressed: () {
           showDialog(
-            context: context,
-            builder: (context) => _TimeForm(setTime)
-          );
-        }, 
+              context: context, builder: (context) => _TimeForm(setTime));
+        },
         icon: const Icon(Icons.calendar_today),
       ),
-
       errorMessage: errorMessage,
     );
   }
 }
 
 class _TimeForm extends StatefulWidget {
-
   final void Function(double) setTime;
 
   const _TimeForm(this.setTime);
@@ -55,7 +49,6 @@ class _TimeForm extends StatefulWidget {
 }
 
 class _TimeFormState extends State<_TimeForm> {
-
   TextEditingController daysController = TextEditingController();
   TextEditingController weeksController = TextEditingController();
   TextEditingController monthsController = TextEditingController();
@@ -97,9 +90,7 @@ class _TimeFormState extends State<_TimeForm> {
             decoration: const InputDecoration(labelText: 'Días'),
             keyboardType: TextInputType.number,
           ),
-      
           const SizedBox(height: 20),
-          
           SizedBox(
             width: double.infinity,
             child: CustomFilledButton(
@@ -112,7 +103,6 @@ class _TimeFormState extends State<_TimeForm> {
                 widget.setTime(years + days / 360 + weeks / 52 + months / 12);
 
                 context.pop();
-      
               },
               child: const Text("Establecer"),
             ),

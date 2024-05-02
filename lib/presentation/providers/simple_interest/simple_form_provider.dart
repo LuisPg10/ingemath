@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
+import '../../../infraestructure/infraestructure.dart';
+import '../providers.dart';
 
 final simpleFormProvider =
     StateNotifierProvider.autoDispose<SimpleFormNotifier, SimpleFormState>(

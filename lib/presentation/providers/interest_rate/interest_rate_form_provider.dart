@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
+import '../../../domain/domain.dart';
+import '../../../infraestructure/infraestructure.dart';
+import '../providers.dart';
 
-final interestRateFormProvider = StateNotifierProvider
-.autoDispose<InterestRateFormNotifier, InterestRateFormState>((ref) {
+final interestRateFormProvider = StateNotifierProvider.autoDispose<
+    InterestRateFormNotifier, InterestRateFormState>((ref) {
   final interestRateRepository = ref.watch(interestRateRepositoryProvider);
 
   return InterestRateFormNotifier(
@@ -14,9 +14,13 @@ final interestRateFormProvider = StateNotifierProvider
 });
 
 enum TypeInterest { none, simple, compound }
+
 enum Capitalization {
-  none, days, weeks, 
-  months, years,
+  none,
+  days,
+  weeks,
+  months,
+  years,
 }
 
 class InterestRateFormState {
@@ -25,7 +29,7 @@ class InterestRateFormState {
     TypeInterest.simple: "Interés simple",
   };
 
-  final capitalizationOptions = const <Capitalization, String> {
+  final capitalizationOptions = const <Capitalization, String>{
     Capitalization.days: "Diariamente",
     Capitalization.weeks: "Semanalmente",
     Capitalization.months: "Mensualmente",
@@ -67,19 +71,19 @@ class InterestRateFormState {
     double? temporalTime,
     DataNumber? interest,
     double? result,
-  }) => InterestRateFormState(
-
-    isFormPosted: isFormPosted ?? this.isFormPosted,
-    isValid: isValid ?? this.isValid,
-    typeInterest: typeInterest ?? this.typeInterest,
-    amount: amount ?? this.amount,
-    capital: capital ?? this.capital,
-    capitalization: capitalization ?? this.capitalization,
-    time: time ?? this.time,
-    temporalTime: temporalTime ?? this.temporalTime,
-    interest: interest ?? this.interest,
-    result: result ?? this.result,
-  );
+  }) =>
+      InterestRateFormState(
+        isFormPosted: isFormPosted ?? this.isFormPosted,
+        isValid: isValid ?? this.isValid,
+        typeInterest: typeInterest ?? this.typeInterest,
+        amount: amount ?? this.amount,
+        capital: capital ?? this.capital,
+        capitalization: capitalization ?? this.capitalization,
+        time: time ?? this.time,
+        temporalTime: temporalTime ?? this.temporalTime,
+        interest: interest ?? this.interest,
+        result: result ?? this.result,
+      );
 }
 
 class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
@@ -115,10 +119,11 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
     state = state.copyWith(
       capitalization: value,
     );
-    
-    switch(state.capitalization) {
+
+    switch (state.capitalization) {
       case Capitalization.days:
-        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
+        state =
+            state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
         break;
       case Capitalization.months:
         state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 12));
@@ -139,9 +144,10 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
       temporalTime: value,
     );
 
-    switch(state.capitalization) {
+    switch (state.capitalization) {
       case Capitalization.days:
-        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
+        state =
+            state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
         break;
       case Capitalization.months:
         state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 12));
@@ -195,14 +201,15 @@ class InterestRateFormNotifier extends StateNotifier<InterestRateFormState> {
       capital: DataNumber.dirty(state.capital.value),
       interest: DataNumber.dirty(state.interest.value),
       time: DataNumber.dirty(state.time.value),
-      isValid: (state.typeInterest != TypeInterest.simple 
-        && state.capitalization != Capitalization.none
-      ) && state.typeInterest != TypeInterest.none && Formz.validate([
-        if (state.typeInterest == TypeInterest.compound) state.amount,
-        if (state.typeInterest == TypeInterest.simple) state.interest,
-        state.capital,
-        state.time,
-      ]),
+      isValid: (state.typeInterest != TypeInterest.simple &&
+              state.capitalization != Capitalization.none) &&
+          state.typeInterest != TypeInterest.none &&
+          Formz.validate([
+            if (state.typeInterest == TypeInterest.compound) state.amount,
+            if (state.typeInterest == TypeInterest.simple) state.interest,
+            state.capital,
+            state.time,
+          ]),
     );
   }
 }

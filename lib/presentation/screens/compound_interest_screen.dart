@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/compoundInterest/custom_time_Cap_form_f.dart';
-import 'package:ingemath/presentation/widgets/operations/conception_Compound.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
+import '../providers/providers.dart';
+import '../widgets/compoundInterest/custom_time_Cap_form_f.dart';
+import '../widgets/operations/conception_Compound.dart';
+import '../widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {
   const CompoundInterestScreen({super.key});
@@ -43,8 +43,7 @@ class _CompoundInterestForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-
-             Text("Interés Compuesto", style: textStyles.titleLarge),
+            Text("Interés Compuesto", style: textStyles.titleLarge),
             const Divider(
               color: Color(0xFFFF833D),
               thickness: 5,
@@ -122,7 +121,7 @@ class _CompoundInterestForm extends ConsumerWidget {
             const SizedBox(height: 15),
 
             CustomTextFormField(
-              enable: compoundForm.variable != keyOptions[2]&&
+              enable: compoundForm.variable != keyOptions[2] &&
                   compoundForm.variable != keyOptions[3],
               label: "Tasa de interés (%)",
               onChanged: (value) {
@@ -138,7 +137,8 @@ class _CompoundInterestForm extends ConsumerWidget {
             ),
 
             const SizedBox(height: 25),
-            Text("Seleccione Tipo de tasa de interes", style: textStyles.bodyLarge),
+            Text("Seleccione Tipo de tasa de interes",
+                style: textStyles.bodyLarge),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
@@ -155,7 +155,10 @@ class _CompoundInterestForm extends ConsumerWidget {
                   : null,
             ),
             const SizedBox(height: 20),
-            Text("Seleccione Capitalizacion", style: textStyles.bodyLarge,),
+            Text(
+              "Seleccione Capitalizacion",
+              style: textStyles.bodyLarge,
+            ),
             const SizedBox(height: 10),
 
             CustomDropDownMenu(
@@ -171,15 +174,14 @@ class _CompoundInterestForm extends ConsumerWidget {
                   ? "Seleccione Capitalizacion"
                   : null,
             ),
-            
+
             const SizedBox(height: 30),
-             
-             CustomTimeCapFormField(
-              compoundFromState: compoundForm, 
-              keyOptions: keyOptions, 
-              ref: ref),
-             
-           
+
+            CustomTimeCapFormField(
+                compoundFromState: compoundForm,
+                keyOptions: keyOptions,
+                ref: ref),
+
             const SizedBox(height: 45),
             SizedBox(
               width: double.infinity,
@@ -200,16 +202,15 @@ class _CompoundInterestForm extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  const Text("RESULTADO:",
+                  const Text(
+                    "RESULTADO:",
                     style: TextStyle(color: Colors.white),
                   ),
                   const SizedBox(height: 6),
-                  if (compoundForm.isFormPosted) 
+                  if (compoundForm.isFormPosted)
                     Text(
                       _getResultText(
-                        compoundForm.variable,
-                        compoundForm.result
-                      ),
+                          compoundForm.variable, compoundForm.result),
                       style: const TextStyle(color: Colors.white),
                     ),
                 ],
