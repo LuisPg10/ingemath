@@ -49,8 +49,8 @@ class _AnnuitiesForm extends ConsumerWidget {
             const SizedBox(height: 20),
             const Concept(
               definition:
-                  "Una anualidad es una serie de pagos o retiros regulares que pueden ocurrir en intervalos anuales, mensuales, trimestrales, semestrales o de otro tipo.",
-              important: ["anualidad"],
+                  "Anualidad se refiere a un conjunto de pagos, depósitos o retiros realizados por la misma cantidad a intervalos iguales de tiempo. A los cuales se aplica interés compuesto.",
+              important: ["Anualidad", "intervalos iguales"],
               equations: [
                 r"VF = A[\frac {(1+i)^n -1} {i}]",
                 r"VA = A[ \frac {1 - (1+i)^{-n}} {i}]",
@@ -112,22 +112,8 @@ class _AnnuitiesForm extends ConsumerWidget {
                   ? annuityForm.annuityValue.errorMessage
                   : null,
             ),
-            const SizedBox(height: 15),
-            CustomTextFormField(
-              enable: true,
-              label: "Tasa de Interés (%)",
-              onChanged: (value) {
-                ref
-                    .read(annuityFormProvider.notifier)
-                    .onInterestRateChanged(double.tryParse(value) ?? 0);
-              },
-              errorMessage: annuityForm.isFormPosted
-                  ? annuityForm.interestRate.errorMessage
-                  : null,
-            ),
 
             const SizedBox(height: 20),
-
             const Text("Tipo de capitalización"),
             const SizedBox(height: 15),
 
@@ -147,6 +133,20 @@ class _AnnuitiesForm extends ConsumerWidget {
             ),
 
             const SizedBox(height: 15),
+            CustomTextFormField(
+              enable: true,
+              label: "Tasa de Interés (%)",
+              onChanged: (value) {
+                ref
+                    .read(annuityFormProvider.notifier)
+                    .onInterestRateChanged(double.tryParse(value) ?? 0);
+              },
+              errorMessage: annuityForm.isFormPosted
+                  ? annuityForm.interestRate.errorMessage
+                  : null,
+            ),
+
+            const SizedBox(height: 20),
 
             CustomTimeFormField(
               enable: annuityForm.variable != keyOptions[3],

@@ -138,9 +138,35 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
   }
 
   void onInterestRateChanged(double value) {
+    double adjustedInterestRate;
+
+    // Obtener el divisor correspondiente según la capitalización seleccionada
+    switch (state.capitalization) {
+      case CapitalizationInterest.days:
+        adjustedInterestRate = value / 360;
+        break;
+      case CapitalizationInterest.weeks:
+        adjustedInterestRate = value / 52;
+        break;
+      case CapitalizationInterest.months:
+        adjustedInterestRate = value / 12;
+        break;
+      case CapitalizationInterest.semesters:
+        adjustedInterestRate = value / 2;
+        break;
+      case CapitalizationInterest.years:
+        adjustedInterestRate = value;
+        break;
+      default:
+        // Si no se ha seleccionado una capitalización, mantener el valor original
+        adjustedInterestRate = value;
+        break;
+    }
+
     state = state.copyWith(
-      interestRate: InterestRate.dirty(value),
+      interestRate: InterestRate.dirty(adjustedInterestRate),
     );
+    print(adjustedInterestRate);
   }
 
   void onCapitalizationChanged(CapitalizationInterest value) {
