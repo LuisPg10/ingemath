@@ -50,7 +50,7 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 20),
             const Concept(
               definition:
-                  "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años",
+                  "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años.",
               important: [
                 "interés simple (I)",
                 "capital (C)",
@@ -202,7 +202,7 @@ String _getResultText(SimpleVariable variable, String result) {
     case SimpleVariable.time:
       return "El Tiempo obtenido es de: $result";
     case SimpleVariable.interest:
-      return "El Interés obtenido es de: \$$result";
+      return "El Interés obtenido es de \$$result";
     default:
       return "";
   }

@@ -62,7 +62,7 @@ class CalculationAnnuitiesRepositoryImpl
   }
 
   @override
-  Future<double> calculateTime({
+  Future<String> calculateTime({
     required double amount,
     required double annuityValue,
     required double annuityRate,

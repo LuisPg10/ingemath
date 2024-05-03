@@ -23,7 +23,7 @@ abstract class CalculationAnnuitiesRepository {
     required double time,
   });
 
-  Future<double> calculateTime({
+  Future<String> calculateTime({
     required double amount,
     required double annuityValue,
     required double annuityRate,

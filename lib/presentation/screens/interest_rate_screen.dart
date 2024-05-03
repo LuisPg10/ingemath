@@ -145,7 +145,8 @@ class _InteresRateForm extends ConsumerWidget {
                     .onCapitalizationChanged(value!);
               },
               errorText: interestRateForm.isFormPosted &&
-                      interestRateForm.capitalization == Capitalization.none &&
+                      interestRateForm.capitalization ==
+                          CapitalizationInterest.none &&
                       interestRateForm.typeInterest == interestOptions[0]
                   ? "Seleccione la capitalización"
                   : null,
