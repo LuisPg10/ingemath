@@ -10,27 +10,27 @@ class CalculationAnnuitiesRepositoryImpl
       : datasource = datasource ?? CalculationAnnuitiesDatasourceImpl();
 
   @override
-  Future<double> calculateAmount({
-    required double interestRate,
+  Future<double> calculateFinalValue({
+    required double annuityRate,
     required double annuityValue,
     required double time,
   }) {
-    return datasource.calculateAmount(
-      interestRate: interestRate,
+    return datasource.calculateFinalValue(
+      annuityRate: annuityRate,
       annuityValue: annuityValue,
       time: time,
     );
   }
 
   @override
-  Future<double> calculateInterestRate({
-    required double amount,
+  Future<double> calculateCurrentValue({
     required double annuityValue,
+    required double annuityRate,
     required double time,
   }) {
-    return datasource.calculateInterestRate(
-      amount: amount,
+    return datasource.calculateCurrentValue(
       annuityValue: annuityValue,
+      annuityRate: annuityRate,
       time: time,
     );
   }
@@ -38,12 +38,25 @@ class CalculationAnnuitiesRepositoryImpl
   @override
   Future<double> calculateAnnuityValue({
     required double amount,
-    required double interestRate,
+    required double annuityRate,
     required double time,
   }) {
     return datasource.calculateAnnuityValue(
       amount: amount,
-      interestRate: interestRate,
+      annuityRate: annuityRate,
+      time: time,
+    );
+  }
+
+  @override
+  Future<double> calculateAnnuityRate({
+    required double amount,
+    required double annuityValue,
+    required double time,
+  }) {
+    return datasource.calculateAnnuityRate(
+      amount: amount,
+      annuityValue: annuityValue,
       time: time,
     );
   }
@@ -52,12 +65,12 @@ class CalculationAnnuitiesRepositoryImpl
   Future<double> calculateTime({
     required double amount,
     required double annuityValue,
-    required double interestRate,
+    required double annuityRate,
   }) {
     return datasource.calculateTime(
       amount: amount,
       annuityValue: annuityValue,
-      interestRate: interestRate,
+      annuityRate: annuityRate,
     );
   }
 }

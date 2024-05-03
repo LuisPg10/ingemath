@@ -13,14 +13,15 @@ final annuityFormProvider =
   );
 });
 
-enum AnnuityVariable { none, amount, annuityValue, interestRate, time }
+enum AnnuityVariable { none, amount, annuityValue, interestRate, time, annuity }
 
 class AnnuityFormState {
   final menuOptions = const <AnnuityVariable, String>{
-    AnnuityVariable.amount: "Monto anualidad",
-    AnnuityVariable.annuityValue: "Valor actual de la anualidad",
-    AnnuityVariable.interestRate: "Tasa de interés",
-    AnnuityVariable.time: "Tiempo anualidad",
+    AnnuityVariable.amount: "Valor Final",
+    AnnuityVariable.annuityValue: "Valor Actual",
+    AnnuityVariable.annuity: "Valor de Anualidad",
+    // AnnuityVariable.interestRate: "Tasa de Anualidad",
+    // AnnuityVariable.time: "Periodos",
   };
 
   final bool isFormPosted;
@@ -108,25 +109,34 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
     if (!state.isValid) return;
 
     double result = 0;
+
     switch (state.variable) {
       case AnnuityVariable.amount:
-        result = await repository.calculateAmount(
-          interestRate: state.interestRate.value,
+        result = await repository.calculateFinalValue(
+          annuityRate: state.interestRate.value,
           annuityValue: state.annuityValue.value,
           time: state.time.value,
         );
         break;
 
       case AnnuityVariable.annuityValue:
+        result = await repository.calculateCurrentValue(
+          annuityRate: state.interestRate.value,
+          annuityValue: state.annuityValue.value,
+          time: state.time.value,
+        );
+        break;
+
+      case AnnuityVariable.annuity:
         result = await repository.calculateAnnuityValue(
-          interestRate: state.interestRate.value,
+          annuityRate: state.interestRate.value,
           amount: state.amount.value,
           time: state.time.value,
         );
         break;
 
       case AnnuityVariable.interestRate:
-        result = await repository.calculateInterestRate(
+        result = await repository.calculateAnnuityRate(
           amount: state.amount.value,
           annuityValue: state.annuityValue.value,
           time: state.time.value,
@@ -137,7 +147,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
         result = await repository.calculateTime(
           amount: state.amount.value,
           annuityValue: state.annuityValue.value,
-          interestRate: state.interestRate.value,
+          annuityRate: state.interestRate.value,
         );
         break;
       default:
@@ -155,9 +165,10 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       interestRate: InterestRate.dirty(state.interestRate.value),
       isValid: state.variable != AnnuityVariable.none &&
           Formz.validate([
-            if (state.variable != AnnuityVariable.amount) state.amount,
-            if (state.variable != AnnuityVariable.annuityValue)
-              state.annuityValue,
+            if (state.variable != AnnuityVariable.amount &&
+                state.variable != AnnuityVariable.annuityValue)
+              state.amount,
+            if (state.variable != AnnuityVariable.annuity) state.annuityValue,
             if (state.variable != AnnuityVariable.interestRate)
               state.interestRate,
             if (state.variable != AnnuityVariable.time) state.time,

@@ -12,7 +12,7 @@ class CustomTimeFormField extends StatelessWidget {
   const CustomTimeFormField({
     super.key,
     this.enable,
-    this.label = "Tiempo en años",
+    this.label = "Tiempo en Años",
     this.text,
     this.errorMessage,
     required this.setTime,
