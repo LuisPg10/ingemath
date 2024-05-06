@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/providers.dart';
 import '../widgets/operations/conception_Compound.dart';
+import '../widgets/shared/header.dart';
 import '../widgets/widgets.dart';
 
 class GradientScreen extends StatelessWidget {
@@ -10,18 +11,28 @@ class GradientScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Gradiente"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: const Color(0xFFFFDC62),
-              borderRadius: BorderRadius.circular(20)),
-          child: const _GradientForm(),
+    return CustomBackground(
+      height: 200,
+      showArrow: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 685,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDC62),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const _GradientForm(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -36,7 +47,6 @@ class _GradientForm extends ConsumerWidget {
     final gradienForm = ref.watch(gradientFormProvider);
     // final keyOptions = gradienForm.menuOptions.keys.toList();
     final textStyles = Theme.of(context).textTheme;
-    
 
     return Padding(
       padding: const EdgeInsets.all(30),
@@ -51,8 +61,17 @@ class _GradientForm extends ConsumerWidget {
               endIndent: 6,
             ),
             const SizedBox(height: 20),
-            ConceptionCompoundInterest(textStyles: textStyles),
+            const Concept(
+              definition:
+                  "Un Gradiente o serie variable es una serie de cuotas que no son iguales, pero tienen una constante de variación. Esta puede ser un valor, lo que da origen al gradiente Aritmetico o Lineal, o un porcentaje, lo que genera el gradiente Geometrico.",
+              important: ["Gradiente", "no son iguales"],
+              equations: [
+                r"P = A[\frac {1 - (1+i)^-n} {i} ]",
 
+              ],
+            ),
+            
+            const SizedBox(height: 20),
             Text(
               "Calculadora de Gradientes",
               style: GoogleFonts.montserrat().copyWith(
@@ -179,7 +198,7 @@ class _GradientForm extends ConsumerWidget {
                           (gradienForm.typeGradiente ==
                                   GradientType.geometric &&
                               gradienForm.variableG != GradientVariableG.none))
-                 ? gradienForm.paymentSeries.errorMessage
+                  ? gradienForm.paymentSeries.errorMessage
                   : null,
             ),
             const SizedBox(height: 15),
