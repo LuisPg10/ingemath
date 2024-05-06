@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/config/routes/app_router.dart';
-import 'package:ingemath/config/theme/app_theme.dart';
+import 'config/routes/app_router.dart';
+import 'config/theme/app_theme.dart';
 
 void main() {
   runApp(const ProviderScope(child: MainApp()));

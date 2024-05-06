@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
+import '../../../infraestructure/infraestructure.dart';
 
 final compoundRepositorytProvider = Provider((ref) {
   return CalculationCompoundRepositoryImpl();

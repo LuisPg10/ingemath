@@ -1,13 +1,13 @@
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
+import '../../domain/domain.dart';
+import '../infraestructure.dart';
 
 class CalculationInterestRateRepositoryImpl
     extends CalculationInterestRateRepository {
   final CalculationInterestRateDatasource datasource;
 
   CalculationInterestRateRepositoryImpl(
-      {CalculationInterestRateDatasource? datasource}
-  ) : datasource = datasource ?? CalculationInterestRateDatasourceImpl();
+      {CalculationInterestRateDatasource? datasource})
+      : datasource = datasource ?? CalculationInterestRateDatasourceImpl();
 
   @override
   Future<double> calculateCompundInterestRate({

@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
+import 'package:ingemath/presentation/widgets/shared/header.dart';
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
 
 class SimpleInterestScreen extends StatelessWidget {
   const SimpleInterestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
+    return CustomBackground(
+      height: 200,
+      showArrow: true,
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFDC62),
-            borderRadius: BorderRadius.circular(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 700,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDC62),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const _SimpleInterestForm(),
+              ),
+            ],
           ),
-          child: const _SimpleInterestForm(),
         ),
       ),
     );
@@ -50,7 +62,7 @@ class _SimpleInterestForm extends ConsumerWidget {
             const SizedBox(height: 20),
             const Concept(
               definition:
-                  "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años",
+                  "El interés simple (I), es el que se cobra sobre el capital (C) o Valor Presente (VP) por un cierto tiempo (t) expresado en años.",
               important: [
                 "interés simple (I)",
                 "capital (C)",
@@ -202,7 +214,7 @@ String _getResultText(SimpleVariable variable, String result) {
     case SimpleVariable.time:
       return "El Tiempo obtenido es de: $result";
     case SimpleVariable.interest:
-      return "El Interés obtenido es de: \$$result";
+      return "El Interés obtenido es de \$$result";
     default:
       return "";
   }

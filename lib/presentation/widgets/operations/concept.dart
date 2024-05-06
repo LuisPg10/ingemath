@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
 class Concept extends StatelessWidget {
-
   final String definition;
   final List<String> important;
   final List<String> equations;
@@ -16,7 +15,6 @@ class Concept extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final textStyles = Theme.of(context).textTheme;
 
     List<TextSpan> textSpans = [];
@@ -27,7 +25,6 @@ class Concept extends StatelessWidget {
     for (String word in important) {
       int index = definition.indexOf(word, currentIndex);
       if (index != -1) {
-
         // Add preceding non-important text
         if (index > currentIndex) {
           textSpans.add(
@@ -61,16 +58,13 @@ class Concept extends StatelessWidget {
             children: textSpans,
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 25),
         const Text("FORMULA:"),
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
         Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 15,
-          children: [
-            ...equations.map((equation) => Math.tex(equation))
-          ]
-        ),
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 15,
+            children: [...equations.map((equation) => Math.tex(equation))]),
       ],
     );
   }

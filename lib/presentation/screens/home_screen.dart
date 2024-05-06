@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
+import '../widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,10 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
+      height: 230,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(flex: 5),
+          const Spacer(flex: 3),
           const IngeMathLogo(size: 130),
           Text(
             "INGEMATH",
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                 letterSpacing: 3,
                 height: 0),
           ),
-          const Spacer(flex: 2),
+          const Spacer(flex: 1),
           SizedBox(
             height: 50,
             child: CustomFilledButton(

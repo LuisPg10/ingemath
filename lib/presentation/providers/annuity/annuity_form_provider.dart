@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:ingemath/domain/domain.dart';
-import 'package:ingemath/infraestructure/infraestructure.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
+import '../../../domain/domain.dart';
+import '../../../infraestructure/infraestructure.dart';
+import '../providers.dart';
 
 final annuityFormProvider =
     StateNotifierProvider.autoDispose<AnnuityFormNotifier, AnnuityFormState>(
@@ -13,50 +13,83 @@ final annuityFormProvider =
   );
 });
 
-enum AnnuityVariable { none, amount, annuityValue, interestRate, time }
+enum AnnuityVariable { none, amount, annuityValue, interestRate, time, annuity }
+
+enum CapitalizationInterest {
+  none,
+  days,
+  weeks,
+  months,
+  semesters,
+  years,
+}
 
 class AnnuityFormState {
   final menuOptions = const <AnnuityVariable, String>{
-    AnnuityVariable.amount: "Monto anualidad",
-    AnnuityVariable.annuityValue: "Valor actual de la anualidad",
-    AnnuityVariable.interestRate: "Tasa de interés",
-    AnnuityVariable.time: "Tiempo anualidad",
+    AnnuityVariable.amount: "Valor Final",
+    AnnuityVariable.annuityValue: "Valor Actual",
+    AnnuityVariable.annuity: "Valor de Anualidad",
+    AnnuityVariable.time: "Periodo o Tiempo",
+  };
+
+  final capitalizationOptions = const <CapitalizationInterest, String>{
+    CapitalizationInterest.days: "Diariamente",
+    CapitalizationInterest.weeks: "Semanalmente",
+    CapitalizationInterest.months: "Mensualmente",
+    CapitalizationInterest.semesters: "Semestralmente",
+    CapitalizationInterest.years: "Anualmente",
   };
 
   final bool isFormPosted;
   final bool isValid;
   final AnnuityVariable variable;
+  final CapitalizationInterest capitalization;
+  final double temporalTime;
+  final double adjustedInterestRate;
   final DataNumber amount;
   final DataNumber annuityValue;
+  final CapitalizationInterest typeInterest;
   final InterestRate interestRate;
   final DataNumber time;
-  final double result;
+  final String result;
 
   AnnuityFormState({
     this.isFormPosted = false,
     this.isValid = false,
     this.variable = AnnuityVariable.none,
+    this.capitalization = CapitalizationInterest.none,
+    this.temporalTime = 0,
+    this.adjustedInterestRate = 0,
     this.amount = const DataNumber.pure(),
     this.annuityValue = const DataNumber.pure(),
+    this.typeInterest = CapitalizationInterest.none,
     this.interestRate = const InterestRate.pure(),
     this.time = const DataNumber.pure(),
-    this.result = 0,
+    this.result = "",
   });
 
   AnnuityFormState copyWith({
     bool? isFormPosted,
     bool? isValid,
     AnnuityVariable? variable,
+    CapitalizationInterest? capitalization,
+    CapitalizationInterest? typeInterest,
+    double? temporalTime,
+    double? adjustedInterestRate,
     DataNumber? amount,
     DataNumber? annuityValue,
     InterestRate? interestRate,
     DataNumber? time,
-    double? result,
+    String? result,
   }) =>
       AnnuityFormState(
         isFormPosted: isFormPosted ?? this.isFormPosted,
         isValid: isValid ?? this.isValid,
         variable: variable ?? this.variable,
+        capitalization: capitalization ?? this.capitalization,
+        typeInterest: typeInterest ?? this.typeInterest,
+        temporalTime: temporalTime ?? this.temporalTime,
+        adjustedInterestRate: adjustedInterestRate ?? this.adjustedInterestRate,
         amount: amount ?? this.amount,
         annuityValue: annuityValue ?? this.annuityValue,
         interestRate: interestRate ?? this.interestRate,
@@ -73,9 +106,24 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
   }) : super(AnnuityFormState());
 
   void onOptionsAnnuitiesChanged(AnnuityVariable value) {
+    state = state.copyWith(variable: value);
+    clearFieldsAndResult();
+  }
+
+  void clearFieldsAndResult() {
     state = state.copyWith(
-      variable: value,
+      amount: const DataNumber.pure(),
+      annuityValue: const DataNumber.pure(),
+      time: const DataNumber.pure(),
+      interestRate: const InterestRate.pure(),
+      result: "",
+      isFormPosted: false,
+      isValid: false,
     );
+  }
+
+  void clearResult() {
+    state = state.copyWith();
   }
 
   void onAmountChanged(double value) {
@@ -90,16 +138,105 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
     );
   }
 
-  void onInterestRateChanged(double value) {
+  void onTypeInterestRateChanged(CapitalizationInterest value) {
     state = state.copyWith(
-      interestRate: InterestRate.dirty(value),
+      typeInterest: value,
     );
+  }
+
+  void onInterestRateChanged(double value) {
+    // Verificar si el tipo de interés seleccionado es diferente a la capitalización
+    if (state.capitalization != state.typeInterest) {
+      // Si son diferentes, realizar la conversión
+      double adjustedInterestRate;
+      // Obtener el divisor correspondiente según la capitalización seleccionada
+      switch (state.capitalization) {
+        case CapitalizationInterest.days:
+          adjustedInterestRate = value / 360;
+          break;
+        case CapitalizationInterest.weeks:
+          adjustedInterestRate = value / 52;
+          break;
+        case CapitalizationInterest.months:
+          adjustedInterestRate = value / 12;
+          break;
+        case CapitalizationInterest.semesters:
+          adjustedInterestRate = value / 2;
+          break;
+        case CapitalizationInterest.years:
+          adjustedInterestRate = value;
+          break;
+        default:
+          // Si no se ha seleccionado una capitalización, mantener el valor original
+          adjustedInterestRate = value;
+          break;
+      }
+
+      state = state.copyWith(
+        interestRate: InterestRate.dirty(adjustedInterestRate),
+      );
+    } else {
+      // Si son iguales, simplemente asignar la tasa de interés sin conversión
+      state = state.copyWith(
+        interestRate: InterestRate.dirty(value),
+      );
+    }
+  }
+
+  void onCapitalizationChanged(CapitalizationInterest value) {
+    state = state.copyWith(
+      capitalization: value,
+    );
+
+    switch (state.capitalization) {
+      case CapitalizationInterest.days:
+        state =
+            state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
+        break;
+      case CapitalizationInterest.months:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 12));
+        break;
+      case CapitalizationInterest.weeks:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 52));
+        break;
+      case CapitalizationInterest.semesters:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 2));
+        break;
+      case CapitalizationInterest.years:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 1));
+        break;
+      default:
+        break;
+    }
   }
 
   void onTimeChanged(double value) {
     state = state.copyWith(
-      time: DataNumber.dirty(value),
+      temporalTime: value,
     );
+
+    switch (state.capitalization) {
+      case CapitalizationInterest.days:
+        state =
+            state.copyWith(time: DataNumber.dirty(state.temporalTime * 360));
+        break;
+      case CapitalizationInterest.months:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 12));
+        break;
+      case CapitalizationInterest.weeks:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 52));
+        break;
+      case CapitalizationInterest.semesters:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 2));
+        break;
+      case CapitalizationInterest.years:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime * 1));
+        break;
+
+      default:
+        state = state.copyWith(time: DataNumber.dirty(state.temporalTime));
+        break;
+    }
   }
 
   void calculate() async {
@@ -107,38 +244,52 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
 
     if (!state.isValid) return;
 
-    double result = 0;
+    String result = "";
+
     switch (state.variable) {
       case AnnuityVariable.amount:
-        result = await repository.calculateAmount(
-          interestRate: state.interestRate.value,
+        double amount = await repository.calculateFinalValue(
+          annuityRate: state.interestRate.value,
           annuityValue: state.annuityValue.value,
           time: state.time.value,
         );
+        result = amount.toString();
         break;
 
       case AnnuityVariable.annuityValue:
-        result = await repository.calculateAnnuityValue(
-          interestRate: state.interestRate.value,
+        double annuityValue = await repository.calculateCurrentValue(
+          annuityRate: state.interestRate.value,
+          annuityValue: state.annuityValue.value,
+          time: state.time.value,
+        );
+        result = annuityValue.toString();
+        break;
+
+      case AnnuityVariable.annuity:
+        double annuity = await repository.calculateAnnuityValue(
+          annuityRate: state.interestRate.value,
           amount: state.amount.value,
           time: state.time.value,
         );
+        result = annuity.toString();
         break;
 
       case AnnuityVariable.interestRate:
-        result = await repository.calculateInterestRate(
+        double interestRate = await repository.calculateAnnuityRate(
           amount: state.amount.value,
           annuityValue: state.annuityValue.value,
           time: state.time.value,
         );
+        result = interestRate.toString();
         break;
 
       case AnnuityVariable.time:
-        result = await repository.calculateTime(
+        String time = await repository.calculateTime(
           amount: state.amount.value,
           annuityValue: state.annuityValue.value,
-          interestRate: state.interestRate.value,
+          annuityRate: state.interestRate.value,
         );
+        result = time;
         break;
       default:
         break;
@@ -155,9 +306,10 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       interestRate: InterestRate.dirty(state.interestRate.value),
       isValid: state.variable != AnnuityVariable.none &&
           Formz.validate([
-            if (state.variable != AnnuityVariable.amount) state.amount,
-            if (state.variable != AnnuityVariable.annuityValue)
-              state.annuityValue,
+            if (state.variable != AnnuityVariable.amount &&
+                state.variable != AnnuityVariable.annuityValue)
+              state.amount,
+            if (state.variable != AnnuityVariable.annuity) state.annuityValue,
             if (state.variable != AnnuityVariable.interestRate)
               state.interestRate,
             if (state.variable != AnnuityVariable.time) state.time,

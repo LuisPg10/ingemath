@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/widgets.dart';
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
 
 class InterestRateScreen extends StatelessWidget {
   const InterestRateScreen({super.key});
@@ -27,7 +27,6 @@ class InterestRateScreen extends StatelessWidget {
   }
 }
 
-
 class _InteresRateForm extends ConsumerWidget {
   const _InteresRateForm();
 
@@ -42,7 +41,6 @@ class _InteresRateForm extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            
             Text("Tasa de interés", style: textStyles.titleLarge),
             const Divider(
               color: Color(0xFFFF833D),
@@ -50,10 +48,11 @@ class _InteresRateForm extends ConsumerWidget {
               indent: 50,
               endIndent: 50,
             ),
-            
+
             const SizedBox(height: 20),
             const Concept(
-              definition: "Hace referencia a la cantidad que se abona en una unidad de tiempo por cada unidad de capital invertido",
+              definition:
+                  "Hace referencia a la cantidad que se abona en una unidad de tiempo por cada unidad de capital invertido",
               equations: [
                 r"i = \frac {I} {Ct}",
                 r"J = \sqrt[n]{\frac {VF} {VP}} - 1",
@@ -69,22 +68,21 @@ class _InteresRateForm extends ConsumerWidget {
               hintText: "Seleccionar",
               options: interestRateForm.interestOptions,
               onSelected: (value) {
-                ref.read(interestRateFormProvider.notifier)
-                .onTypeInterestChanged(value!);
+                ref
+                    .read(interestRateFormProvider.notifier)
+                    .onTypeInterestChanged(value!);
               },
               errorText: interestRateForm.isFormPosted &&
-              interestRateForm.typeInterest == TypeInterest.none
-              ? "Seleccione el tipo de interés"
-              : null,
+                      interestRateForm.typeInterest == TypeInterest.none
+                  ? "Seleccione el tipo de interés"
+                  : null,
             ),
 
             const SizedBox(height: 30),
-            Text(
-              "Completa la siguiente información:",
-              style: textStyles.bodyMedium?.copyWith(
-                color: const Color(0xFFF13636),
-              )
-            ),
+            Text("Completa la siguiente información:",
+                style: textStyles.bodyMedium?.copyWith(
+                  color: const Color(0xFFF13636),
+                )),
 
             const SizedBox(height: 15),
 
@@ -92,13 +90,14 @@ class _InteresRateForm extends ConsumerWidget {
               enable: interestRateForm.typeInterest != interestOptions[1],
               label: "Monto",
               onChanged: (value) {
-                ref.read(interestRateFormProvider.notifier)
-                .onAmountChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(interestRateFormProvider.notifier)
+                    .onAmountChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted &&
-                interestRateForm.typeInterest != TypeInterest.simple
-              ? interestRateForm.amount.errorMessage
-              : null,
+                      interestRateForm.typeInterest != TypeInterest.simple
+                  ? interestRateForm.amount.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
@@ -106,12 +105,13 @@ class _InteresRateForm extends ConsumerWidget {
             CustomTextFormField(
               label: "Capital",
               onChanged: (value) {
-                ref.read(interestRateFormProvider.notifier)
-                .onCapitalChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(interestRateFormProvider.notifier)
+                    .onCapitalChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted
-              ? interestRateForm.capital.errorMessage
-              : null,
+                  ? interestRateForm.capital.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 15),
@@ -120,13 +120,14 @@ class _InteresRateForm extends ConsumerWidget {
               enable: interestRateForm.typeInterest != interestOptions[0],
               label: "Interés",
               onChanged: (value) {
-                ref.read(interestRateFormProvider.notifier)
-                .onInterestChanged(double.tryParse(value) ?? 0);
+                ref
+                    .read(interestRateFormProvider.notifier)
+                    .onInterestChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: interestRateForm.isFormPosted &&
-              interestRateForm.typeInterest != TypeInterest.compound
-              ? interestRateForm.interest.errorMessage
-              : null,
+                      interestRateForm.typeInterest != TypeInterest.compound
+                  ? interestRateForm.interest.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 20),
@@ -139,14 +140,16 @@ class _InteresRateForm extends ConsumerWidget {
               hintText: "Seleccionar",
               options: interestRateForm.capitalizationOptions,
               onSelected: (value) {
-                ref.read(interestRateFormProvider.notifier)
-                .onCapitalizationChanged(value!);
+                ref
+                    .read(interestRateFormProvider.notifier)
+                    .onCapitalizationChanged(value!);
               },
               errorText: interestRateForm.isFormPosted &&
-              interestRateForm.capitalization == Capitalization.none &&
-              interestRateForm.typeInterest == interestOptions[0]
-              ? "Seleccione la capitalización"
-              : null,
+                      interestRateForm.capitalization ==
+                          CapitalizationInterest.none &&
+                      interestRateForm.typeInterest == interestOptions[0]
+                  ? "Seleccione la capitalización"
+                  : null,
             ),
 
             const SizedBox(height: 15),
@@ -154,11 +157,11 @@ class _InteresRateForm extends ConsumerWidget {
             CustomTimeFormField(
               label: "Tiempo",
               text: interestRateForm.time.value.toStringAsFixed(3),
-              setTime: ref.read(interestRateFormProvider.notifier)
-              .onTimeChanged,
+              setTime:
+                  ref.read(interestRateFormProvider.notifier).onTimeChanged,
               errorMessage: interestRateForm.isFormPosted
-              ? interestRateForm.time.errorMessage
-              : null,
+                  ? interestRateForm.time.errorMessage
+                  : null,
             ),
 
             const SizedBox(height: 30),
@@ -167,7 +170,8 @@ class _InteresRateForm extends ConsumerWidget {
               width: double.infinity,
               height: 40,
               child: CustomFilledButton(
-                onPressed: ref.read(interestRateFormProvider.notifier).calculate,
+                onPressed:
+                    ref.read(interestRateFormProvider.notifier).calculate,
                 child: const Text("Calcular"),
               ),
             ),
@@ -183,7 +187,8 @@ class _InteresRateForm extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: const Color(0xFFD3AD24),
               ),
-              child: Text("Resultado: ${interestRateForm.result}",
+              child: Text(
+                "Resultado: ${interestRateForm.result}",
                 style: const TextStyle(color: Colors.white),
               ),
             ),

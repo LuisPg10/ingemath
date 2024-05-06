@@ -1,4 +1,4 @@
-import 'package:ingemath/domain/entities/capitalization.dart';
+import '../entities/capitalization.dart';
 
 abstract class CalculationCompoundDatasource {
   Future<double> calculateAmountComp({
@@ -9,19 +9,19 @@ abstract class CalculationCompoundDatasource {
     required double time,
   });
 
- Future<double> calculateInterestRate({
+  Future<double> calculateInterestRate({
     required double amount,
     required double capital,
     required double time,
     required TypeInterestRate typeInterestRate,
-    required CapitalizationPeriod capitalizationPeriod ,
+    required CapitalizationPeriod capitalizationPeriod,
   });
 
-   Future<double> calculateInterestRate2({
+  Future<double> calculateInterestRate2({
     required double amount,
     required double capital,
   });
-  
+
   Future<double> calculateCapitalComp({
     required double amount,
     required double capInterestRate,

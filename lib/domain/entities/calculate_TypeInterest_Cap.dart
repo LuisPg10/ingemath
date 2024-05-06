@@ -1,4 +1,4 @@
-import 'package:ingemath/domain/domain.dart';
+import '../domain.dart';
 
 double formulaTipoInteres(TypeInterestRate typeInterestRate,
     CapitalizationPeriod capitalizationPeriod) {
