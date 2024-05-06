@@ -132,6 +132,25 @@ class _AnnuitiesForm extends ConsumerWidget {
                   : null,
             ),
 
+            const SizedBox(height: 20),
+            const Text("Tipo de Tasa de Interes"),
+            const SizedBox(height: 15),
+
+            CustomDropDownMenu(
+              enable: true,
+              hintText: "Seleccionar",
+              options: annuityForm.capitalizationOptions,
+              onSelected: (value) {
+                ref
+                    .read(annuityFormProvider.notifier)
+                    .onTypeInterestRateChanged(value!);
+              },
+              errorText: annuityForm.isFormPosted &&
+                      annuityForm.capitalization == CapitalizationInterest.none
+                  ? "Seleccione la tasa  de interés"
+                  : null,
+            ),
+
             const SizedBox(height: 15),
             CustomTextFormField(
               enable: true,

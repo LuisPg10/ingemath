@@ -45,8 +45,10 @@ class AnnuityFormState {
   final AnnuityVariable variable;
   final CapitalizationInterest capitalization;
   final double temporalTime;
+  final double adjustedInterestRate;
   final DataNumber amount;
   final DataNumber annuityValue;
+  final CapitalizationInterest typeInterest;
   final InterestRate interestRate;
   final DataNumber time;
   final String result;
@@ -57,8 +59,10 @@ class AnnuityFormState {
     this.variable = AnnuityVariable.none,
     this.capitalization = CapitalizationInterest.none,
     this.temporalTime = 0,
+    this.adjustedInterestRate = 0,
     this.amount = const DataNumber.pure(),
     this.annuityValue = const DataNumber.pure(),
+    this.typeInterest = CapitalizationInterest.none,
     this.interestRate = const InterestRate.pure(),
     this.time = const DataNumber.pure(),
     this.result = "",
@@ -69,7 +73,9 @@ class AnnuityFormState {
     bool? isValid,
     AnnuityVariable? variable,
     CapitalizationInterest? capitalization,
+    CapitalizationInterest? typeInterest,
     double? temporalTime,
+    double? adjustedInterestRate,
     DataNumber? amount,
     DataNumber? annuityValue,
     InterestRate? interestRate,
@@ -81,7 +87,9 @@ class AnnuityFormState {
         isValid: isValid ?? this.isValid,
         variable: variable ?? this.variable,
         capitalization: capitalization ?? this.capitalization,
+        typeInterest: typeInterest ?? this.typeInterest,
         temporalTime: temporalTime ?? this.temporalTime,
+        adjustedInterestRate: adjustedInterestRate ?? this.adjustedInterestRate,
         amount: amount ?? this.amount,
         annuityValue: annuityValue ?? this.annuityValue,
         interestRate: interestRate ?? this.interestRate,
@@ -137,42 +145,60 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
     );
   }
 
-  void onInterestRateChanged(double value) {
-    double adjustedInterestRate;
-
-    // Obtener el divisor correspondiente según la capitalización seleccionada
-    switch (state.capitalization) {
-      case CapitalizationInterest.days:
-        adjustedInterestRate = value / 360;
-        break;
-      case CapitalizationInterest.weeks:
-        adjustedInterestRate = value / 52;
-        break;
-      case CapitalizationInterest.months:
-        adjustedInterestRate = value / 12;
-        break;
-      case CapitalizationInterest.semesters:
-        adjustedInterestRate = value / 2;
-        break;
-      case CapitalizationInterest.years:
-        adjustedInterestRate = value;
-        break;
-      default:
-        // Si no se ha seleccionado una capitalización, mantener el valor original
-        adjustedInterestRate = value;
-        break;
-    }
-
+  void onTypeInterestRateChanged(CapitalizationInterest value) {
     state = state.copyWith(
-      interestRate: InterestRate.dirty(adjustedInterestRate),
+      typeInterest: value,
     );
-    print(adjustedInterestRate);
+
+    print("Interest: ${state.typeInterest}");
+  }
+
+  void onInterestRateChanged(double value) {
+    // Verificar si el tipo de interés seleccionado es diferente a la capitalización
+    if (state.capitalization != state.typeInterest) {
+      // Si son diferentes, realizar la conversión
+      double adjustedInterestRate;
+      // Obtener el divisor correspondiente según la capitalización seleccionada
+      switch (state.capitalization) {
+        case CapitalizationInterest.days:
+          adjustedInterestRate = value / 360;
+          break;
+        case CapitalizationInterest.weeks:
+          adjustedInterestRate = value / 52;
+          break;
+        case CapitalizationInterest.months:
+          adjustedInterestRate = value / 12;
+          break;
+        case CapitalizationInterest.semesters:
+          adjustedInterestRate = value / 2;
+          break;
+        case CapitalizationInterest.years:
+          adjustedInterestRate = value;
+          break;
+        default:
+          // Si no se ha seleccionado una capitalización, mantener el valor original
+          adjustedInterestRate = value;
+          break;
+      }
+
+      state = state.copyWith(
+        interestRate: InterestRate.dirty(adjustedInterestRate),
+      );
+      print(adjustedInterestRate);
+    } else {
+      // Si son iguales, simplemente asignar la tasa de interés sin conversión
+      state = state.copyWith(
+        interestRate: InterestRate.dirty(value),
+      );
+    }
   }
 
   void onCapitalizationChanged(CapitalizationInterest value) {
     state = state.copyWith(
       capitalization: value,
     );
+
+    print(state.capitalization);
 
     switch (state.capitalization) {
       case CapitalizationInterest.days:
