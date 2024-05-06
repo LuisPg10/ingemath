@@ -50,7 +50,7 @@ double formulaTiempo(int M4, int M5, int M6, int M7, int M8, int M9, Capitalizat
 
             if (capitalizationPeriod == CapitalizationPeriod.anual) {
               tiempo = ((years["B4"] * M4) + // año
-                  (years["C4"] * M5) + // meses
+                  (years["C4"] * M5) + // meses 1/12 * 12 = 1
                   (years["D4"] * M6) + // dias
                   (years["E4"] * M7) + // semestre
                   (years["F4"] * M8) + // trimestre

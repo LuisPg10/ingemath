@@ -29,9 +29,9 @@ const appMenuOptions = <Option>[
     link: "compound_interest",
   ),
 
-  // Option(
-  //  name: "Anualidades",
-  //  icon: "assets/images/annuities.png",
-  //  link: "annuities",
-  // ),
+  Option(
+   name: "Gradiente",
+   icon: "assets/images/gradient.png",
+   link: "gradient",
+  ),
 ];
