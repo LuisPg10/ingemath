@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomBackground extends StatelessWidget {
-
   final Widget child;
 
   const CustomBackground({
@@ -19,10 +18,7 @@ class CustomBackground extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Transform.flip(
-              flipX: true,
-              flipY: true,              
-              child: const _CustomLines()
-            ),
+                flipX: true, flipY: true, child: const _CustomLines()),
           ),
           child
         ],

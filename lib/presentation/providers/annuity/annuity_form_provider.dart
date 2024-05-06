@@ -106,31 +106,24 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
   }) : super(AnnuityFormState());
 
   void onOptionsAnnuitiesChanged(AnnuityVariable value) {
-    state = state.copyWith(
-      variable: value,
-    );
+    state = state.copyWith(variable: value);
+    clearFieldsAndResult();
   }
 
   void clearFieldsAndResult() {
-    clearFields();
-    clearResult();
-  }
-
-  void clearFields() {
     state = state.copyWith(
       amount: const DataNumber.pure(),
       annuityValue: const DataNumber.pure(),
       time: const DataNumber.pure(),
       interestRate: const InterestRate.pure(),
-    );
-  }
-
-  void clearResult() {
-    state = state.copyWith(
       result: "",
       isFormPosted: false,
       isValid: false,
     );
+  }
+
+  void clearResult() {
+    state = state.copyWith();
   }
 
   void onAmountChanged(double value) {
@@ -149,8 +142,6 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
     state = state.copyWith(
       typeInterest: value,
     );
-
-    print("Interest: ${state.typeInterest}");
   }
 
   void onInterestRateChanged(double value) {
@@ -184,7 +175,6 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       state = state.copyWith(
         interestRate: InterestRate.dirty(adjustedInterestRate),
       );
-      print(adjustedInterestRate);
     } else {
       // Si son iguales, simplemente asignar la tasa de interés sin conversión
       state = state.copyWith(
@@ -197,8 +187,6 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
     state = state.copyWith(
       capitalization: value,
     );
-
-    print(state.capitalization);
 
     switch (state.capitalization) {
       case CapitalizationInterest.days:
