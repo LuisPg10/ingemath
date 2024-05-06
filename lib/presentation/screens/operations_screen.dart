@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ingemath/presentation/widgets/shared/custom_background.dart';
+import 'package:ingemath/presentation/widgets/shared/header.dart';
 import '../../config/menu/operation_options.dart';
 
 class OperationsScreen extends StatelessWidget {
@@ -8,16 +10,26 @@ class OperationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Bienvenidos a IngeMath")),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
+    return CustomBackground(
+      height: 180,
+      showArrow: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            const Text("Elige la herramienta contable de tu interes"),
-            const SizedBox(height: 20),
+            const Header(),
+            const SizedBox(height: 40),
+            const Text(
+              "Bienvenidos a IngeMath",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              "Elige la herramienta contable de tu \ninteres !",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
             Expanded(
                 child: MasonryGridView.count(
               padding: const EdgeInsets.symmetric(horizontal: 20),

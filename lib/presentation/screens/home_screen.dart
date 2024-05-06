@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
+      height: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
