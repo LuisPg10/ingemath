@@ -10,11 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
-      height: 180,
+      height: 230,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(flex: 5),
+          const Spacer(flex: 3),
           const IngeMathLogo(size: 130),
           Text(
             "INGEMATH",
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                 letterSpacing: 3,
                 height: 0),
           ),
-          const Spacer(flex: 2),
+          const Spacer(flex: 1),
           SizedBox(
             height: 50,
             child: CustomFilledButton(

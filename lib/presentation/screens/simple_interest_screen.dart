@@ -10,24 +10,27 @@ class SimpleInterestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
-      height: 180,
+      height: 200,
+      showArrow: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Header(),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              height: 640,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFDC62),
-                borderRadius: BorderRadius.circular(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 700,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDC62),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const _SimpleInterestForm(),
               ),
-              child: const _SimpleInterestForm(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

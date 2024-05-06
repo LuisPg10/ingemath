@@ -4,12 +4,14 @@ import 'package:ingemath/presentation/widgets/shared/flecha.dart';
 class CustomBackground extends StatelessWidget {
   final Widget child;
   final bool showArrow;
+  final bool showLogo;
   final double height;
 
   const CustomBackground({
     super.key,
     required this.child,
     this.showArrow = false,
+    this.showLogo = false,
     this.height = 200,
   });
 
@@ -32,7 +34,7 @@ class CustomBackground extends StatelessWidget {
             const Flecha(
               navigation: "/login",
               icon: Icons.close_rounded,
-              alignment: 350,
+              alignment: 320,
             ),
           child,
         ],
