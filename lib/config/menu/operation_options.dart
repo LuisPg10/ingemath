@@ -22,7 +22,7 @@ const appMenuOptions = <Option>[
     link: "simple_interest",
   ),
   Option(
-    name: "Interé compuesto",
+    name: "    Interés \n compuesto",
     icon: "assets/images/compound-interest.png",
     link: "compound_interest",
   ),
@@ -31,10 +31,9 @@ const appMenuOptions = <Option>[
     icon: "assets/images/annuities.png",
     link: "annuities",
   ),
-
   Option(
-   name: "Gradiente",
-   icon: "assets/images/gradient.png",
-   link: "gradient",
+    name: "Gradientes",
+    icon: "assets/images/gradient.png",
+    link: "gradient",
   ),
 ];

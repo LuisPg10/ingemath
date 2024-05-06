@@ -1,5 +1,4 @@
-
-abstract class CalculationGradientDatasource {
+abstract class CalculationGradientRepository {
 
   // GRADIENTE ARITMETICO
   

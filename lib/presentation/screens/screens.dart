@@ -4,3 +4,4 @@ export 'home_screen.dart';
 export 'interest_rate_screen.dart';
 export 'operations_screen.dart';
 export 'simple_interest_screen.dart';
+export 'gradient_screen.dart';
