@@ -59,12 +59,13 @@ class _AnnuitiesForm extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             const Concept(
+              spaicing: 3,
               definition:
                   "Anualidad se refiere a un conjunto de pagos, depósitos o retiros realizados por la misma cantidad a intervalos iguales de tiempo. A los cuales se aplica interés compuesto.",
               important: ["Anualidad", "intervalos iguales"],
               equations: [
-                r"VF = A[\frac {(1+i)^n -1} {i}]",
-                r"VA = A[ \frac {1 - (1+i)^{-n}} {i}]",
+                r"VF = A[\frac {(1+i)^n-1} {i}],",
+                r"VA = A[ \frac {1-(1+i)^{-n}} {i}]",
               ],
             ),
 

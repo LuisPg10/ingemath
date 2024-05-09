@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../providers/providers.dart';
 import '../widgets/compoundInterest/custom_time_Cap_form_f.dart';
 import '../widgets/operations/conception_Compound.dart';
+import '../widgets/shared/header.dart';
 import '../widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {
@@ -11,18 +12,28 @@ class CompoundInterestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Interes Compuesto"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: const Color(0xFFFFDC62),
-              borderRadius: BorderRadius.circular(20)),
-          child: const _CompoundInterestForm(),
+    return CustomBackground(
+      height: 200,
+      showArrow: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 685,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDC62),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const _CompoundInterestForm(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -51,8 +62,23 @@ class _CompoundInterestForm extends ConsumerWidget {
               endIndent: 6,
             ),
             const SizedBox(height: 20),
-            ConceptionCompoundInterest(textStyles: textStyles),
-
+            const Concept(
+              definition:
+                  "El Interes compuesto es Es la acumulación de intereses que se generan en un período determinado de tiempo por un capital inicial o principal a una tasa de interés durante determinados periodos de imposición, de manera que los intereses que se obtienen al final de los períodos de inversión no se reinvierten al capital inicial, o sea, se capitalizan.",
+              important: ["Interes compuesto"],
+              equations: [
+                r"I = {(\frac {MC}{C})^1/n-1}",
+                r"\text{\textbardbl}",
+                r"I_C = {MC-C}",
+                r"M = {C(1+i)^n}", 
+                r"",
+                r"",
+                r"\text{\textbardbl}",
+                r"C = {\frac {MC} {(1+i)^n}} ",
+                r"M = {\scriptsize\frac {Log MC - Log C} {Log (1+i)}} ",
+              ],
+            ),
+            const SizedBox(height: 20),
             Text(
               "Calculadora de Interés Compuesto",
               style: GoogleFonts.montserrat().copyWith(

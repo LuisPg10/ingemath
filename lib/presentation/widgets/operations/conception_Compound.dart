@@ -19,7 +19,7 @@ class ConceptionCompoundInterest extends StatelessWidget {
             children: const <TextSpan>[
               TextSpan(
                 text:
-                    'El interés compuesto es cuando los intereses generados se agregan al capital inicial en cada período, lo que resulta en un crecimiento exponencial del capital a lo largo del tiempo.\n ',
+                    'Un gradiente o serie variable es una serie de cuotas que no son iguales, pero tienen una constante de variación. Esta puede ser un valor, lo que da origen al gradiente Aritmetico o Lineal, o un porcentaje, lo que genera el gradiente Geometrico; igualmente, esa variación puede ser positiva o negativa, por lo que los gradientes pueden \n ',
               ),
               TextSpan(
                 text: '\n La ecuacion de interes compuesto es:',

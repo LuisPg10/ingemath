@@ -32,6 +32,10 @@ final appRouter = GoRouter(
           path: "tir",
           builder: (context, state) => const TirScreen(),
         ),
+        GoRoute(
+          path: "gradient",
+          builder: (context, state) => const GradientScreen(),
+        ),
       ],
     ),
   ],
