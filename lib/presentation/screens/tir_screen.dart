@@ -112,6 +112,7 @@ class _TirForm extends ConsumerWidget {
                 .onVanChanged(double.tryParse(value) ?? 0);
               },
               errorMessage: tirForm.isFormPosted && tirForm.variable != TirVariable.van
+              && tirForm.variable != TirVariable.tir
               ? tirForm.van.errorMessage
               : null,
             ),

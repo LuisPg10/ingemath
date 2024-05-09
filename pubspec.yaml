@@ -17,6 +17,7 @@ dependencies:
   google_fonts: ^6.1.0
   intl: ^0.17.0
   fraction: ^5.0.2
+  finance_updated: ^0.1.0
 
 dev_dependencies:
   flutter_test:
