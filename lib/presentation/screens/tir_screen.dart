@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/providers/tir/tir_form_provider.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class TirScreen extends StatelessWidget {
@@ -179,7 +180,9 @@ class _TirForm extends ConsumerWidget {
                 color: const Color(0xFFD3AD24),
               ),
               child: Text(
-                "Resultado: ${tirForm.result}",
+                tirForm.isFormPosted && tirForm.isValid
+                ? _getResultText(tirForm.variable, tirForm.result)
+                : "RESULTADO:",
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -188,4 +191,19 @@ class _TirForm extends ConsumerWidget {
       ),
     );
   }
+
+  String _getResultText(TirVariable variable, double result) {
+  switch (variable) {
+    case TirVariable.none:
+      return "RESULTADO:";
+    case TirVariable.van:
+      return "El valor actual neto obtenido es de: \$$result";
+    case TirVariable.investment:
+      return "La inversión hecha es de: \$$result";
+    case TirVariable.tir:
+      return "La tasa interna de retorno obtenida es de: \$$result";
+    default:
+      return "";
+  }
+}
 }

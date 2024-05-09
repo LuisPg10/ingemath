@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ingemath/presentation/providers/interest_rate/interest_rate_form_provider.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
@@ -156,7 +157,7 @@ class _InteresRateForm extends ConsumerWidget {
               },
               errorText: interestRateForm.isFormPosted &&
                       interestRateForm.capitalization ==
-                          CapitalizationInterest.none &&
+                          Capitalization.none &&
                       interestRateForm.typeInterest == interestOptions[0]
                   ? "Seleccione la capitalización"
                   : null,
@@ -198,7 +199,9 @@ class _InteresRateForm extends ConsumerWidget {
                 color: const Color(0xFFD3AD24),
               ),
               child: Text(
-                "Resultado: ${interestRateForm.result}",
+                interestRateForm.isFormPosted && interestRateForm.isValid
+                ? _getResultText(interestRateForm.typeInterest, interestRateForm.result)
+                : "RESULTADO:",
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -206,5 +209,18 @@ class _InteresRateForm extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+   String _getResultText(TypeInterest variable, double result) {
+    switch (variable) {
+      case TypeInterest.none:
+        return "RESULTADO:";
+      case TypeInterest.compound:
+        return "El interés compuesto es de: \$$result";
+      case TypeInterest.simple:
+        return "El interes simple es de: \$$result";
+      default:
+        return "";
+    }
   }
 }
