@@ -5,12 +5,14 @@ class Concept extends StatelessWidget {
   final String definition;
   final List<String> important;
   final List<String> equations;
+  final double spaicing;
 
   const Concept({
     super.key,
     required this.definition,
     this.important = const [],
     required this.equations,
+    this.spaicing = 15,
   });
 
   @override
@@ -63,7 +65,7 @@ class Concept extends StatelessWidget {
         const SizedBox(height: 15),
         Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 15,
+            spacing: spaicing,
             children: [...equations.map((equation) => Math.tex(equation))]),
       ],
     );
