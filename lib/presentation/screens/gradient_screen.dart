@@ -15,7 +15,7 @@ class GradientScreen extends StatelessWidget {
       height: 200,
       showArrow: true,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,14 +63,26 @@ class _GradientForm extends ConsumerWidget {
             const SizedBox(height: 20),
             const Concept(
               definition:
-                  "Un Gradiente o serie variable es una serie de cuotas que no son iguales, pero tienen una constante de variación. Esta puede ser un valor, lo que da origen al gradiente Aritmetico o Lineal, o un porcentaje, lo que genera el gradiente Geometrico.",
-              important: ["Gradiente", "no son iguales"],
+                  "Un Gradiente o serie variable es una serie de cuotas que no son iguales, pero tienen una constante de variación. Esta puede ser un valor, lo que da origen al gradiente Aritmetico o Lineal, o un porcentaje, lo que genera el gradiente Geometrico; Igualmente, esa variación puede ser positiva o negativa, por lo que los gradientes pueden ser Crecientes (C) o Decrecientes (D)",
+              important: ["Gradiente", "no son iguales", "Crecientes", "Decrecientes"],
               equations: [
-                r"P = A[\frac {1 - (1+i)^-n} {i} ]",
-
+                r"Aritmetico: CyD",
+                r" \vdots\scriptsize V_p = A\Bigg\lbrack~ \frac {1-(1+i)^-n} {i}  \Bigg\rbrack + \frac {G}{i} \Bigg\lbrack~ \frac {1-(1+i)^-n} {i}-\frac {n} {(1+i)^n} \Bigg\rbrack",
+                r"",
+                r" \vdots\scriptsize V_f = A\Bigg\lbrack~ \frac {(1+i)^n - 1} {i}  \Bigg\rbrack + \frac {G}{i} \Bigg\lbrack~ \frac {(1+i)^n - 1} {i} - n \Bigg\rbrack ",
+                
+                r" \vdots\scriptsize V_p = A\Bigg\lbrack~ \frac {1-(1+i)^-n} {i}  \Bigg\rbrack + \frac {G}{i} \Bigg\lbrack~ \frac {1-(1+i)^-n} {i}-\frac {n} {(1+i)^n} \Bigg\rbrack",
+                r"",
+                r" \vdots\scriptsize V_f = A\Bigg\lbrack~ \frac {(1+i)^n - 1} {i}  \Bigg\rbrack + \frac {G}{i} \Bigg\lbrack~ \frac {(1+i)^n - 1} {i} - n \Bigg\rbrack ",
+                r"Geometrico: ",
+                r"", r"",
+                r"\vdots \scriptsize V_p = \Bigg\lbrack~ \frac {A [(1+G)^n (1+i)^-n - 1]} {G - i} \Bigg\rbrack (C) ",
+                r"\vdots \scriptsize V_f = \Bigg\lbrack~ \frac {A [(1+G)^n (1+i)^n ]} {G - i} \Bigg\rbrack (C)",
+                r"\vdots \scriptsize V_p = \Bigg\lbrack~ \frac {A [(1+G)^n (1+i)^-n - 1]} {G + i} \Bigg\rbrack (D)",
+                r"\vdots \scriptsize V_f = \Bigg\lbrack~ \frac {A [(1+G)^n - (1+i)^n ]} {G + i} \Bigg\rbrack (D)",
               ],
             ),
-            
+
             const SizedBox(height: 20),
             Text(
               "Calculadora de Gradientes",
@@ -149,7 +161,7 @@ class _GradientForm extends ConsumerWidget {
 
             //Form
             CustomTextFormField(
-              label: "Serie de pagos",
+              label: "Serie de pagos (A)",
               onChanged: (value) {
                 ref
                     .read(gradientFormProvider.notifier)
@@ -167,7 +179,7 @@ class _GradientForm extends ConsumerWidget {
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-              label: "Variación G",
+              label: "Variación (G)",
               onChanged: (value) {
                 ref
                     .read(gradientFormProvider.notifier)
@@ -185,7 +197,7 @@ class _GradientForm extends ConsumerWidget {
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-              label: "Tasa de Interés (%)",
+              label: "Tasa de Interés (%) (I)",
               onChanged: (value) {
                 ref
                     .read(gradientFormProvider.notifier)
@@ -203,7 +215,7 @@ class _GradientForm extends ConsumerWidget {
             ),
             const SizedBox(height: 15),
             CustomTextFormField(
-              label: "Número de períodos",
+              label: "Número de períodos (n)",
               onChanged: (value) {
                 ref
                     .read(gradientFormProvider.notifier)

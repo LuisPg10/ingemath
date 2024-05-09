@@ -2,9 +2,10 @@ import 'dart:math';
 import '../../domain/domain.dart';
 
 class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
-  // GRADIENTE ARITMETICO
 
-  // CRECIENTE
+  // ARITHMETIC GRADIENT
+
+  // GROWING
   @override
   Future<double> calculateGradientAIncreasingVP(
       {required double paymentSeries,
@@ -41,7 +42,7 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     return valorFuture;
   }
 
-// DECRECIENTE
+// DECREASING
   @override
   Future<double> calculateGradientADecreasingVP(
       {required double paymentSeries,
@@ -79,7 +80,7 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     return valorFuture;
   }
 
-  // GRADIENTE ARITMETICO
+  // GEOMETRIC GRADIENT
 
   // CRECIENTE
   @override
@@ -91,6 +92,8 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     double interes = interestRate / 100;
     double variation = variationG / 100;
 
+    // Equation 1: Definitive Correct
+
     double terminoExp1 = pow((1 + variation), numPeriod).toDouble();
     double terminoExp2 = pow((1 + interes), -numPeriod).toDouble();
 
@@ -98,6 +101,16 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     double denominador = variation - interes;
 
     double valorPresent = numerador / denominador;
+
+    // Equation 2: 
+
+    // double termino1 = pow((1 + variation), numPeriod).toDouble();
+    // double termino2 = pow((1 + interes), numPeriod).toDouble();
+    // double termino3 = (variation - interes).toDouble();
+
+    // double expresion1 = (paymentSeries / termino3 );
+    // double expresion2 = (termino1 / termino2 - 1);
+    // double valorPresent = expresion1 * expresion2;
     return valorPresent;
   }
 
@@ -107,10 +120,11 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
       required double variationG,
       required double interestRate,
       required double numPeriod}) async {
-
     double interes = interestRate / 100;
     double variation = variationG / 100;
-    
+
+   // Equation 1: Definitive Correct
+
     double terminoExp1 = pow((1 + variation), numPeriod).toDouble();
     double terminoExp2 = pow((1 + interes), numPeriod).toDouble();
 
@@ -118,10 +132,22 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     double denominador = variation - interes;
 
     double valorFuture = numerador / denominador;
+
+
+    // Equation 2: 
+
+    // double termino1 = pow((1 + variation), numPeriod).toDouble();
+    // double termino2 = pow((1 + interes), numPeriod).toDouble();
+
+    // double expresion1 = paymentSeries / (variation - interes);
+    // double expresion2 = (termino1 - termino2);
+    // double valorFuture = expresion1 * expresion2;
+    
+
     return valorFuture;
   }
 
-// DECRECIENTE
+// DECREASING
   @override
   Future<double> calculateGradientGDecreasingVP(
       {required double paymentSeries,
@@ -131,6 +157,7 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     double interes = interestRate / 100;
     double variation = variationG / 100;
 
+
     double terminoExp1 = pow((1 - variation), numPeriod).toDouble();
     double terminoExp2 = pow((1 + interes), -numPeriod).toDouble();
 
@@ -138,6 +165,7 @@ class CalculationGradientDatasourceImpl extends CalculationGradientDatasource {
     double denominador = variation + interes;
 
     double valorPresent = numerador / denominador;
+
     return valorPresent;
   }
 
