@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ingemath/presentation/providers/providers.dart';
-import 'package:ingemath/presentation/widgets/shared/header.dart';
 import 'package:ingemath/presentation/widgets/widgets.dart';
 
 class TirScreen extends StatelessWidget {

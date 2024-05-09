@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/providers.dart';
-import '../widgets/widgets.dart';
+import 'package:ingemath/presentation/providers/providers.dart';
+import 'package:ingemath/presentation/widgets/widgets.dart';
+
 
 class InterestRateScreen extends StatelessWidget {
   const InterestRateScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tasa de interés"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFDC62),
-            borderRadius: BorderRadius.circular(20),
+    return CustomBackground(
+      height: 200,
+      showArrow: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 700,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDC62),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const _InteresRateForm(),
+              ),
+            ],
           ),
-          child: const _InteresRateForm(),
         ),
-      ),
+      )
     );
   }
 }
