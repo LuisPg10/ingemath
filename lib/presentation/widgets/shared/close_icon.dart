@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Flecha extends StatelessWidget {
-  const Flecha({
+class CloseIcon extends StatelessWidget {
+  const CloseIcon({
     super.key,
     required this.navigation,
     required this.icon,

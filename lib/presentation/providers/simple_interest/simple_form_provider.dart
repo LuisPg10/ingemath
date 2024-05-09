@@ -28,7 +28,7 @@ class SimpleFormState {
   final bool isValid;
   final SimpleVariable variable;
   final DataNumber capital;
-  final InterestRate rateInterest;
+  final DataPercentage rateInterest;
   final DataNumber time;
   final DataNumber interest;
   final String result;
@@ -38,7 +38,7 @@ class SimpleFormState {
     this.isValid = false,
     this.variable = SimpleVariable.none,
     this.capital = const DataNumber.pure(),
-    this.rateInterest = const InterestRate.pure(),
+    this.rateInterest = const DataPercentage.pure(),
     this.time = const DataNumber.pure(),
     this.interest = const DataNumber.pure(),
     this.result = "",
@@ -49,7 +49,7 @@ class SimpleFormState {
     bool? isValid,
     SimpleVariable? variable,
     DataNumber? capital,
-    InterestRate? rateInterest,
+    DataPercentage? rateInterest,
     DataNumber? time,
     DataNumber? interest,
     String? result,
@@ -81,7 +81,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
   void clearFieldsAndResult() {
     state = state.copyWith(
       capital: const DataNumber.pure(),
-      rateInterest: const InterestRate.pure(),
+      rateInterest: const DataPercentage.pure(),
       time: const DataNumber.pure(),
       interest: const DataNumber.pure(),
       result: "",
@@ -104,7 +104,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
 
   void onRateInterestChanged(double value) {
     state = state.copyWith(
-      rateInterest: InterestRate.dirty(value),
+      rateInterest: DataPercentage.dirty(value),
     );
   }
 
@@ -171,7 +171,7 @@ class SimpleFormNotifier extends StateNotifier<SimpleFormState> {
       isFormPosted: true,
       capital: DataNumber.dirty(state.capital.value),
       time: DataNumber.dirty(state.time.value),
-      rateInterest: InterestRate.dirty(state.rateInterest.value),
+      rateInterest: DataPercentage.dirty(state.rateInterest.value),
       interest: DataNumber.dirty(state.interest.value),
       isValid: state.variable != SimpleVariable.none &&
           Formz.validate([

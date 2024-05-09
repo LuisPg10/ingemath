@@ -10,3 +10,4 @@ export 'compoundInterest/custom_text_form_field_M.dart';
 
 export 'operations/concept.dart';
 export 'operations/custom_time_form_field.dart';
+export 'operations/tir/cashflow_text_field.dart';

@@ -9,3 +9,6 @@ export 'compound_interest/compound_repository_provider.dart';
 
 export 'interest_rate/interest_rate_form_provider.dart';
 export 'interest_rate/interest_rate_repository_provider.dart';
+
+export 'tir/tir_form_provider.dart';
+export 'tir/tir_repository_provider.dart';

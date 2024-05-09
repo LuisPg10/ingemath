@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ingemath/presentation/widgets/shared/flecha.dart';
+import 'package:ingemath/presentation/widgets/shared/close_icon.dart';
 
 class CustomBackground extends StatelessWidget {
   final Widget child;
@@ -31,7 +31,7 @@ class CustomBackground extends StatelessWidget {
             ),
           ),
           if (showArrow)
-            const Flecha(
+            const CloseIcon(
               navigation: "/login",
               icon: Icons.close_rounded,
               alignment: 320,

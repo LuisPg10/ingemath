@@ -31,4 +31,9 @@ const appMenuOptions = <Option>[
     icon: "assets/images/annuities.png",
     link: "annuities",
   ),
+  Option(
+    name: "Tir",
+    icon: "assets/images/tir.png",
+    link: "tir",
+  ),
 ];

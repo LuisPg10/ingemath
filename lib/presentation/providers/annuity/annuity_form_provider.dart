@@ -49,7 +49,7 @@ class AnnuityFormState {
   final DataNumber amount;
   final DataNumber annuityValue;
   final CapitalizationInterest typeInterest;
-  final InterestRate interestRate;
+  final DataPercentage interestRate;
   final DataNumber time;
   final String result;
 
@@ -63,7 +63,7 @@ class AnnuityFormState {
     this.amount = const DataNumber.pure(),
     this.annuityValue = const DataNumber.pure(),
     this.typeInterest = CapitalizationInterest.none,
-    this.interestRate = const InterestRate.pure(),
+    this.interestRate = const DataPercentage.pure(),
     this.time = const DataNumber.pure(),
     this.result = "",
   });
@@ -78,7 +78,7 @@ class AnnuityFormState {
     double? adjustedInterestRate,
     DataNumber? amount,
     DataNumber? annuityValue,
-    InterestRate? interestRate,
+    DataPercentage? interestRate,
     DataNumber? time,
     String? result,
   }) =>
@@ -115,7 +115,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       amount: const DataNumber.pure(),
       annuityValue: const DataNumber.pure(),
       time: const DataNumber.pure(),
-      interestRate: const InterestRate.pure(),
+      interestRate: const DataPercentage.pure(),
       result: "",
       isFormPosted: false,
       isValid: false,
@@ -173,12 +173,12 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       }
 
       state = state.copyWith(
-        interestRate: InterestRate.dirty(adjustedInterestRate),
+        interestRate: DataPercentage.dirty(adjustedInterestRate),
       );
     } else {
       // Si son iguales, simplemente asignar la tasa de interés sin conversión
       state = state.copyWith(
-        interestRate: InterestRate.dirty(value),
+        interestRate: DataPercentage.dirty(value),
       );
     }
   }
@@ -303,7 +303,7 @@ class AnnuityFormNotifier extends StateNotifier<AnnuityFormState> {
       amount: DataNumber.dirty(state.amount.value),
       annuityValue: DataNumber.dirty(state.annuityValue.value),
       time: DataNumber.dirty(state.time.value),
-      interestRate: InterestRate.dirty(state.interestRate.value),
+      interestRate: DataPercentage.dirty(state.interestRate.value),
       isValid: state.variable != AnnuityVariable.none &&
           Formz.validate([
             if (state.variable != AnnuityVariable.amount &&
