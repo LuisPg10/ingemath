@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/providers.dart';
-import '../widgets/compoundInterest/custom_time_Cap_form_f.dart';
-import '../widgets/operations/conception_Compound.dart';
-import '../widgets/shared/header.dart';
 import '../widgets/widgets.dart';
 
 class CompoundInterestScreen extends StatelessWidget {
